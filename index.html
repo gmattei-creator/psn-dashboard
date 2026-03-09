@@ -235,6 +235,78 @@
   .rti-role { font-size: 11px; color: #888; margin-top: 3px; }
   .rti-emails { font-size: 11px; color: #555; margin-top: 4px; font-weight: 600; }
 
+  /* GANTT */
+  .gantt-wrap { overflow-x: auto; padding-bottom: 8px; }
+  .gantt-inner { min-width: 820px; }
+  .gantt-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; font-size: 12px; }
+  .gantt-legend-item { display: flex; align-items: center; gap: 6px; }
+  .gantt-legend-dot { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .gl-green  { background:#2E7D32; } .gl-orange { background:#E87722; }
+  .gl-red    { background:#C62828; } .gl-blue   { background:#2B5F8E; }
+  .gl-purple { background:#6A1B9A; } .gl-grey   { background:#9E9E9E; }
+
+  .gantt-header-row { display: flex; margin-bottom: 2px; }
+  .gantt-row-label-hdr { width: 190px; flex-shrink: 0; }
+  .gantt-weeks { flex: 1; display: flex; }
+  .gantt-week-cell {
+    flex: 1; text-align: center; font-size: 10px; font-weight: 700;
+    color: white; padding: 5px 2px; background: #1B3A5C; border-right: 1px solid #2B5F8E;
+  }
+  .gantt-week-cell:last-child { border-right: none; }
+  .gantt-week-cell.today-week { background: #E87722; }
+
+  .gantt-row { display: flex; border-bottom: 1px solid #eee; align-items: center; min-height: 46px; }
+  .gantt-row:hover { background: #f8f9fc; }
+  .gantt-row-label {
+    width: 190px; flex-shrink: 0; font-size: 11px; font-weight: 600;
+    padding: 6px 10px 6px 0; color: #1B3A5C; line-height: 1.3;
+  }
+  .gantt-row-label small { font-weight: 400; color: #888; display: block; font-size: 10px; }
+  .gantt-timeline { flex: 1; position: relative; height: 46px; }
+  .gantt-bar {
+    position: absolute; height: 22px; top: 12px; border-radius: 4px;
+    display: flex; align-items: center; padding: 0 8px;
+    font-size: 10px; font-weight: 600; color: white; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: opacity 0.2s; cursor: default;
+  }
+  .gantt-bar:hover { opacity: 0.85; }
+  .bar-green  { background: #2E7D32; }
+  .bar-orange { background: #E87722; }
+  .bar-red    { background: #C62828; }
+  .bar-blue   { background: #2B5F8E; }
+  .bar-purple { background: #6A1B9A; }
+  .bar-grey   { background: #9E9E9E; }
+
+  .gantt-today-line {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: #E87722; z-index: 10;
+  }
+  .gantt-today-label {
+    position: absolute; top: -18px; font-size: 9px; font-weight: 700;
+    color: #E87722; transform: translateX(-50%); white-space: nowrap;
+  }
+  .gantt-milestone {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 10px; height: 10px; background: #1B3A5C; border: 2px solid white;
+    border-radius: 50%; z-index: 5; cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .gantt-milestone:hover::after {
+    content: attr(data-label); position: absolute; top: -28px; left: 50%;
+    transform: translateX(-50%); background: #1B3A5C; color: white;
+    font-size: 10px; padding: 3px 7px; border-radius: 4px; white-space: nowrap; z-index: 20;
+    pointer-events: none;
+  }
+  .gantt-grid-line {
+    position: absolute; top: 0; bottom: 0; width: 1px; background: #e8eaf0;
+  }
+  .gantt-section-title {
+    font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 10px 0 4px; grid-column: 1 / -1;
+    border-top: 2px solid #eee; margin-top: 4px;
+  }
+
   /* FOOTER */
   .footer {
     background: #1B3A5C; color: rgba(255,255,255,0.7); text-align: center;
@@ -324,6 +396,7 @@
   <button class="tab-btn" onclick="showTab('calendario')">&#128197; Calendario</button>
   <button class="tab-btn" onclick="showTab('avanzamento')">&#128202; Avanzamento</button>
   <button class="tab-btn" onclick="showTab('log')">&#128203; Log</button>
+  <button class="tab-btn" onclick="showTab('gantt')">&#128336; Gantt</button>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════ -->
@@ -991,6 +1064,278 @@
 </div>
 </div>
 
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- TAB: GANTT                                                  -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="tab-gantt" class="tab-panel">
+<div class="container">
+  <div class="card grid-full">
+    <div class="card-header">
+      <div class="card-header-left">&#128336; Gantt PSN – Marzo / Aprile 2026</div>
+      <small style="color:#888;font-weight:400">Calendario settimanale per verticale · Aggiornato 09/03/2026</small>
+    </div>
+    <div class="card-body">
+
+      <!-- LEGENDA -->
+      <div class="gantt-legend">
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-green"></div> Completato / Attivo</div>
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-orange"></div> In corso</div>
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-red"></div> Bloccato</div>
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-blue"></div> Pianificato</div>
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-purple"></div> On-site / In presenza</div>
+        <div class="gantt-legend-item"><div class="gantt-legend-dot gl-grey"></div> Fuori scope / Sospeso</div>
+        <div class="gantt-legend-item"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#1B3A5C;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></span> Milestone / evento</div>
+        <div class="gantt-legend-item"><span style="display:inline-block;width:3px;height:14px;background:#E87722;border-radius:1px"></span> Oggi (09/03)</div>
+      </div>
+
+      <div class="gantt-wrap">
+      <div class="gantt-inner" id="ganttInner">
+
+        <!-- INTESTAZIONE SETTIMANE -->
+        <!--
+          Span totale: Mar 3 (lun) → Apr 13 (dom) = 42 giorni = 6 settimane
+          Ogni settimana = 100%/6 ≈ 16.667%
+          Oggi (Mar 9) = giorno 6 dal Mar 3 = (6/42)*100 = 14.3%
+        -->
+        <div class="gantt-header-row">
+          <div class="gantt-row-label-hdr"></div>
+          <div class="gantt-weeks">
+            <div class="gantt-week-cell today-week">W09<br><span style="font-weight:400">3–9 mar</span></div>
+            <div class="gantt-week-cell">W10<br><span style="font-weight:400">10–16 mar</span></div>
+            <div class="gantt-week-cell">W11<br><span style="font-weight:400">17–23 mar</span></div>
+            <div class="gantt-week-cell">W12<br><span style="font-weight:400">24–30 mar</span></div>
+            <div class="gantt-week-cell">W13<br><span style="font-weight:400">31 mar–6 apr</span></div>
+            <div class="gantt-week-cell">W14<br><span style="font-weight:400">7–13 apr</span></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: GOVERNANCE -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Governance</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- SAL Settimanale -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">SAL Settimanale<small>PCM – DPC – PSN</small></div>
+          <div class="gantt-timeline" id="gtl-sal">
+            <div class="gantt-today-line" style="left:14.3%"><div class="gantt-today-label">oggi</div></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div>
+            <div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <div class="gantt-bar bar-green" style="left:0%;width:100%">Ricorrente ogni martedì ore 11:00</div>
+            <!-- Milestones SAL: 11/3=19%, 18/3=36%, 25/3=52%, 1/4=69%, 8/4=86% -->
+            <div class="gantt-milestone" style="left:19%" data-label="SAL 11/03 – ore 11:00"></div>
+            <div class="gantt-milestone" style="left:36%" data-label="SAL 18/03 – ore 11:00"></div>
+            <div class="gantt-milestone" style="left:52%" data-label="SAL 25/03 – ore 11:00"></div>
+            <div class="gantt-milestone" style="left:69%" data-label="SAL 01/04 – ore 11:00"></div>
+            <div class="gantt-milestone" style="left:86%" data-label="SAL 08/04 – ore 11:00"></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: INFRASTRUTTURA -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Infrastruttura</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- Nutanix -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Nutanix On-Premise<small>Cluster DPC</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Configurazione: W09-W10 -->
+            <div class="gantt-bar bar-orange" style="left:0%;width:33.3%">Configurazione</div>
+            <!-- On-site install: Mar 16-17 = W11 inizio (33.3% + 2gg = 36.5%) width 2gg=4.8% -->
+            <div class="gantt-bar bar-purple" style="left:30.9%;width:4.8%">On-site</div>
+            <!-- NDB Design: Mar 31-Apr 1 = (28/42)*100=66.7%, width 2gg=4.8% -->
+            <div class="gantt-bar bar-purple" style="left:66.7%;width:4.8%">NDB</div>
+            <!-- Fill ongoing -->
+            <div class="gantt-bar bar-orange" style="left:35.7%;width:31%;opacity:0.5"></div>
+            <!-- Milestone: call Nutanix 09/03 -->
+            <div class="gantt-milestone" style="left:14.3%" data-label="Call Nutanix configurazione · 09/03 ore 10:00"></div>
+            <!-- On-site milestone -->
+            <div class="gantt-milestone" style="left:30.9%" data-label="Installazione cluster on-site · Via Ulpiano · 16-17/03"></div>
+            <!-- NDB milestone -->
+            <div class="gantt-milestone" style="left:66.7%" data-label="NDB Design DPC · 31/03-01/04 · In presenza"></div>
+          </div>
+        </div>
+
+        <!-- Cynet -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Cynet – Sicurezza<small>Onboarding endpoint</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Onboarding: Mar 10-20 = 16.7% → 40.5%, width 23.8% -->
+            <div class="gantt-bar bar-blue" style="left:16.7%;width:23.8%">Onboarding</div>
+            <!-- Deployment ongoing -->
+            <div class="gantt-bar bar-orange" style="left:40.5%;width:59.5%;opacity:0.6">Deploy & configurazione</div>
+            <div class="gantt-milestone" style="left:16.7%" data-label="Onboarding meeting · 10/03 ore 12:00 · Zoom"></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: MIGRAZIONE & CONNETTIVITÀ -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Migrazione &amp; Connettività</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- VPN -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">VPN AWS as-is ↔ PSN<small>Connettività</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Pianificato fino a call 10/3 = 16.7%, poi in corso -->
+            <div class="gantt-bar bar-blue" style="left:0%;width:19%">Pianificazione</div>
+            <div class="gantt-bar bar-orange" style="left:19%;width:81%">Configurazione VPN</div>
+            <!-- Milestone call VPN 10/3 -->
+            <div class="gantt-milestone" style="left:16.7%" data-label="🆕 Call VPN AWS as-is→PSN · 10/03 ore 15:00 · Teams"></div>
+          </div>
+        </div>
+
+        <!-- Migrazione VM AWS -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Migrazione VM AWS→PSN<small>Cutover da definire</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <div class="gantt-bar bar-orange" style="left:0%;width:60%">In corso – Wave I</div>
+            <div class="gantt-bar bar-blue" style="left:60%;width:40%;opacity:0.7">Wave II-III (TBD)</div>
+          </div>
+        </div>
+
+        <!-- Extreme/MuXo -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Extreme/MuXo/DPC<small>Bi-weekly call</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <div class="gantt-bar bar-green" style="left:0%;width:100%">Bi-weekly ricorrente</div>
+            <!-- 10/3=16.7%, 24/3=50%, 7/4=83.3% -->
+            <div class="gantt-milestone" style="left:16.7%" data-label="Extreme/MuXo call · 10/03 ore 11:00"></div>
+            <div class="gantt-milestone" style="left:50%" data-label="Extreme/MuXo call · 24/03 ore 11:00"></div>
+            <div class="gantt-milestone" style="left:83.3%" data-label="Extreme/MuXo call · 07/04 ore 11:00"></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: IAM & APPLICATIVI -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">IAM &amp; Applicativi</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- IAM -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Verticale IAM<small>Leonardo + Accenture FA</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Specifiche condivise 5/3 → call 13/3 → ongoing -->
+            <div class="gantt-bar bar-orange" style="left:0%;width:100%">Progettazione &amp; validazione IAM</div>
+            <!-- Call IAM 13/3 = giorno 10 = (10/42)*100 = 23.8% -->
+            <div class="gantt-milestone" style="left:4.8%" data-label="Specifiche IAM condivise da Leonardo · 05/03"></div>
+            <div class="gantt-milestone" style="left:23.8%" data-label="⭐ Call Verticale IAM – FA Accenture · 13/03 ore 11:00"></div>
+          </div>
+        </div>
+
+        <!-- Fornitori applicativi -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Fornitori Applicativi<small>Wave II e III</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <div class="gantt-bar bar-orange" style="left:0%;width:100%">Ingaggio &amp; validazione Accenture</div>
+            <div class="gantt-milestone" style="left:0%" data-label="Avvio ingaggio Wave II-III · 03/03"></div>
+          </div>
+        </div>
+
+        <!-- MLA CIMA -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">MLA – CIMA Foundation<small>Maturity Level Assessment</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- DR call 9/3 = 14.3%, MLA call 10/3 = 16.7% → ongoing -->
+            <div class="gantt-bar bar-blue" style="left:14.3%;width:85.7%">Assessment in corso</div>
+            <div class="gantt-milestone" style="left:14.3%" data-label="Call DR – FA CIMA · 09/03 ore 15:30"></div>
+            <div class="gantt-milestone" style="left:16.7%" data-label="Call MLA – CIMA · 10/03 ore 11:00"></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: DATABASE -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Database</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- DB PSN -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">DB PSN – DBPaaS<small>PostgreSQL Pa_admin</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Attivo da Mar 6 = giorno 3 = 7.1% -->
+            <div class="gantt-bar bar-green" style="left:7.1%;width:92.9%">✓ Attivo – credenziali OK</div>
+            <div class="gantt-milestone" style="left:7.1%" data-label="Credenziali Pa_admin ricevute · 06/03"></div>
+          </div>
+        </div>
+
+        <!-- DB AS-IS -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">DB AS-IS – AWS<small>🔴 Bloccato</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- Bloccato -->
+            <div class="gantt-bar bar-red" style="left:0%;width:100%">⛔ Bloccato – credenziali mancanti</div>
+            <div class="gantt-milestone" style="left:14.3%" data-label="Segnalazione urgente credenziali mancanti · 09/03"></div>
+          </div>
+        </div>
+
+        <!-- SEZIONE: AMMINISTRATIVO -->
+        <div class="gantt-row" style="background:#f8f9fc">
+          <div class="gantt-row-label" style="color:#888;font-size:10px;text-transform:uppercase;letter-spacing:0.5px">Amministrativo</div>
+          <div class="gantt-timeline"></div>
+        </div>
+
+        <!-- Finanziamento -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Variazione Finanziamento<small>Domanda DPC → DTD</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <!-- In revisione → target invio Mar 31 = 66.7% -->
+            <div class="gantt-bar bar-orange" style="left:0%;width:66.7%">Revisione bozza DPC + DTD</div>
+            <div class="gantt-bar bar-blue" style="left:66.7%;width:33.3%;opacity:0.7">Iter formale</div>
+            <div class="gantt-milestone" style="left:14.3%" data-label="Bozza ricevuta da Ferrari · 09/03 – manca Dettaglio rack"></div>
+            <div class="gantt-milestone" style="left:66.7%" data-label="Target invio a DTD · entro 31/03"></div>
+          </div>
+        </div>
+
+        <!-- Piano Fabbisogni CPU -->
+        <div class="gantt-row">
+          <div class="gantt-row-label">Rimodulazione CPU<small>Piano Fabbisogni</small></div>
+          <div class="gantt-timeline">
+            <div class="gantt-today-line" style="left:14.3%"></div>
+            <div class="gantt-grid-line" style="left:16.67%"></div><div class="gantt-grid-line" style="left:33.33%"></div><div class="gantt-grid-line" style="left:50%"></div><div class="gantt-grid-line" style="left:66.67%"></div><div class="gantt-grid-line" style="left:83.33%"></div>
+            <div class="gantt-bar bar-blue" style="left:7.1%;width:92.9%">In attesa di delivery pool CPU aggiuntiva</div>
+            <div class="gantt-milestone" style="left:7.1%" data-label="Richiesta delivery pool CPU · 06/03"></div>
+          </div>
+        </div>
+
+      </div><!-- /gantt-inner -->
+      </div><!-- /gantt-wrap -->
+
+      <div style="font-size:11px;color:#aaa;margin-top:12px;text-align:right">
+        * Hover sui pallini ● per dettagli milestone · Linea arancio = oggi (09/03/2026)
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
   Dashboard PMO PSN &mdash; Dipartimento della Protezione Civile &mdash; Diffusione Limitata &mdash; Aggiornata il 09/03/2026
@@ -1024,6 +1369,9 @@ const searchIndex = [
   { title: 'CIMA – Soluzione DR', desc: 'Incontro oggi 09/03 ore 15:30', tab: 'calendario' },
   { title: 'Abilitazione utenze AWS ON PREM', desc: 'Lista aggiornata con colonna Stato', tab: 'email' },
   { title: 'Fornitori applicativi Wave II III', desc: 'Onboarding Accenture in corso', tab: 'pmo' },
+  { title: 'Gantt PSN marzo aprile', desc: 'Calendario settimanale per verticale', tab: 'gantt' },
+  { title: 'NDB Design DPC', desc: '31 mar-1 apr in presenza, Nutanix', tab: 'gantt' },
+  { title: 'Rimodulazione Piano Fabbisogni CPU', desc: 'In attesa delivery pool CPU aggiuntiva', tab: 'gantt' },
 ];
 
 function doSearch(q) {
@@ -1050,7 +1398,7 @@ function goToTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   const btns = document.querySelectorAll('.tab-btn');
-  const tabMap = { panoramica: 0, email: 1, pmo: 2, calendario: 3, avanzamento: 4, log: 5 };
+  const tabMap = { panoramica: 0, email: 1, pmo: 2, calendario: 3, avanzamento: 4, log: 5, gantt: 6 };
   if (btns[tabMap[tab]]) btns[tabMap[tab]].classList.add('active');
 }
 
