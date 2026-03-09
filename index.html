@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard PSN – DPC</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #333; }
+
+  /* PASSWORD GATE */
+  #pw-gate {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1a3a5c 0%, #0d5c8f 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  #pw-box {
+    background: white; border-radius: 12px; padding: 40px 48px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3); text-align: center; min-width: 320px;
+  }
+  #pw-box h2 { color: #1a3a5c; margin-bottom: 8px; font-size: 1.4rem; }
+  #pw-box p { color: #666; margin-bottom: 24px; font-size: 0.9rem; }
+  #pw-input {
+    width: 100%; padding: 12px 16px; border: 2px solid #ddd;
+    border-radius: 8px; font-size: 1rem; margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  #pw-input:focus { outline: none; border-color: #1a3a5c; }
+  #pw-btn {
+    width: 100%; padding: 12px; background: #1a3a5c; color: white;
+    border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
+    transition: background 0.2s;
+  }
+  #pw-btn:hover { background: #0d5c8f; }
+  #pw-err { color: #e74c3c; margin-top: 12px; font-size: 0.85rem; display: none; }
+  .pw-logo { font-size: 2.5rem; margin-bottom: 16px; }
+
+  /* MAIN DASHBOARD */
+  #dashboard { display: none; }
+  header {
+    background: linear-gradient(135deg, #1a3a5c 0%, #0d5c8f 100%);
+    color: white; padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  header h1 { font-size: 1.4rem; }
+  header .subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+  .badge {
+    background: rgba(255,255,255,0.2); border-radius: 20px;
+    padding: 6px 14px; font-size: 0.8rem; font-weight: 600;
+  }
+
+  .container { padding: 24px 32px; }
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px; margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: white; border-radius: 10px; padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); text-align: center;
+    border-top: 4px solid #1a3a5c;
+  }
+  .kpi-card.verde { border-top-color: #27ae60; }
+  .kpi-card.giallo { border-top-color: #f39c12; }
+  .kpi-card.rosso { border-top-color: #e74c3c; }
+  .kpi-card.blu { border-top-color: #2980b9; }
+  .kpi-val { font-size: 2.2rem; font-weight: 700; color: #1a3a5c; margin-bottom: 4px; }
+  .kpi-card.verde .kpi-val { color: #27ae60; }
+  .kpi-card.giallo .kpi-val { color: #f39c12; }
+  .kpi-card.rosso .kpi-val { color: #e74c3c; }
+  .kpi-card.blu .kpi-val { color: #2980b9; }
+  .kpi-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .card {
+    background: white; border-radius: 10px; padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin-bottom: 20px;
+  }
+  .card h2 { font-size: 1rem; color: #1a3a5c; margin-bottom: 16px;
+    padding-bottom: 10px; border-bottom: 2px solid #f0f2f5; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 8px 18px; border: none; border-radius: 20px;
+    background: #e8ecf0; color: #555; cursor: pointer; font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: #1a3a5c; color: white; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th { background: #f8f9fa; padding: 10px 14px; text-align: left;
+    font-weight: 600; color: #555; border-bottom: 2px solid #e9ecef; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f0f2f5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbfc; }
+
+  .tag {
+    display: inline-block; padding: 2px 10px; border-radius: 12px;
+    font-size: 0.75rem; font-weight: 600;
+  }
+  .tag-verde { background: #d4edda; color: #155724; }
+  .tag-giallo { background: #fff3cd; color: #856404; }
+  .tag-rosso { background: #f8d7da; color: #721c24; }
+  .tag-blu { background: #d1ecf1; color: #0c5460; }
+  .tag-grigio { background: #e2e3e5; color: #383d41; }
+
+  .alert-box {
+    border-left: 4px solid; padding: 12px 16px; border-radius: 6px;
+    margin-bottom: 12px; font-size: 0.9rem;
+  }
+  .alert-info { border-color: #2980b9; background: #d6eaf8; }
+  .alert-warning { border-color: #f39c12; background: #fef9e7; }
+  .alert-danger { border-color: #e74c3c; background: #fde8e8; }
+  .alert-success { border-color: #27ae60; background: #d5f5e3; }
+
+  .progress-bar { background: #e9ecef; border-radius: 8px; height: 10px; margin-top: 8px; }
+  .progress-fill { height: 100%; border-radius: 8px; transition: width 0.5s; }
+  .progress-label { font-size: 0.8rem; color: #666; margin-top: 4px; display: flex; justify-content: space-between; }
+
+  footer {
+    text-align: center; padding: 20px; color: #aaa; font-size: 0.8rem;
+    border-top: 1px solid #e9ecef; margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="pw-gate">
+  <div id="pw-box">
+    <div class="pw-logo">🔐</div>
+    <h2>Dashboard PSN – DPC</h2>
+    <p>Accesso riservato. Inserire la password.</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Accedi</button>
+    <div id="pw-err">Password errata. Riprovare.</div>
+  </div>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div>
+      <h1>📡 Dashboard PSN – Dipartimento Protezione Civile</h1>
+      <div class="subtitle">Monitor attività PSN / Emiliano Ferrari</div>
+    </div>
+    <div class="badge" id="last-update">⏳ In caricamento…</div>
+  </header>
+
+  <div class="container">
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi-card blu">
+        <div class="kpi-val" id="kpi-email">–</div>
+        <div class="kpi-label">Email PSN oggi</div>
+      </div>
+      <div class="kpi-card verde">
+        <div class="kpi-val" id="kpi-task-ok">–</div>
+        <div class="kpi-label">Task completati</div>
+      </div>
+      <div class="kpi-card giallo">
+        <div class="kpi-val" id="kpi-task-wip">–</div>
+        <div class="kpi-label">In corso</div>
+      </div>
+      <div class="kpi-card rosso">
+        <div class="kpi-val" id="kpi-scadenze">–</div>
+        <div class="kpi-label">Scadenze</div>
+      </div>
+    </div>
+
+    <!-- ALERT AREA -->
+    <div class="card">
+      <h2>🚨 Alert & Priorità</h2>
+      <div id="alert-area">
+        <div class="alert-box alert-info">
+          ℹ️ Dashboard inizializzata. In attesa del primo aggiornamento automatico.
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('tab-email', this)">📧 Email PSN</button>
+      <button class="tab-btn" onclick="showTab('tab-calendar', this)">📅 Calendario</button>
+      <button class="tab-btn" onclick="showTab('tab-log', this)">📋 Log attività</button>
+    </div>
+
+    <!-- TAB: EMAIL -->
+    <div class="tab-pane active" id="tab-email">
+      <div class="card">
+        <h2>📧 Email PSN ricevute</h2>
+        <div id="email-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Mittente</th>
+                <th>Oggetto</th>
+                <th>Stato</th>
+              </tr>
+            </thead>
+            <tbody id="email-tbody">
+              <tr>
+                <td colspan="4" style="text-align:center;color:#aaa;padding:20px;">
+                  In attesa del primo aggiornamento automatico…
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CALENDARIO -->
+    <div class="tab-pane" id="tab-calendar">
+      <div class="card">
+        <h2>📅 Prossimi eventi calendario DPC-LAVORO</h2>
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Evento</th><th>Tipo</th></tr>
+          </thead>
+          <tbody id="cal-tbody">
+            <tr>
+              <td colspan="3" style="text-align:center;color:#aaa;padding:20px;">
+                In attesa del primo aggiornamento automatico…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: LOG -->
+    <div class="tab-pane" id="tab-log">
+      <div class="card">
+        <h2>📋 Log aggiornamenti dashboard</h2>
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Azione</th><th>Note</th></tr>
+          </thead>
+          <tbody id="log-tbody">
+            <tr>
+              <td>09/03/2026</td>
+              <td>Creazione dashboard</td>
+              <td><span class="tag tag-verde">OK</span> Dashboard PSN inizializzata con password gate</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <footer>
+    Dashboard PSN – DPC &nbsp;|&nbsp; Aggiornata automaticamente ogni mattina alle 07:08 &nbsp;|&nbsp; Accesso riservato
+  </footer>
+</div><!-- /dashboard -->
+
+<script>
+// ─── MD5 ──────────────────────────────────────────────────────────────────────
+function md5(s){function L(k,d){return(k<<d)|(k>>>(32-d))}function K(G,k){var I,d,F,H,x;F=(G&2147483648);H=(k&2147483648);I=(G&1073741824);d=(k&1073741824);x=(G&1073741823)+(k&1073741823);if(I&d){return(x^2147483648^F^H)}if(I|d){if(x&1073741824){return(x^3221225472^F^H)}else{return(x^1073741824^F^H)}}else{return(x^F^H)}}function r(d,F,k,I,G,H,x){d=K(d,K(K((F&k)|(~F&I),G),x));return K(L(d,H),F)}function q(d,F,k,I,G,H,x){d=K(d,K(K((F&I)|(k&~I),G),x));return K(L(d,H),F)}function p(d,F,k,I,G,H,x){d=K(d,K(K(F^k^I,G),x));return K(L(d,H),F)}function n(d,F,k,I,G,H,x){d=K(d,K(K(k^(F|~I),G),x));return K(L(d,H),F)}function u(G){var z,C=G.length,A=C+8,B=(A-(A%64))/64,D=(B+1)*16,F=Array(D-1),E=0,y=0;while(y<C){z=(y-(y%4))/4;E=(y%4)*8;F[z]=(F[z]|(G.charCodeAt(y)<<E));y++}z=(y-(y%4))/4;E=(y%4)*8;F[z]=F[z]|(128<<E);F[D-2]=C<<3;F[D-1]=C>>>29;return F}function m(G){var z="",y,A="";for(y=0;y<=3;y++){A=(G>>>(y*8))&255;A="0"+A.toString(16);z=z+A.substr(A.length-2,2)}return z}var X=Array(),w,v,B,A,z,y,x,t,C=1732584193,k=4023233417,l=2562383102,j=271733878;s=unescape(encodeURIComponent(s));X=u(s);for(w=0;w<X.length;w+=16){v=C;B=k;z=l;t=j;C=r(C,k,l,j,X[w+0],7,3614090360);j=r(j,C,k,l,X[w+1],12,3905402710);l=r(l,j,C,k,X[w+2],17,606105819);k=r(k,l,j,C,X[w+3],22,3250441966);C=r(C,k,l,j,X[w+4],7,4118548399);j=r(j,C,k,l,X[w+5],12,1200080426);l=r(l,j,C,k,X[w+6],17,2821735955);k=r(k,l,j,C,X[w+7],22,4249261313);C=r(C,k,l,j,X[w+8],7,1770035416);j=r(j,C,k,l,X[w+9],12,2336552879);l=r(l,j,C,k,X[w+10],17,4294925233);k=r(k,l,j,C,X[w+11],22,2304563134);C=r(C,k,l,j,X[w+12],7,1804603682);j=r(j,C,k,l,X[w+13],12,4254626195);l=r(l,j,C,k,X[w+14],17,2792965006);k=r(k,l,j,C,X[w+15],22,1236535329);C=q(C,k,l,j,X[w+1],5,4129170786);j=q(j,C,k,l,X[w+6],9,3225465664);l=q(l,j,C,k,X[w+11],14,643717713);k=q(k,l,j,C,X[w+0],20,3921069994);C=q(C,k,l,j,X[w+5],5,3593408605);j=q(j,C,k,l,X[w+10],9,38016083);l=q(l,j,C,k,X[w+15],14,3634488961);k=q(k,l,j,C,X[w+4],20,3889429448);C=q(C,k,l,j,X[w+9],5,568446438);j=q(j,C,k,l,X[w+14],9,3275163606);l=q(l,j,C,k,X[w+3],14,4107603335);k=q(k,l,j,C,X[w+8],20,1163531501);C=q(C,k,l,j,X[w+13],5,2850285829);j=q(j,C,k,l,X[w+2],9,4243563512);l=q(l,j,C,k,X[w+7],14,1735328473);k=q(k,l,j,C,X[w+12],20,2368359562);C=p(C,k,l,j,X[w+5],4,4294588738);j=p(j,C,k,l,X[w+8],11,2272392833);l=p(l,j,C,k,X[w+11],16,1839030562);k=p(k,l,j,C,X[w+14],23,4259657740);C=p(C,k,l,j,X[w+1],4,2763975236);j=p(j,C,k,l,X[w+4],11,1272893353);l=p(l,j,C,k,X[w+7],16,4139469664);k=p(k,l,j,C,X[w+10],23,3200236656);C=p(C,k,l,j,X[w+13],4,681279174);j=p(j,C,k,l,X[w+0],11,3936430074);l=p(l,j,C,k,X[w+3],16,3572445317);k=p(k,l,j,C,X[w+6],23,76029189);C=p(C,k,l,j,X[w+9],4,3654602809);j=p(j,C,k,l,X[w+12],11,3873151461);l=p(l,j,C,k,X[w+15],16,530742520);k=p(k,l,j,C,X[w+2],23,3299628645);C=n(C,k,l,j,X[w+0],6,4096336452);j=n(j,C,k,l,X[w+7],10,1126891415);l=n(l,j,C,k,X[w+14],15,2878612391);k=n(k,l,j,C,X[w+5],21,4237533241);C=n(C,k,l,j,X[w+12],6,1700485571);j=n(j,C,k,l,X[w+3],10,2399980690);l=n(l,j,C,k,X[w+10],15,4293915773);k=n(k,l,j,C,X[w+1],21,2240044497);C=n(C,k,l,j,X[w+8],6,1873313359);j=n(j,C,k,l,X[w+15],10,4264355552);l=n(l,j,C,k,X[w+6],15,2734768916);k=n(k,l,j,C,X[w+13],21,1309151649);C=n(C,k,l,j,X[w+4],6,4149444226);j=n(j,C,k,l,X[w+11],10,3174756917);l=n(l,j,C,k,X[w+2],15,718787259);k=n(k,l,j,C,X[w+9],21,3951481745);C=K(C,v);k=K(k,B);l=K(l,z);j=K(j,t)}return(m(C)+m(k)+m(l)+m(j)).toLowerCase()}
+// ─── PASSWORD GATE ────────────────────────────────────────────────────────────
+const HASH = "8b3c986d990fee6fc1d58a400cd8a964"; // MD5 di DashDpc@26
+(function(){
+  if(sessionStorage.getItem('psn_auth')==='1'){
+    document.getElementById('pw-gate').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    initDashboard();
+  }
+})();
+function checkPw(){
+  var v=document.getElementById('pw-input').value;
+  if(md5(v)===HASH){
+    sessionStorage.setItem('psn_auth','1');
+    document.getElementById('pw-gate').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    initDashboard();
+  } else {
+    document.getElementById('pw-err').style.display='block';
+    document.getElementById('pw-input').value='';
+    document.getElementById('pw-input').focus();
+  }
+}
+// ─── TABS ────────────────────────────────────────────────────────────────────
+function showTab(id, btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function initDashboard(){
+  var now = new Date();
+  var opts = {day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'};
+  document.getElementById('last-update').textContent =
+    '✅ AGGIORNATA — ' + now.toLocaleDateString('it-IT', opts);
+  // KPI placeholder
+  document.getElementById('kpi-email').textContent = '0';
+  document.getElementById('kpi-task-ok').textContent = '0';
+  document.getElementById('kpi-task-wip').textContent = '0';
+  document.getElementById('kpi-scadenze').textContent = '0';
+}
+</script>
+</body>
+</html>
