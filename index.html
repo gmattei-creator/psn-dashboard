@@ -8,6 +8,34 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f0f2f5; color: #1a1a2e; }
 
+  /* LOGIN OVERLAY */
+  #login-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, #1B3A5C 0%, #2B5F8E 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #login-box {
+    background: white; border-radius: 16px; padding: 40px 48px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 360px;
+  }
+  #login-box .login-logo { font-size: 48px; margin-bottom: 12px; }
+  #login-box h2 { color: #1B3A5C; font-size: 20px; margin-bottom: 4px; }
+  #login-box p { color: #888; font-size: 12px; margin-bottom: 24px; }
+  #login-box input {
+    width: 100%; padding: 12px 16px; border: 2px solid #ddd; border-radius: 8px;
+    font-size: 14px; outline: none; margin-bottom: 12px; letter-spacing: 2px;
+    transition: border-color 0.2s;
+  }
+  #login-box input:focus { border-color: #2B5F8E; }
+  #login-box button {
+    width: 100%; padding: 12px; background: linear-gradient(135deg, #1B3A5C, #2B5F8E);
+    color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  #login-box button:hover { opacity: 0.9; }
+  #login-error { color: #C62828; font-size: 12px; margin-top: 8px; display: none; }
+  #dashboard-content { display: none; }
+
   .header { background: linear-gradient(135deg, #1B3A5C 0%, #2B5F8E 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
   .header h1 { font-size: 22px; font-weight: 600; }
   .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 4px; }
@@ -112,6 +140,49 @@
 </style>
 </head>
 <body>
+
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay">
+  <div id="login-box">
+    <div class="login-logo">&#128200;</div>
+    <h2>Dashboard PMO PSN</h2>
+    <p>Dipartimento della Protezione Civile &mdash; Accesso riservato</p>
+    <input type="password" id="pwd-input" placeholder="Inserisci la password" onkeydown="if(event.key==='Enter')checkPwd()" autocomplete="current-password" />
+    <button onclick="checkPwd()">&#128274; Accedi</button>
+    <div id="login-error">&#10060; Password non corretta. Riprova.</div>
+  </div>
+</div>
+
+<script>
+  // Verifica sessione già autenticata
+  (function() {
+    if (sessionStorage.getItem('psn_auth') === '1') {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('dashboard-content').style.display = 'block';
+      });
+    }
+  })();
+
+  function checkPwd() {
+    var h = 0, s = 'DashDpc@2026';
+    for (var i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
+    var input = document.getElementById('pwd-input').value;
+    var hi = 0;
+    for (var i = 0; i < input.length; i++) { hi = ((hi << 5) - hi) + input.charCodeAt(i); hi |= 0; }
+    if (hi === h) {
+      sessionStorage.setItem('psn_auth', '1');
+      document.getElementById('login-overlay').style.display = 'none';
+      document.getElementById('dashboard-content').style.display = 'block';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('pwd-input').value = '';
+      document.getElementById('pwd-input').focus();
+    }
+  }
+</script>
+
+<div id="dashboard-content">
 
 <div class="header">
   <div>
@@ -461,6 +532,6 @@
     Dashboard aggiornata il 09/03/2026 &mdash; Fonte: Gmail (label PSN) + Google Calendar (DPC - LAVORO) &mdash; Referente PMO: Ferrari Emiliano (Sogei S.p.A.)
   </div>
 
-</div>
+</div><!-- fine dashboard-content -->
 </body>
 </html>
