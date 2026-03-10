@@ -255,13 +255,14 @@ const CONTATORI = {"totale_email_processate": 26, "totale_gantt_items": 2, "tota
 
 // ─── LOGIN ───────────────────────────────────────────────────────────────────
 function doLogin() {
-  const p = document.getElementById('pwd-input').value;
+  const p = (document.getElementById('pwd-input').value || '').trim();
   if (p === 'DashDpc@26') {
     document.getElementById('login-overlay').style.display = 'none';
-    initDashboard();
+    try { initDashboard(); } catch(err) { console.error('initDashboard error:', err); }
   } else {
     document.getElementById('login-error').style.display = 'block';
     document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-input').focus();
   }
 }
 
@@ -325,10 +326,10 @@ function buildActionItems() {
 // ─── OVERVIEW CAL ─────────────────────────────────────────────────────────────
 function buildOverviewCal() {
   const c = document.getElementById('overview-cal');
-  c.innerHTML = CALENDAR.map(ev => `
-    <div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;background:#f8fafc;margin-bottom:6px;">
-      <span style="font-weight:700;color:#2563eb;min-width:80px;font-size:12px;">${ev.inizio}–${ev.fine}</span>
-      <span style="font-size:12px;">${ev.titolo}</span>
+  if (!c) return;
+  c.innerHTML = CALENDAR.map(ev => `<div style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;background:#f8fafc;margin-bottom:6px;">
+      <span style="font-weight:700;color:#2563eb;min-width:80px;font-size:12px;">${esc(ev.inizio)}–${esc(ev.fine)}</span>
+      <span style="font-size:12px;">${esc(ev.titolo)}</span>
     </div>`).join('');
 }
 
@@ -353,11 +354,11 @@ function buildEmailTable() {
 // ─── CALENDARIO ───────────────────────────────────────────────────────────────
 function buildCal() {
   const g = document.getElementById('cal-grid');
-  g.innerHTML = CALENDAR.map(ev => `
-    <div class="cal-card">
-      <div class="time">${ev.inizio} – ${ev.fine}</div>
-      <div class="title">${ev.titolo}</div>
-      <div class="org">👤 ${ev.organizzatore} &nbsp;|&nbsp; 💻 ${ev.tipo}</div>
+  if (!g) return;
+  g.innerHTML = CALENDAR.map(ev => `<div class="cal-card">
+      <div class="time">${esc(ev.inizio)} – ${esc(ev.fine)}</div>
+      <div class="title">${esc(ev.titolo)}</div>
+      <div class="org">👤 ${esc(ev.organizzatore)} &nbsp;|&nbsp; 💻 ${esc(ev.tipo)}</div>
     </div>`).join('');
 }
 
@@ -408,27 +409,32 @@ function buildStorico() {
 
 // ─── LOG TIMELINE ─────────────────────────────────────────────────────────────
 let currentLogFilter = 'all';
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 function buildLog(filter, search) {
   const tl = document.getElementById('log-timeline');
   let entries = LOG_ENTRIES;
-  if (filter && filter !== 'all') entries = entries.filter(e => e.tipo === filter);
-  if (search) entries = entries.filter(e =>
-    (e.titolo || '').toLowerCase().includes(search.toLowerCase()) ||
-    (e.descrizione || '').toLowerCase().includes(search.toLowerCase())
+  const filterVal = filter || currentLogFilter || 'all';
+  if (filterVal && filterVal !== 'all') entries = entries.filter(e => e.tipo === filterVal);
+  const q = search !== undefined ? search : (document.getElementById('log-search') ? document.getElementById('log-search').value : '');
+  if (q) entries = entries.filter(e =>
+    (e.titolo || '').toLowerCase().includes(q.toLowerCase()) ||
+    (e.descrizione || '').toLowerCase().includes(q.toLowerCase())
   );
-  tl.innerHTML = entries.map(e => `
-    <div class="tl-item" data-type="${e.tipo}" data-text="${(e.titolo+''+e.descrizione).toLowerCase()}">
-      <div class="tl-dot ${e.tipo}"></div>
-      <span class="tl-badge ${e.tipo}">${e.badge || e.tipo}</span>
-      <div class="tl-title">${e.titolo}</div>
-      <div class="tl-desc">${e.descrizione}</div>
-      <div class="tl-time">📅 ${e.data} ${e.ora}</div>
+  if (!tl) return;
+  tl.innerHTML = entries.map(e => `<div class="tl-item" data-type="${esc(e.tipo)}" data-text="${esc((e.titolo+''+e.descrizione).toLowerCase())}">
+      <div class="tl-dot ${esc(e.tipo)}"></div>
+      <span class="tl-badge ${esc(e.tipo)}">${esc(e.badge || e.tipo)}</span>
+      <div class="tl-title">${esc(e.titolo)}</div>
+      <div class="tl-desc">${esc(e.descrizione)}</div>
+      <div class="tl-time">📅 ${esc(e.data)} ${esc(e.ora)}</div>
     </div>`).join('') || '<p style="color:#94a3b8;font-size:13px">Nessun evento trovato.</p>';
 }
 function filterLog(filter, btn) {
-  currentLogFilter = filter || currentLogFilter;
+  if (filter) currentLogFilter = filter;
   document.querySelectorAll('.log-filter').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  if (btn && btn !== 'this') btn.classList.add('active');
   const search = document.getElementById('log-search') ? document.getElementById('log-search').value : '';
   buildLog(currentLogFilter, search);
 }
