@@ -199,8 +199,7 @@
     <div class="login-logo">🛡</div>
     <h2>Dashboard PMO PSN</h2>
     <p>Protezione Civile – Polo Strategico Nazionale<br>Accesso riservato – Diffusione Limitata</p>
-    <input type="text"     id="login-user" placeholder="Username" autocomplete="off">
-    <input type="password" id="login-pass" placeholder="Password">
+    <input type="password" id="login-pass" placeholder="Password" autocomplete="off">
     <button class="login-btn" onclick="doLogin()">Accedi</button>
     <div class="login-error" id="login-error"></div>
   </div>
@@ -472,19 +471,16 @@
 
 <script>
 /* ─── Login ──────────────────────────────────────────────── */
-const USERS = { "gmattei": "PSN2026!", "admin": "dpc-psn" };
 function doLogin() {
-  const u = document.getElementById("login-user").value.trim();
   const p = document.getElementById("login-pass").value;
-  if (USERS[u] && USERS[u] === p) {
+  if (p === "DashDpc@26") {
     document.getElementById("login-overlay").classList.add("hidden");
     setTimeout(()=>document.getElementById("login-overlay").style.display="none", 450);
   } else {
-    document.getElementById("login-error").textContent = "❌ Credenziali non valide.";
+    document.getElementById("login-error").textContent = "❌ Password non valida.";
   }
 }
 document.getElementById("login-pass").addEventListener("keydown", e => { if (e.key==="Enter") doLogin(); });
-document.getElementById("login-user").addEventListener("keydown", e => { if (e.key==="Enter") document.getElementById("login-pass").focus(); });
 
 /* ─── Verticali ──────────────────────────────────────────── */
 const verticali = {
