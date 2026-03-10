@@ -1,0 +1,56 @@
+{
+  "last_run_date": "2026-03-10",
+  "last_run_time": "10:00",
+  "processed_message_ids": [
+    "19cd34852beaeea5",
+    "19cd345b999b2c55",
+    "19cd256f8c7cdd3b",
+    "19cc3d6bfb4afa81",
+    "19cc29aa923432ae",
+    "19cc285e9428d827",
+    "19cc284eb1e66ac9",
+    "19cc258b5d7c506f",
+    "19cbeea40ede8d0b",
+    "19cbee7662c13260",
+    "19cbe35d1ff2cbed",
+    "19cbd85cdfd0155e",
+    "19cbd5778ce64316",
+    "19cb944088c5eecd",
+    "19cb4ac58a39f825",
+    "19cb3e2ab8fb87de",
+    "19cb399a8b9ca5ed",
+    "19cb39465ed70628",
+    "19cb39372bd5a0a2",
+    "19cb378f01a23108",
+    "19cb3502a1f76fd6",
+    "19cb2f5a6677af27",
+    "19caf175c688e3d7",
+    "19cb9455bf893e51"
+  ],
+  "processed_sent_ids": [
+    "19cb9455bf893e51"
+  ],
+  "total_emails_processed": 24,
+  "new_emails_today": 0,
+  "open_action_items": 7,
+  "blocked_tasks": 2,
+  "calendar_events_found": 10,
+  "new_events_detected": [
+    "DPC Installazione Cluster Via Ulpiano 16/03",
+    "DPC Installazione Cluster Via Ulpiano 17/03"
+  ],
+  "verticali_stato": {
+    "IAM": {"aperti": 2, "chiusi": 1},
+    "AWS": {"aperti": 3, "chiusi": 2},
+    "VPN": {"aperti": 2, "chiusi": 1},
+    "DB": {"aperti": 2, "chiusi": 1},
+    "Finanziamento": {"aperti": 1, "chiusi": 0},
+    "SAL": {"aperti": 1, "chiusi": 1},
+    "Fornitori applicativi": {"aperti": 2, "chiusi": 0},
+    "PSN": {"aperti": 2, "chiusi": 1}
+  },
+  "run_history": [
+    {"date": "2026-03-09", "time": "17:30", "new_emails": 3, "new_events": 1},
+    {"date": "2026-03-10", "time": "10:00", "new_emails": 0, "new_events": 2}
+  ]
+}
