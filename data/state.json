@@ -62,6 +62,14 @@
     {
       "tipo": "system",
       "data": "2026-03-10",
+      "ora": "19:10",
+      "titolo": "Run automatica – 10/03/2026 19:10",
+      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 0 nuovi eventi calendario, 2 Gantt items invariati, PDF PSN_Report_20260310_1910.pdf generato. Nessuna modifica rispetto alla run 19:00.",
+      "badge": "🖥️ Sistema"
+    },
+    {
+      "tipo": "system",
+      "data": "2026-03-10",
       "ora": "19:00",
       "titolo": "Run automatica – 10/03/2026 19:00",
       "descrizione": "Elaborazione completata: 2 nuove email Ferrari, 4 riunioni oggi, 2 voci Gantt, PDF generato.",
@@ -142,6 +150,14 @@
   ],
   "run_history": [
     {
+      "data": "2026-03-10",
+      "ora": "19:10",
+      "nuove_email": 0,
+      "nuovi_eventi_cal": 0,
+      "gantt_items": 2,
+      "pdf": "PSN_Report_20260310_1910.pdf"
+    },
+    {
       "date": "2026-03-10",
       "time": "19:00",
       "new_emails": 2,
@@ -197,10 +213,10 @@
     }
   },
   "last_run_date": "2026-03-10",
-  "last_run_time": "19:00",
+  "last_run_time": "19:10",
   "contatori": {
     "totale_email_processate": 26,
     "totale_gantt_items": 2,
-    "totale_log_entries": 10
+    "totale_log_entries": 11
   }
 }
