@@ -1,48 +1,174 @@
 {
-  "last_run_date": "2026-03-10",
-  "last_run_time": "12:07",
   "processed_message_ids": [
-    "19cd34852beaeea5",
-    "19cd345b999b2c55",
-    "19cd256f8c7cdd3b",
-    "19cc3d6bfb4afa81",
-    "19cc29aa923432ae",
-    "19cc285e9428d827",
-    "19cc284eb1e66ac9",
-    "19cc258b5d7c506f",
-    "19cbeea40ede8d0b",
-    "19cbee7662c13260",
-    "19cbe35d1ff2cbed",
-    "19cbd85cdfd0155e",
-    "19cbd5778ce64316",
-    "19cb944088c5eecd",
-    "19cb4ac58a39f825",
-    "19cb3e2ab8fb87de",
-    "19cb399a8b9ca5ed",
-    "19cb39465ed70628",
-    "19cb39372bd5a0a2",
     "19cb378f01a23108",
-    "19cb3502a1f76fd6",
+    "19cbd5778ce64316",
+    "19cc285e9428d827",
+    "19cbd85cdfd0155e",
+    "19cd345b999b2c55",
+    "19cc3d6bfb4afa81",
+    "19cb39372bd5a0a2",
+    "19cd256f8c7cdd3b",
+    "19cc284eb1e66ac9",
+    "19cd7e7427e7e069",
+    "19cbe35d1ff2cbed",
+    "19cb39465ed70628",
     "19cb2f5a6677af27",
+    "19cb3e2ab8fb87de",
+    "19cb944088c5eecd",
+    "19cc258b5d7c506f",
+    "19cb4ac58a39f825",
+    "19cd850e9cc29a3e",
     "19caf175c688e3d7",
-    "19cb9455bf893e51"
+    "19cb399a8b9ca5ed",
+    "19cbeea40ede8d0b",
+    "19cd34852beaeea5",
+    "19cc29aa923432ae",
+    "19cb9455bf893e51",
+    "19cb3502a1f76fd6",
+    "19cbee7662c13260"
   ],
   "processed_sent_ids": [
     "19cb9455bf893e51"
   ],
-  "total_emails_processed": 24,
-  "new_emails_today": 0,
-  "open_action_items": 7,
-  "blocked_tasks": 2,
-  "calendar_events_found": 4,
-  "new_events_detected": [],
+  "gantt_items": [
+    {
+      "nome": "Accesso DB AS-IS Eustema - AWS",
+      "stato": "pending",
+      "inizio": "2026-03-10",
+      "fine": "",
+      "owner": "DPC/Eustema",
+      "pct": 0,
+      "verticale": "AWS",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19cd850e9cc29a3e",
+      "note": "Richiesta accesso a 5 DB AS-IS (Cartis, Check-in, Donazioni, Designa, Contributi)"
+    },
+    {
+      "nome": "Invio Gantt Excel aggiornato #dpc_gantt",
+      "stato": "pending",
+      "inizio": "2026-03-10",
+      "fine": "",
+      "owner": "Ferrari/Sogei",
+      "pct": 0,
+      "verticale": "PSN",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19cd7e7427e7e069",
+      "note": "Ferrari ok a inviare Gantt Excel con tag #dpc_gantt nell'oggetto"
+    }
+  ],
+  "log_entries": [
+    {
+      "tipo": "system",
+      "data": "2026-03-10",
+      "ora": "19:00",
+      "titolo": "Run automatica – 10/03/2026 19:00",
+      "descrizione": "Elaborazione completata: 2 nuove email Ferrari, 4 riunioni oggi, 2 voci Gantt, PDF generato.",
+      "badge": "🖥️ Sistema"
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-10",
+      "ora": "15:14",
+      "titolo": "🟡 Accesso DB AS-IS - AWS",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS",
+      "badge": "📧 Email"
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-10",
+      "ora": "13:19",
+      "titolo": "🟢 R: Gantt con stato di avanzamento",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: INFO | Verticale: PSN",
+      "badge": "📧 Email"
+    },
+    {
+      "tipo": "action",
+      "data": "2026-03-10",
+      "ora": "15:14",
+      "titolo": "🟡 Accesso DB AS-IS Eustema richiesto",
+      "descrizione": "Ferrari chiede a Eustema (Federico Crisci) credenziali per 5 DB AWS: Cartis, Check-in, Donazioni, Designa, Contributi di autosostentamento",
+      "badge": "⚡ Azione"
+    },
+    {
+      "tipo": "action",
+      "data": "2026-03-10",
+      "ora": "13:19",
+      "titolo": "🟢 Gantt Excel in arrivo da Ferrari",
+      "descrizione": "Ferrari conferma invio Gantt aggiornato Excel con tag #dpc_gantt",
+      "badge": "⚡ Azione"
+    },
+    {
+      "tipo": "gantt",
+      "data": "2026-03-10",
+      "ora": "19:00",
+      "titolo": "📈 Gantt aggiornato: 2 nuove voci",
+      "descrizione": "'Accesso DB AS-IS Eustema - AWS' (pending) | 'Invio Gantt Excel #dpc_gantt' (pending)",
+      "badge": "📈 Gantt"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-10",
+      "ora": "11:00",
+      "titolo": "📅 Extreme/MuXo/DPC bi-weekly Call",
+      "descrizione": "11:00–11:30 | Organizzatore: Extreme Networks | Teams",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-10",
+      "ora": "11:00",
+      "titolo": "📅 Maturity Level Assessment - Incontro con CIMA",
+      "descrizione": "11:00–12:00 | Organizzatore: Ferrari/Sogei | Teams",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-10",
+      "ora": "12:00",
+      "titolo": "📅 Cynet <> DPC: Onboarding meeting",
+      "descrizione": "12:00–13:00 | Organizzatore: Cynet | Zoom",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-10",
+      "ora": "15:00",
+      "titolo": "📅 DPC PSN | VPN AWS as-is → AWS PSN",
+      "descrizione": "15:00–15:55 | Organizzatore: Accenture (Allushi Igli) | Teams",
+      "badge": "📅 Riunione"
+    }
+  ],
+  "run_history": [
+    {
+      "date": "2026-03-10",
+      "time": "19:00",
+      "new_emails": 2,
+      "new_events": 4,
+      "pdf_generated": "PSN_Report_20260310_1900.pdf",
+      "gantt_updated": 2
+    },
+    {
+      "date": "2026-03-09",
+      "time": "17:30",
+      "new_emails": 3,
+      "new_events": 1
+    },
+    {
+      "date": "2026-03-10",
+      "time": "10:00",
+      "new_emails": 0,
+      "new_events": 2
+    }
+  ],
   "verticali_stato": {
     "IAM": {
       "aperti": 2,
       "chiusi": 1
     },
     "AWS": {
-      "aperti": 3,
+      "aperti": 4,
       "chiusi": 2
     },
     "VPN": {
@@ -70,25 +196,11 @@
       "chiusi": 1
     }
   },
-  "run_history": [
-    {
-      "date": "2026-03-09",
-      "time": "17:30",
-      "new_emails": 3,
-      "new_events": 1
-    },
-    {
-      "date": "2026-03-10",
-      "time": "10:00",
-      "new_emails": 0,
-      "new_events": 2
-    },
-    {
-      "date": "2026-03-10",
-      "time": "12:07",
-      "new_emails": 0,
-      "new_events": 0,
-      "note": "4 riunioni oggi, Gantt aggiunto alla dashboard"
-    }
-  ]
+  "last_run_date": "2026-03-10",
+  "last_run_time": "19:00",
+  "contatori": {
+    "totale_email_processate": 26,
+    "totale_gantt_items": 2,
+    "totale_log_entries": 10
+  }
 }
