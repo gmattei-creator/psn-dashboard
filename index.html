@@ -349,50 +349,93 @@
   <div id="tab-gantt" class="tab-pane">
     <div class="section">
       <div class="section-title">📈 Gantt Attività PSN – Marzo 2026</div>
+
+      <!-- Fonte dati -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#1d4ed8">
+          <strong>📎 Excel importato:</strong> DPC_Utenze_AWS_AS_IS_v2.xlsx &nbsp;·&nbsp; Ferrari/Sogei &nbsp;·&nbsp; 5 Mar 2026
+          <span style="margin-left:6px;background:#bfdbfe;color:#1e40af;border-radius:10px;padding:1px 7px;font-size:.7rem;font-weight:700">1 file</span>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#166534">
+          <strong>✉️ Testo email:</strong> 3 attività estratte da email Ferrari/Sogei
+        </div>
+      </div>
+
       <div class="gantt-wrap">
         <table class="gantt-table">
           <thead>
             <tr>
-              <th style="width:22%">Attività</th>
-              <th style="width:11%">Verticale</th>
-              <th style="width:10%">Owner</th>
-              <th style="width:7%">Inizio</th>
-              <th style="width:7%">Fine</th>
-              <th style="width:10%">Stato</th>
-              <th style="width:25%">Avanzamento</th>
+              <th style="width:21%">Attività</th>
+              <th style="width:10%">Verticale</th>
+              <th style="width:8%">Owner</th>
+              <th style="width:6%">Inizio</th>
+              <th style="width:6%">Fine</th>
+              <th style="width:9%">Stato</th>
+              <th style="width:6%">Fonte</th>
+              <th style="width:24%">Avanzamento</th>
               <th style="width:5%">%</th>
             </tr>
           </thead>
           <tbody>
+            <!-- ── Da Excel: DPC_Utenze_AWS_AS_IS_v2.xlsx ── -->
+            <tr style="background:#f0f9ff">
+              <td>
+                <div class="g-task">Abilitazione Utenze AWS AS-IS</div>
+                <div class="g-owner">Lista aggiornata con colonna Stato (chi abilitare / già abilitato)</div>
+              </td>
+              <td><span class="email-vertical" style="background:#dbeafe;color:#1d4ed8">IAM / AWS</span></td>
+              <td>Ferrari</td><td>05/01</td><td>21/03</td>
+              <td><span class="priority-badge" style="background:#fffbeb;color:#d97706;border:1px solid #fde68a;font-size:.69rem">🟡 In Corso</span></td>
+              <td><span style="background:#dbeafe;color:#1d4ed8;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">📎 Excel</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:50%">50%</div></div></td>
+              <td class="g-pct">50%</td>
+            </tr>
+            <!-- ── Da Testo Email ── -->
             <tr>
-              <td><div class="g-task">Migrazione DB AS-IS → AWS PSN</div><div class="g-owner">Ferrari / Accenture</div></td>
+              <td>
+                <div class="g-task">Migrazione DB AS-IS → AWS PSN</div>
+                <div class="g-owner">Ferrari / Accenture – credenziali bloccate</div>
+              </td>
               <td><span class="email-vertical" style="background:#fee2e2;color:#991b1b">DB</span></td>
               <td>Ferrari</td><td>01/03</td><td>28/03</td>
               <td><span class="priority-badge badge-red" style="font-size:.69rem">🔴 Bloccato</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar blocked" style="width:15%">15%</div></div></td>
               <td class="g-pct">15%</td>
             </tr>
-            <tr>
-              <td><div class="g-task">Config VPN AWS as-is → AWS PSN</div><div class="g-owner">Allushi / Accenture</div></td>
+            <tr style="background:#f8fafc">
+              <td>
+                <div class="g-task">Config VPN AWS as-is → AWS PSN</div>
+                <div class="g-owner">Allushi / Accenture</div>
+              </td>
               <td><span class="email-vertical" style="background:#dbeafe;color:#1d4ed8">VPN</span></td>
               <td>Allushi</td><td>05/03</td><td>14/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:60%">60%</div></div></td>
               <td class="g-pct">60%</td>
             </tr>
             <tr>
-              <td><div class="g-task">Assessment Fornitori Applicativi DPC</div><div class="g-owner">Ferrari / DPC</div></td>
+              <td>
+                <div class="g-task">Assessment Fornitori Applicativi DPC</div>
+                <div class="g-owner">Ferrari / DPC – CSRS, SAE, Budibase</div>
+              </td>
               <td><span class="email-vertical">Fornitori App.</span></td>
               <td>Ferrari</td><td>09/03</td><td>20/03</td>
               <td><span class="priority-badge badge-orange" style="font-size:.69rem">🟡 Pendente</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar pending" style="width:10%">10%</div></div></td>
               <td class="g-pct">10%</td>
             </tr>
-            <tr>
-              <td><div class="g-task">Variazione Domanda Finanziamento</div><div class="g-owner">Ferrari / DPC / DTD</div></td>
+            <tr style="background:#f8fafc">
+              <td>
+                <div class="g-task">Variazione Domanda Finanziamento</div>
+                <div class="g-owner">Ferrari / DPC / DTD – manca tabella rack</div>
+              </td>
               <td><span class="email-vertical" style="background:#fef3c7;color:#92400e">Finanz.</span></td>
               <td>Ferrari</td><td>09/03</td><td>25/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:40%">40%</div></div></td>
               <td class="g-pct">40%</td>
             </tr>
@@ -401,14 +444,16 @@
               <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
               <td>DPC</td><td>10/03</td><td>17/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:20%">20%</div></div></td>
               <td class="g-pct">20%</td>
             </tr>
-            <tr>
-              <td><div class="g-task">Installazione Cluster Via Ulpiano</div><div class="g-owner">Team PSN</div></td>
+            <tr style="background:#f8fafc">
+              <td><div class="g-task">Installazione Cluster Via Ulpiano</div><div class="g-owner">Team PSN – 16-17/03</div></td>
               <td><span class="email-vertical" style="background:#ede9fe;color:#5b21b6">AWS</span></td>
               <td>Team PSN</td><td>16/03</td><td>17/03</td>
               <td><span class="priority-badge badge-orange" style="font-size:.69rem">🟡 Pianificato</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar pending" style="width:0%"></div></div></td>
               <td class="g-pct">0%</td>
             </tr>
@@ -417,14 +462,16 @@
               <td><span class="email-vertical" style="background:#e0e7ff;color:#3730a3">IAM</span></td>
               <td>Sogei</td><td>03/03</td><td>21/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:35%">35%</div></div></td>
               <td class="g-pct">35%</td>
             </tr>
-            <tr>
+            <tr style="background:#f8fafc">
               <td><div class="g-task">SAL Mensile PSN</div><div class="g-owner">PMO DPC</div></td>
               <td><span class="email-vertical" style="background:#fce7f3;color:#9d174d">SAL</span></td>
               <td>PMO DPC</td><td>01/03</td><td>31/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:33%">33%</div></div></td>
               <td class="g-pct">33%</td>
             </tr>
@@ -433,6 +480,7 @@
               <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
               <td>Cynet</td><td>10/03</td><td>24/03</td>
               <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 Avviato</span></td>
+              <td><span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.68rem;font-weight:700;white-space:nowrap">✉️ Email</span></td>
               <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:5%"></div></div></td>
               <td class="g-pct">5%</td>
             </tr>
@@ -444,6 +492,12 @@
         <span><span class="g-dot" style="background:#2563eb"></span>In Corso</span>
         <span><span class="g-dot" style="background:#d97706"></span>Pendente / Pianificato</span>
         <span><span class="g-dot" style="background:#dc2626"></span>Bloccato</span>
+        <span style="margin-left:8px;padding-left:8px;border-left:1px solid #e2e8f0">
+          <span style="background:#dbeafe;color:#1d4ed8;border-radius:10px;padding:2px 7px;font-size:.7rem;font-weight:700">📎 Excel</span> = da allegato Ferrari
+        </span>
+        <span>
+          <span style="background:#fce7f3;color:#9d174d;border-radius:10px;padding:2px 7px;font-size:.7rem;font-weight:700">✉️ Email</span> = da testo email Ferrari
+        </span>
       </div>
     </div>
   </div>
