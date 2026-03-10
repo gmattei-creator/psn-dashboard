@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard PMO PSN – DPC</title>
 <style>
-  /* ── Reset & Base ──────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f1f5f9; color: #1e293b; }
 
-  /* ── Login Overlay ─────────────────────────────────────── */
+  /* ── Login Overlay ── */
   #login-overlay {
-    position: fixed; inset: 0; background: linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);
     display: flex; align-items: center; justify-content: center; z-index: 9999;
     transition: opacity .4s ease;
   }
@@ -20,60 +20,59 @@
     background: white; border-radius: 16px; padding: 40px 48px; width: 380px;
     box-shadow: 0 25px 60px rgba(0,0,0,.35); text-align: center;
   }
-  .login-logo { font-size: 36px; margin-bottom: 8px; }
+  .login-logo { font-size: 40px; margin-bottom: 10px; }
   .login-box h2 { color: #1a3a5c; font-size: 1.3rem; margin-bottom: 4px; }
   .login-box p  { color: #64748b; font-size: .85rem; margin-bottom: 24px; }
   .login-box input {
-    width: 100%; padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    width: 100%; padding: 11px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px;
     font-size: .95rem; margin-bottom: 12px; outline: none; transition: border-color .2s;
   }
   .login-box input:focus { border-color: #2563eb; }
   .login-btn {
     width: 100%; padding: 11px; background: #2563eb; color: white; border: none;
-    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;
-    transition: background .2s;
+    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background .2s;
   }
   .login-btn:hover { background: #1d4ed8; }
   .login-error { color: #dc2626; font-size: .82rem; margin-top: 8px; min-height: 18px; }
 
-  /* ── Layout ────────────────────────────────────────────── */
+  /* ── Header ── */
   header {
     background: linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);
-    color: white; padding: 20px 32px; display: flex; align-items: center; gap: 16px;
+    color: white; padding: 18px 32px; display: flex; align-items: center; gap: 14px;
     box-shadow: 0 4px 12px rgba(37,99,235,.3);
   }
-  header .logo { font-size: 32px; }
-  header h1 { font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
-  header .meta { font-size: .8rem; opacity: .8; margin-top: 2px; }
+  header .logo { font-size: 30px; }
+  header h1 { font-size: 1.25rem; font-weight: 700; }
+  header .meta { font-size: .78rem; opacity: .8; margin-top: 2px; }
   .badge-live {
     margin-left: auto; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3);
-    border-radius: 20px; padding: 4px 12px; font-size: .75rem; font-weight: 600;
-    display: flex; align-items: center; gap: 6px;
+    border-radius: 20px; padding: 4px 12px; font-size: .73rem; font-weight: 600;
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
   }
-  .dot-live { width: 7px; height: 7px; background: #4ade80; border-radius: 50%;
-    animation: pulse 1.5s infinite; }
+  .dot-live { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; animation: pulse 1.5s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
+  /* ── Tab Nav ── */
+  .tab-nav {
+    background: white; border-bottom: 2px solid #e2e8f0;
+    display: flex; gap: 0; overflow-x: auto; padding: 0 24px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+  }
+  .tab-btn {
+    padding: 14px 18px; font-size: .85rem; font-weight: 600; color: #64748b;
+    border: none; background: none; cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent; margin-bottom: -2px;
+    transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover { color: #2563eb; }
+  .tab-btn.active { color: #2563eb; border-bottom-color: #2563eb; background: #eff6ff; border-radius: 6px 6px 0 0; }
+
+  /* ── Tab Content ── */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
   main { max-width: 1280px; margin: 0 auto; padding: 24px 24px 40px; }
 
-  /* ── KPI Cards ─────────────────────────────────────────── */
-  .kpi-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 24px;
-  }
-  .kpi-card {
-    background: white; border-radius: 12px; padding: 18px 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.07); border-top: 4px solid #2563eb;
-    text-align: center;
-  }
-  .kpi-card.red    { border-top-color: #dc2626; }
-  .kpi-card.orange { border-top-color: #d97706; }
-  .kpi-card.green  { border-top-color: #16a34a; }
-  .kpi-label { font-size: .72rem; color: #64748b; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .05em; margin-bottom: 8px; }
-  .kpi-value { font-size: 2rem; font-weight: 800; color: #1e293b; line-height: 1; }
-  .kpi-sub   { font-size: .72rem; color: #94a3b8; margin-top: 4px; }
-
-  /* ── Section headers ───────────────────────────────────── */
+  /* ── Cards / Sections ── */
   .section { background: white; border-radius: 12px; padding: 20px 24px;
     box-shadow: 0 1px 4px rgba(0,0,0,.07); margin-bottom: 20px; }
   .section-title {
@@ -82,31 +81,46 @@
     border-bottom: 1.5px solid #e2e8f0;
   }
 
-  /* ── Email PMO table ───────────────────────────────────── */
-  .email-row {
-    display: grid; grid-template-columns: 100px 1fr auto;
-    gap: 12px; align-items: start; padding: 12px 0;
-    border-bottom: 1px solid #f1f5f9;
+  /* ── KPI ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card {
+    background: white; border-radius: 12px; padding: 18px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07); border-top: 4px solid #2563eb; text-align: center;
   }
-  .email-row:last-child { border-bottom: none; }
+  .kpi-card.red    { border-top-color: #dc2626; }
+  .kpi-card.orange { border-top-color: #d97706; }
+  .kpi-card.green  { border-top-color: #16a34a; }
+  .kpi-label { font-size: .7rem; color: #64748b; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .05em; margin-bottom: 8px; }
+  .kpi-value { font-size: 2rem; font-weight: 800; color: #1e293b; line-height: 1; }
+  .kpi-sub   { font-size: .7rem; color: #94a3b8; margin-top: 4px; }
+
+  /* ── Badges ── */
   .priority-badge {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 9px; border-radius: 20px; font-size: .73rem; font-weight: 700;
+    padding: 3px 9px; border-radius: 20px; font-size: .72rem; font-weight: 700;
   }
   .badge-red    { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
   .badge-orange { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
   .badge-green  { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+  .email-vertical { font-size: .68rem; background: #e0e7ff; color: #3730a3;
+    border-radius: 10px; padding: 2px 8px; display: inline-block; margin-top: 3px; font-weight: 600; }
+
+  /* ── Email rows ── */
+  .email-row {
+    display: grid; grid-template-columns: 100px 1fr auto;
+    gap: 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid #f1f5f9;
+  }
+  .email-row:last-child { border-bottom: none; }
   .email-subject { font-weight: 600; font-size: .88rem; color: #1e293b; }
-  .email-from    { font-size: .77rem; color: #64748b; margin-top: 2px; }
-  .email-body    { font-size: .80rem; color: #475569; margin-top: 4px; line-height: 1.45; }
-  .email-action  { font-size: .78rem; font-weight: 600; margin-top: 5px; }
+  .email-from    { font-size: .76rem; color: #64748b; margin-top: 2px; }
+  .email-body    { font-size: .79rem; color: #475569; margin-top: 4px; line-height: 1.45; }
+  .email-action  { font-size: .77rem; font-weight: 600; margin-top: 5px; }
   .email-action.red    { color: #dc2626; }
   .email-action.orange { color: #d97706; }
-  .email-date { font-size: .73rem; color: #94a3b8; white-space: nowrap; padding-top: 2px; }
-  .email-vertical { font-size: .7rem; background: #e0e7ff; color: #3730a3; border-radius: 10px;
-    padding: 2px 8px; display: inline-block; margin-top: 4px; font-weight: 600; }
+  .email-date    { font-size: .72rem; color: #94a3b8; white-space: nowrap; padding-top: 2px; }
 
-  /* ── Calendar ──────────────────────────────────────────── */
+  /* ── Calendar ── */
   .cal-grid { display: grid; gap: 10px; }
   .cal-event {
     display: grid; grid-template-columns: 90px 1fr auto;
@@ -115,85 +129,71 @@
   }
   .cal-event.orange { border-left-color: #d97706; }
   .cal-event.green  { border-left-color: #16a34a; }
-  .cal-time { font-size: .82rem; font-weight: 700; color: #1a3a5c; }
+  .cal-time  { font-size: .82rem; font-weight: 700; color: #1a3a5c; }
   .cal-title { font-size: .87rem; font-weight: 600; color: #1e293b; }
-  .cal-note  { font-size: .75rem; color: #64748b; margin-top: 2px; }
+  .cal-note  { font-size: .74rem; color: #64748b; margin-top: 2px; }
 
-  /* ── Verticali grid ────────────────────────────────────── */
-  .vert-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-  .vert-card {
-    border-radius: 10px; padding: 14px 16px; background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
+  /* ── Gantt ── */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 720px; }
+  .gantt-table th {
+    background: #1a3a5c; color: white; padding: 8px 10px;
+    text-align: left; font-size: .72rem; font-weight: 600; white-space: nowrap;
   }
+  .gantt-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+  .gantt-table tr:hover td { background: #f8fafc; }
+  .g-task  { font-weight: 600; color: #1e293b; }
+  .g-owner { font-size: .69rem; color: #64748b; }
+  .g-bar-wrap { background: #f1f5f9; border-radius: 6px; height: 13px; position: relative; overflow: hidden; }
+  .g-bar {
+    height: 100%; border-radius: 6px; position: absolute; top: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .6rem; font-weight: 700; color: white;
+  }
+  .g-bar.completed   { background: linear-gradient(90deg,#16a34a,#22c55e); }
+  .g-bar.in-progress { background: linear-gradient(90deg,#2563eb,#60a5fa); }
+  .g-bar.blocked     { background: linear-gradient(90deg,#dc2626,#f87171); }
+  .g-bar.pending     { background: linear-gradient(90deg,#d97706,#fbbf24); }
+  .g-pct { font-size: .72rem; color: #64748b; font-weight: 600; min-width: 30px; text-align: right; }
+  .g-legend { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; font-size: .74rem; color: #64748b; }
+  .g-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+
+  /* ── Verticali ── */
+  .vert-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .vert-card { border-radius: 10px; padding: 14px 16px; background: #f8fafc; border: 1.5px solid #e2e8f0; }
   .vert-name { font-size: .8rem; font-weight: 700; color: #1a3a5c; margin-bottom: 8px; }
   .vert-bars { display: flex; gap: 4px; margin-bottom: 6px; }
   .bar { height: 6px; border-radius: 3px; flex: 1; }
   .bar.open   { background: #f87171; }
   .bar.closed { background: #4ade80; }
   .bar.empty  { background: #e2e8f0; }
-  .vert-stats { font-size: .73rem; color: #64748b; }
+  .vert-stats { font-size: .72rem; color: #64748b; }
 
-  /* ── Gantt ─────────────────────────────────────────────── */
-  .gantt-container { overflow-x: auto; }
-  .gantt-table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 700px; }
-  .gantt-table th {
-    background: #1a3a5c; color: white; padding: 7px 10px; text-align: left;
-    font-size: .73rem; font-weight: 600; white-space: nowrap;
-  }
-  .gantt-table td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-  .gantt-table tr:hover td { background: #f8fafc; }
-  .gantt-task { font-weight: 600; color: #1e293b; }
-  .gantt-owner { font-size: .7rem; color: #64748b; }
-  .gantt-bar-cell { width: 50%; }
-  .gantt-bar-wrap {
-    background: #f1f5f9; border-radius: 6px; height: 14px; position: relative; overflow: hidden;
-  }
-  .gantt-bar {
-    height: 100%; border-radius: 6px; position: absolute; top: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: .62rem; font-weight: 700; color: white;
-    transition: width .3s ease;
-  }
-  .gantt-bar.completed  { background: linear-gradient(90deg,#16a34a,#22c55e); }
-  .gantt-bar.in-progress{ background: linear-gradient(90deg,#2563eb,#60a5fa); }
-  .gantt-bar.blocked    { background: linear-gradient(90deg,#dc2626,#f87171); }
-  .gantt-bar.pending    { background: linear-gradient(90deg,#d97706,#fbbf24); }
-  .gantt-pct { font-size: .72rem; color: #64748b; font-weight: 600; min-width: 32px; text-align:right; }
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px;
-  }
-  .dot-green  { background: #16a34a; }
-  .dot-blue   { background: #2563eb; }
-  .dot-red    { background: #dc2626; }
-  .dot-orange { background: #d97706; }
-
-  /* ── Storico run ───────────────────────────────────────── */
+  /* ── Run history ── */
   .run-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
-  .run-table th { background: #1a3a5c; color: white; padding: 7px 12px; text-align: left; font-size: .75rem; }
+  .run-table th { background: #1a3a5c; color: white; padding: 7px 12px; text-align: left; font-size: .74rem; }
   .run-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; }
   .run-table tr:last-child td { background: #eff6ff; font-weight: 600; }
   .run-table tr:hover td { background: #f8fafc; }
 
-  /* ── Footer ────────────────────────────────────────────── */
-  footer { text-align: center; font-size: .75rem; color: #94a3b8; padding: 16px; margin-top: 8px; }
+  /* ── Footer ── */
+  footer { text-align: center; font-size: .74rem; color: #94a3b8; padding: 14px; }
 
-  /* ── Responsive ────────────────────────────────────────── */
+  /* ── Responsive ── */
   @media (max-width: 900px) {
     .kpi-grid { grid-template-columns: repeat(3,1fr); }
     .vert-grid { grid-template-columns: repeat(2,1fr); }
   }
   @media (max-width: 600px) {
     .kpi-grid { grid-template-columns: repeat(2,1fr); }
-    .email-row { grid-template-columns: 1fr; }
-    .cal-event { grid-template-columns: 1fr; }
+    .email-row, .cal-event { grid-template-columns: 1fr; }
+    .tab-btn { padding: 12px 12px; font-size: .78rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     LOGIN OVERLAY
-═══════════════════════════════════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="login-overlay">
   <div class="login-box">
     <div class="login-logo">🛡</div>
@@ -205,9 +205,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     HEADER
-═══════════════════════════════════════════════════════════════ -->
+<!-- HEADER -->
 <header>
   <div class="logo">🛡</div>
   <div>
@@ -217,248 +215,260 @@
   <div class="badge-live"><span class="dot-live"></span>LIVE</div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     MAIN
-═══════════════════════════════════════════════════════════════ -->
+<!-- TAB NAV -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview',this)">📊 Overview</button>
+  <button class="tab-btn" onclick="showTab('email',this)">📧 Email PMO</button>
+  <button class="tab-btn" onclick="showTab('calendario',this)">📅 Calendario</button>
+  <button class="tab-btn" onclick="showTab('gantt',this)">📈 Gantt</button>
+  <button class="tab-btn" onclick="showTab('verticali',this)">🏗 Verticali</button>
+  <button class="tab-btn" onclick="showTab('storico',this)">🕐 Storico</button>
+</div>
+
 <main>
 
-  <!-- KPI -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-label">Email Elaborate</div>
-      <div class="kpi-value">24</div>
-      <div class="kpi-sub">Totale storico</div>
+  <!-- ═══ TAB: OVERVIEW ═══ -->
+  <div id="tab-overview" class="tab-pane active">
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Email Elaborate</div><div class="kpi-value">24</div><div class="kpi-sub">Totale storico</div></div>
+      <div class="kpi-card orange"><div class="kpi-label">Nuove Oggi</div><div class="kpi-value">0</div><div class="kpi-sub">Run 12:07</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Action Items</div><div class="kpi-value">7</div><div class="kpi-sub">Aperti</div></div>
+      <div class="kpi-card red"><div class="kpi-label">Task Bloccati</div><div class="kpi-value">2</div><div class="kpi-sub">Richiedono azione</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Riunioni Oggi</div><div class="kpi-value">4</div><div class="kpi-sub">10 Marzo 2026</div></div>
     </div>
-    <div class="kpi-card orange">
-      <div class="kpi-label">Nuove Oggi</div>
-      <div class="kpi-value">0</div>
-      <div class="kpi-sub">Run 12:07</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-label">Action Items Aperti</div>
-      <div class="kpi-value">7</div>
-      <div class="kpi-sub">Da risolvere</div>
-    </div>
-    <div class="kpi-card red">
-      <div class="kpi-label">Task Bloccati</div>
-      <div class="kpi-value">2</div>
-      <div class="kpi-sub">Richiedono azione</div>
-    </div>
-    <div class="kpi-card green">
-      <div class="kpi-label">Riunioni Oggi</div>
-      <div class="kpi-value">4</div>
-      <div class="kpi-sub">10 Marzo 2026</div>
-    </div>
-  </div>
-
-  <!-- EMAIL PMO -->
-  <div class="section">
-    <div class="section-title">📧 Email PMO (Ferrari / Sogei) – Ultime 3 Rilevate</div>
-
-    <!-- 1 -->
-    <div class="email-row">
-      <div>
-        <span class="priority-badge badge-red">🔴 CRITICO</span>
-        <div style="margin-top:6px"><span class="email-vertical">DB</span></div>
-      </div>
-      <div>
-        <div class="email-subject">Accesso DB AS-IS</div>
-        <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro, Accenture</div>
-        <div class="email-body">Credenziali di accesso ai database AS-IS su AWS non disponibili nemmeno per il gruppo di conduzione. DB coinvolti: <i>dpc-emergency-database, dpc-emergency-db, dpc-emergency-management, dpc-emergency-tools, lcahq-cartis, moodle</i>. In attesa di identificare modalità di abilitazione.</div>
-        <div class="email-action red">🔴 AZIONE: Identificare e abilitare le credenziali DB AS-IS – impatto bloccante sulla migrazione.</div>
-      </div>
-      <div class="email-date">Lun 9 Mar<br>15:44</div>
-    </div>
-
-    <!-- 2 -->
-    <div class="email-row">
-      <div>
-        <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
-        <div style="margin-top:6px"><span class="email-vertical">Fornitori App.</span></div>
-      </div>
-      <div>
-        <div class="email-subject">Assessment FA DPC</div>
-        <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro</div>
-        <div class="email-body">Necessità di coordinamento con fornitori e operation di CSRS e SAE. Per Budibase: richiesta conferma che il gruppo di sviluppo sia DPC e indicazione di un referente da contattare direttamente.</div>
-        <div class="email-action orange">🟡 AZIONE: Confermare referente Budibase e coordinare con CSRS / SAE.</div>
-      </div>
-      <div class="email-date">Lun 9 Mar<br>15:47</div>
-    </div>
-
-    <!-- 3 -->
-    <div class="email-row">
-      <div>
-        <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
-        <div style="margin-top:6px"><span class="email-vertical">Finanziamento</span></div>
-      </div>
-      <div>
-        <div class="email-subject">Variazione domanda di finanziamento</div>
-        <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro</div>
-        <div class="email-body">Bozza variazione domanda finanziamento allegata (v0.1). Manca tabella "Dettaglio rack": Ferrari in attesa di informazioni. Richiesta verifica DPC prima di condivisione con DTD.</div>
-        <div class="email-action orange">🟡 AZIONE: Verificare disponibilità info rack. Review doc prima di condivisione con DTD.</div>
-      </div>
-      <div class="email-date">Lun 9 Mar<br>11:23</div>
-    </div>
-  </div>
-
-  <!-- CALENDARIO -->
-  <div class="section">
-    <div class="section-title">📅 Riunioni di Oggi – 10 Marzo 2026</div>
-    <div class="cal-grid">
-      <div class="cal-event green">
-        <div class="cal-time">11:00 – 11:30</div>
-        <div>
-          <div class="cal-title">Extreme/MuXo/DPC bi-weekly Call</div>
-          <div class="cal-note">Teams – Allineamento refresh ambiente di rete. Ricorrente bisettimanale.</div>
+    <div class="section">
+      <div class="section-title">🚨 Azioni Prioritarie</div>
+      <div style="display:grid;gap:10px">
+        <div style="background:#fef2f2;border-left:4px solid #dc2626;border-radius:8px;padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="priority-badge badge-red">🔴 CRITICO</span>
+            <strong style="font-size:.87rem">Accesso DB AS-IS</strong>
+            <span style="margin-left:auto;font-size:.72rem;color:#94a3b8">9 Mar · 15:44</span>
+          </div>
+          <div style="font-size:.8rem;color:#475569">Credenziali DB AS-IS non disponibili nemmeno per il gruppo di conduzione. 6 DB bloccati.</div>
+          <div style="font-size:.78rem;color:#dc2626;font-weight:600;margin-top:5px">👉 Identificare e abilitare credenziali – impatto bloccante sulla migrazione.</div>
         </div>
-        <span class="priority-badge badge-green">🟢 INFO</span>
-      </div>
-      <div class="cal-event orange">
-        <div class="cal-time">11:00 – 12:00</div>
-        <div>
-          <div class="cal-title">Maturity Level Assessment – Incontro con CIMA</div>
-          <div class="cal-note">Teams – Assessment maturità livelli. ID: 313 822 602 022 69 / Passcode: u4jG9Ka3</div>
+        <div style="background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+            <strong style="font-size:.87rem">Assessment FA DPC (CSRS, SAE, Budibase)</strong>
+            <span style="margin-left:auto;font-size:.72rem;color:#94a3b8">9 Mar · 15:47</span>
+          </div>
+          <div style="font-size:.8rem;color:#475569">Coordinamento con CSRS, SAE. Conferma referente Budibase richiesta.</div>
+          <div style="font-size:.78rem;color:#d97706;font-weight:600;margin-top:5px">👉 Confermare referente Budibase e coordinare con CSRS / SAE.</div>
         </div>
-        <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
-      </div>
-      <div class="cal-event green">
-        <div class="cal-time">12:00 – 13:00</div>
-        <div>
-          <div class="cal-title">Cynet ↔ DPC: Onboarding Meeting</div>
-          <div class="cal-note">Zoom – ID: 851 7848 6343 / Passcode: 761004. Onboarding sicurezza Cynet.</div>
+        <div style="background:#fffbeb;border-left:4px solid #d97706;border-radius:8px;padding:12px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+            <strong style="font-size:.87rem">Variazione Domanda Finanziamento (v0.1)</strong>
+            <span style="margin-left:auto;font-size:.72rem;color:#94a3b8">9 Mar · 11:23</span>
+          </div>
+          <div style="font-size:.8rem;color:#475569">Bozza pronta, manca tabella rack. Da condividere con DTD dopo verifica DPC.</div>
+          <div style="font-size:.78rem;color:#d97706;font-weight:600;margin-top:5px">👉 Verificare info rack. Review doc prima del DTD.</div>
         </div>
-        <span class="priority-badge badge-green">🟢 INFO</span>
-      </div>
-      <div class="cal-event orange">
-        <div class="cal-time">15:00 – 15:55</div>
-        <div>
-          <div class="cal-title">DPC PSN | VPN AWS as-is → AWS PSN</div>
-          <div class="cal-note">Teams – Configurazione tunnel VPN site-to-site. Organizzatore: Accenture (Allushi). ID: 230 816 502 533 59</div>
-        </div>
-        <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
       </div>
     </div>
   </div>
 
-  <!-- GANTT -->
-  <div class="section">
-    <div class="section-title">📊 Gantt Attività PSN – Marzo 2026</div>
-    <div class="gantt-container">
-      <table class="gantt-table">
-        <thead>
-          <tr>
-            <th style="width:22%">Attività</th>
-            <th style="width:12%">Verticale</th>
-            <th style="width:12%">Owner</th>
-            <th style="width:10%">Inizio</th>
-            <th style="width:10%">Fine</th>
-            <th style="width:9%">Stato</th>
-            <th class="gantt-bar-cell">Avanzamento</th>
-            <th style="width:5%">%</th>
-          </tr>
-        </thead>
+  <!-- ═══ TAB: EMAIL PMO ═══ -->
+  <div id="tab-email" class="tab-pane">
+    <div class="section">
+      <div class="section-title">📧 Email PMO (Ferrari / Sogei) – Ultime 3 Rilevate</div>
+      <div class="email-row">
+        <div>
+          <span class="priority-badge badge-red">🔴 CRITICO</span>
+          <div><span class="email-vertical">DB</span></div>
+        </div>
+        <div>
+          <div class="email-subject">Accesso DB AS-IS</div>
+          <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro, Accenture</div>
+          <div class="email-body">Credenziali di accesso ai database AS-IS su AWS non disponibili nemmeno per il gruppo di conduzione. DB coinvolti: <i>dpc-emergency-database, dpc-emergency-db, dpc-emergency-management, dpc-emergency-tools, lcahq-cartis, moodle</i>.</div>
+          <div class="email-action red">🔴 AZIONE: Identificare e abilitare le credenziali DB AS-IS – impatto bloccante.</div>
+        </div>
+        <div class="email-date">Lun 9 Mar<br>15:44</div>
+      </div>
+      <div class="email-row">
+        <div>
+          <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+          <div><span class="email-vertical">Fornitori App.</span></div>
+        </div>
+        <div>
+          <div class="email-subject">Assessment FA DPC</div>
+          <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro</div>
+          <div class="email-body">Necessità di coordinamento con CSRS e SAE. Per Budibase: conferma che il gruppo di sviluppo sia DPC + indicazione referente.</div>
+          <div class="email-action orange">🟡 AZIONE: Confermare referente Budibase e coordinare con CSRS / SAE.</div>
+        </div>
+        <div class="email-date">Lun 9 Mar<br>15:47</div>
+      </div>
+      <div class="email-row">
+        <div>
+          <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+          <div><span class="email-vertical">Finanziamento</span></div>
+        </div>
+        <div>
+          <div class="email-subject">Variazione domanda di finanziamento</div>
+          <div class="email-from">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Giordano, Pietro</div>
+          <div class="email-body">Bozza variazione finanziamento allegata (v0.1). Manca tabella "Dettaglio rack". Da verificare prima di condivisione con DTD.</div>
+          <div class="email-action orange">🟡 AZIONE: Verificare info rack. Review doc prima del DTD.</div>
+        </div>
+        <div class="email-date">Lun 9 Mar<br>11:23</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: CALENDARIO ═══ -->
+  <div id="tab-calendario" class="tab-pane">
+    <div class="section">
+      <div class="section-title">📅 Riunioni di Oggi – 10 Marzo 2026</div>
+      <div class="cal-grid">
+        <div class="cal-event green">
+          <div class="cal-time">11:00 – 11:30</div>
+          <div><div class="cal-title">Extreme/MuXo/DPC bi-weekly Call</div><div class="cal-note">Teams – Allineamento refresh ambiente di rete. Ricorrente bisettimanale.</div></div>
+          <span class="priority-badge badge-green">🟢 INFO</span>
+        </div>
+        <div class="cal-event orange">
+          <div class="cal-time">11:00 – 12:00</div>
+          <div><div class="cal-title">Maturity Level Assessment – Incontro con CIMA</div><div class="cal-note">Teams – ID: 313 822 602 022 69 / Passcode: u4jG9Ka3</div></div>
+          <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+        </div>
+        <div class="cal-event green">
+          <div class="cal-time">12:00 – 13:00</div>
+          <div><div class="cal-title">Cynet ↔ DPC: Onboarding Meeting</div><div class="cal-note">Zoom – ID: 851 7848 6343 / Passcode: 761004</div></div>
+          <span class="priority-badge badge-green">🟢 INFO</span>
+        </div>
+        <div class="cal-event orange">
+          <div class="cal-time">15:00 – 15:55</div>
+          <div><div class="cal-title">DPC PSN | VPN AWS as-is → AWS PSN</div><div class="cal-note">Teams – Config tunnel VPN site-to-site. Organizzatore: Accenture (Allushi). ID: 230 816 502 533 59</div></div>
+          <span class="priority-badge badge-orange">🟡 ATTENZIONE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: GANTT ═══ -->
+  <div id="tab-gantt" class="tab-pane">
+    <div class="section">
+      <div class="section-title">📈 Gantt Attività PSN – Marzo 2026</div>
+      <div class="gantt-wrap">
+        <table class="gantt-table">
+          <thead>
+            <tr>
+              <th style="width:22%">Attività</th>
+              <th style="width:11%">Verticale</th>
+              <th style="width:10%">Owner</th>
+              <th style="width:7%">Inizio</th>
+              <th style="width:7%">Fine</th>
+              <th style="width:10%">Stato</th>
+              <th style="width:25%">Avanzamento</th>
+              <th style="width:5%">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="g-task">Migrazione DB AS-IS → AWS PSN</div><div class="g-owner">Ferrari / Accenture</div></td>
+              <td><span class="email-vertical" style="background:#fee2e2;color:#991b1b">DB</span></td>
+              <td>Ferrari</td><td>01/03</td><td>28/03</td>
+              <td><span class="priority-badge badge-red" style="font-size:.69rem">🔴 Bloccato</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar blocked" style="width:15%">15%</div></div></td>
+              <td class="g-pct">15%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Config VPN AWS as-is → AWS PSN</div><div class="g-owner">Allushi / Accenture</div></td>
+              <td><span class="email-vertical" style="background:#dbeafe;color:#1d4ed8">VPN</span></td>
+              <td>Allushi</td><td>05/03</td><td>14/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:60%">60%</div></div></td>
+              <td class="g-pct">60%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Assessment Fornitori Applicativi DPC</div><div class="g-owner">Ferrari / DPC</div></td>
+              <td><span class="email-vertical">Fornitori App.</span></td>
+              <td>Ferrari</td><td>09/03</td><td>20/03</td>
+              <td><span class="priority-badge badge-orange" style="font-size:.69rem">🟡 Pendente</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar pending" style="width:10%">10%</div></div></td>
+              <td class="g-pct">10%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Variazione Domanda Finanziamento</div><div class="g-owner">Ferrari / DPC / DTD</div></td>
+              <td><span class="email-vertical" style="background:#fef3c7;color:#92400e">Finanz.</span></td>
+              <td>Ferrari</td><td>09/03</td><td>25/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:40%">40%</div></div></td>
+              <td class="g-pct">40%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Maturity Level Assessment (CIMA)</div><div class="g-owner">DPC / CIMA</div></td>
+              <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
+              <td>DPC</td><td>10/03</td><td>17/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:20%">20%</div></div></td>
+              <td class="g-pct">20%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Installazione Cluster Via Ulpiano</div><div class="g-owner">Team PSN</div></td>
+              <td><span class="email-vertical" style="background:#ede9fe;color:#5b21b6">AWS</span></td>
+              <td>Team PSN</td><td>16/03</td><td>17/03</td>
+              <td><span class="priority-badge badge-orange" style="font-size:.69rem">🟡 Pianificato</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar pending" style="width:0%"></div></div></td>
+              <td class="g-pct">0%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Config IAM / Accessi Privilegiati</div><div class="g-owner">Team Sogei / AWS</div></td>
+              <td><span class="email-vertical" style="background:#e0e7ff;color:#3730a3">IAM</span></td>
+              <td>Sogei</td><td>03/03</td><td>21/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:35%">35%</div></div></td>
+              <td class="g-pct">35%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">SAL Mensile PSN</div><div class="g-owner">PMO DPC</div></td>
+              <td><span class="email-vertical" style="background:#fce7f3;color:#9d174d">SAL</span></td>
+              <td>PMO DPC</td><td>01/03</td><td>31/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 In Corso</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:33%">33%</div></div></td>
+              <td class="g-pct">33%</td>
+            </tr>
+            <tr>
+              <td><div class="g-task">Onboarding Sicurezza Cynet</div><div class="g-owner">Cynet / DPC</div></td>
+              <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
+              <td>Cynet</td><td>10/03</td><td>24/03</td>
+              <td><span class="priority-badge" style="background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;font-size:.69rem">🔵 Avviato</span></td>
+              <td><div class="g-bar-wrap"><div class="g-bar in-progress" style="width:5%"></div></div></td>
+              <td class="g-pct">5%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="g-legend">
+        <span><span class="g-dot" style="background:#16a34a"></span>Completato</span>
+        <span><span class="g-dot" style="background:#2563eb"></span>In Corso</span>
+        <span><span class="g-dot" style="background:#d97706"></span>Pendente / Pianificato</span>
+        <span><span class="g-dot" style="background:#dc2626"></span>Bloccato</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: VERTICALI ═══ -->
+  <div id="tab-verticali" class="tab-pane">
+    <div class="section">
+      <div class="section-title">🏗 Stato Verticali PSN</div>
+      <div class="vert-grid" id="vert-grid"></div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: STORICO ═══ -->
+  <div id="tab-storico" class="tab-pane">
+    <div class="section">
+      <div class="section-title">🕐 Storico Run Automatici</div>
+      <table class="run-table">
+        <thead><tr><th>Data</th><th>Orario</th><th>Nuove Email</th><th>Nuovi Eventi</th><th>Note</th></tr></thead>
         <tbody>
-          <tr>
-            <td><div class="gantt-task">Migrazione DB AS-IS → AWS PSN</div><div class="gantt-owner">Ferrari / Accenture</div></td>
-            <td><span class="email-vertical" style="background:#fee2e2;color:#991b1b">DB</span></td>
-            <td>Ferrari</td><td>01/03</td><td>28/03</td>
-            <td><span class="status-dot dot-red"></span>Bloccato</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar blocked" style="width:15%">15%</div></div></td>
-            <td class="gantt-pct">15%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Config VPN AWS as-is → AWS PSN</div><div class="gantt-owner">Allushi / Accenture</div></td>
-            <td><span class="email-vertical" style="background:#dbeafe;color:#1d4ed8">VPN</span></td>
-            <td>Allushi</td><td>05/03</td><td>14/03</td>
-            <td><span class="status-dot dot-blue"></span>In Corso</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:60%">60%</div></div></td>
-            <td class="gantt-pct">60%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Assessment Fornitori Applicativi DPC</div><div class="gantt-owner">Ferrari / DPC</div></td>
-            <td><span class="email-vertical">Fornitori App.</span></td>
-            <td>Ferrari</td><td>09/03</td><td>20/03</td>
-            <td><span class="status-dot dot-orange"></span>Pendente</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar pending" style="width:10%">10%</div></div></td>
-            <td class="gantt-pct">10%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Variazione Domanda Finanziamento</div><div class="gantt-owner">Ferrari / DPC / DTD</div></td>
-            <td><span class="email-vertical" style="background:#fef3c7;color:#92400e">Finanz.</span></td>
-            <td>Ferrari</td><td>09/03</td><td>25/03</td>
-            <td><span class="status-dot dot-orange"></span>In Corso</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:40%">40%</div></div></td>
-            <td class="gantt-pct">40%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Maturity Level Assessment (CIMA)</div><div class="gantt-owner">DPC / CIMA</div></td>
-            <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
-            <td>DPC</td><td>10/03</td><td>17/03</td>
-            <td><span class="status-dot dot-blue"></span>In Corso</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:20%">20%</div></div></td>
-            <td class="gantt-pct">20%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Installazione Cluster Via Ulpiano</div><div class="gantt-owner">Team PSN</div></td>
-            <td><span class="email-vertical" style="background:#ede9fe;color:#5b21b6">AWS</span></td>
-            <td>Team PSN</td><td>16/03</td><td>17/03</td>
-            <td><span class="status-dot dot-orange"></span>Pianificato</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar pending" style="width:0%"></div></div></td>
-            <td class="gantt-pct">0%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">SAL Mensile PSN</div><div class="gantt-owner">PMO DPC</div></td>
-            <td><span class="email-vertical" style="background:#fce7f3;color:#9d174d">SAL</span></td>
-            <td>PMO DPC</td><td>01/03</td><td>31/03</td>
-            <td><span class="status-dot dot-blue"></span>In Corso</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:33%">33%</div></div></td>
-            <td class="gantt-pct">33%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Config IAM / Accessi Privilegiati</div><div class="gantt-owner">Team Sogei / AWS</div></td>
-            <td><span class="email-vertical" style="background:#e0e7ff;color:#3730a3">IAM</span></td>
-            <td>Sogei</td><td>03/03</td><td>21/03</td>
-            <td><span class="status-dot dot-blue"></span>In Corso</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:35%">35%</div></div></td>
-            <td class="gantt-pct">35%</td>
-          </tr>
-          <tr>
-            <td><div class="gantt-task">Onboarding Sicurezza Cynet</div><div class="gantt-owner">Cynet / DPC</div></td>
-            <td><span class="email-vertical" style="background:#f0fdf4;color:#166534">PSN</span></td>
-            <td>Cynet</td><td>10/03</td><td>24/03</td>
-            <td><span class="status-dot dot-blue"></span>Avviato oggi</td>
-            <td><div class="gantt-bar-wrap"><div class="gantt-bar in-progress" style="width:5%"></div></div></td>
-            <td class="gantt-pct">5%</td>
-          </tr>
+          <tr><td>09/03/2026</td><td>17:30</td><td>3</td><td>1</td><td>Primo rilevamento nuove email giornata</td></tr>
+          <tr><td>10/03/2026</td><td>10:00</td><td>0</td><td>2</td><td>Rilevati eventi installazione cluster Via Ulpiano 16-17/03</td></tr>
+          <tr><td>10/03/2026</td><td>12:07</td><td>0</td><td>0</td><td>✅ Dashboard aggiornata con tab Gantt + login solo password</td></tr>
         </tbody>
       </table>
     </div>
-    <!-- Legenda -->
-    <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;font-size:.75rem;color:#64748b">
-      <span><span class="status-dot dot-green" style="display:inline-block"></span>Completato</span>
-      <span><span class="status-dot dot-blue"  style="display:inline-block"></span>In Corso</span>
-      <span><span class="status-dot dot-orange"style="display:inline-block"></span>Pendente/Pianificato</span>
-      <span><span class="status-dot dot-red"   style="display:inline-block"></span>Bloccato</span>
-    </div>
-  </div>
-
-  <!-- VERTICALI -->
-  <div class="section">
-    <div class="section-title">🏗 Stato Verticali PSN</div>
-    <div class="vert-grid" id="vert-grid"></div>
-  </div>
-
-  <!-- STORICO RUN -->
-  <div class="section">
-    <div class="section-title">🕐 Storico Run Automatici</div>
-    <table class="run-table">
-      <thead><tr><th>Data</th><th>Orario</th><th>Nuove Email</th><th>Nuovi Eventi</th><th>Note</th></tr></thead>
-      <tbody>
-        <tr><td>09/03/2026</td><td>17:30</td><td>3</td><td>1</td><td>Primo rilevamento nuove email giornata</td></tr>
-        <tr><td>10/03/2026</td><td>10:00</td><td>0</td><td>2</td><td>Rilevati eventi installazione cluster Via Ulpiano 16-17/03</td></tr>
-        <tr><td>10/03/2026</td><td>12:07</td><td>0</td><td>0</td><td>✅ Run corrente – 4 riunioni oggi, nessuna email nuova</td></tr>
-      </tbody>
-    </table>
   </div>
 
 </main>
@@ -470,19 +480,28 @@
 </footer>
 
 <script>
-/* ─── Login ──────────────────────────────────────────────── */
+/* ── Login ─────────────────────────────── */
 function doLogin() {
   const p = document.getElementById("login-pass").value;
   if (p === "DashDpc@26") {
-    document.getElementById("login-overlay").classList.add("hidden");
-    setTimeout(()=>document.getElementById("login-overlay").style.display="none", 450);
+    const ov = document.getElementById("login-overlay");
+    ov.classList.add("hidden");
+    setTimeout(() => ov.style.display = "none", 450);
   } else {
     document.getElementById("login-error").textContent = "❌ Password non valida.";
   }
 }
-document.getElementById("login-pass").addEventListener("keydown", e => { if (e.key==="Enter") doLogin(); });
+document.getElementById("login-pass").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
 
-/* ─── Verticali ──────────────────────────────────────────── */
+/* ── Tab switch ────────────────────────── */
+function showTab(name, btn) {
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + name).classList.add("active");
+  btn.classList.add("active");
+}
+
+/* ── Verticali ─────────────────────────── */
 const verticali = {
   "IAM":                   { aperti:2, chiusi:1 },
   "AWS":                   { aperti:3, chiusi:2 },
@@ -493,25 +512,23 @@ const verticali = {
   "Fornitori applicativi": { aperti:2, chiusi:0 },
   "PSN":                   { aperti:2, chiusi:1 },
 };
-const vertGrid = document.getElementById("vert-grid");
+const grid = document.getElementById("vert-grid");
 for (const [name, v] of Object.entries(verticali)) {
   const total = v.aperti + v.chiusi;
   const stato = v.aperti >= 3 ? "🔴 KO" : v.aperti >= 2 ? "🟡 In Corso" : "🟢 OK";
-  const badgeClass = v.aperti >= 3 ? "badge-red" : v.aperti >= 2 ? "badge-orange" : "badge-green";
-  const bars = Array.from({length: Math.max(total,4)}, (_,i) => {
-    const cls = i < v.chiusi ? "closed" : i < total ? "open" : "empty";
-    return `<div class="bar ${cls}"></div>`;
-  }).join("");
-  vertGrid.innerHTML += `
+  const bc    = v.aperti >= 3 ? "badge-red" : v.aperti >= 2 ? "badge-orange" : "badge-green";
+  const bars  = Array.from({length: Math.max(total,4)}, (_,i) =>
+    `<div class="bar ${i < v.chiusi ? 'closed' : i < total ? 'open' : 'empty'}"></div>`).join("");
+  grid.innerHTML += `
     <div class="vert-card">
       <div class="vert-name">${name}</div>
       <div class="vert-bars">${bars}</div>
       <div class="vert-stats">Aperti: <b>${v.aperti}</b> &nbsp;|&nbsp; Chiusi: <b>${v.chiusi}</b></div>
-      <div style="margin-top:6px"><span class="priority-badge ${badgeClass}" style="font-size:.7rem">${stato}</span></div>
+      <div style="margin-top:6px"><span class="priority-badge ${bc}" style="font-size:.7rem">${stato}</span></div>
     </div>`;
 }
 
-/* ─── Update timestamp ───────────────────────────────────── */
+/* ── Timestamp ─────────────────────────── */
 const now = new Date();
 document.getElementById("last-update").textContent =
   now.toLocaleDateString("it-IT",{day:"2-digit",month:"long",year:"numeric"}) +
