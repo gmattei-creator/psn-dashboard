@@ -176,6 +176,63 @@
   .run-table tr:last-child td { background: #eff6ff; font-weight: 600; }
   .run-table tr:hover td { background: #f8fafc; }
 
+  /* ── Log tab ── */
+  .log-toolbar {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .log-filter-btn {
+    padding: 5px 12px; border-radius: 20px; border: 1.5px solid #e2e8f0;
+    background: white; font-size: .74rem; font-weight: 600; cursor: pointer;
+    color: #64748b; transition: all .15s;
+  }
+  .log-filter-btn.active, .log-filter-btn:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+  .log-search {
+    margin-left: auto; padding: 6px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px;
+    font-size: .78rem; outline: none; min-width: 200px; transition: border-color .2s;
+  }
+  .log-search:focus { border-color: #2563eb; }
+  .log-timeline { position: relative; padding-left: 28px; }
+  .log-timeline::before {
+    content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+    width: 2px; background: #e2e8f0; border-radius: 2px;
+  }
+  .log-day-header {
+    font-size: .72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;
+    letter-spacing: .07em; margin: 16px 0 8px -28px; padding-left: 28px;
+    border-bottom: 1px solid #f1f5f9; padding-bottom: 4px;
+  }
+  .log-entry {
+    position: relative; background: white; border-radius: 10px; padding: 10px 14px;
+    margin-bottom: 8px; border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05); transition: box-shadow .15s;
+  }
+  .log-entry:hover { box-shadow: 0 3px 8px rgba(0,0,0,.09); }
+  .log-entry::before {
+    content: ''; position: absolute; left: -23px; top: 13px;
+    width: 10px; height: 10px; border-radius: 50%; border: 2px solid white;
+  }
+  .log-entry.type-email::before   { background: #2563eb; }
+  .log-entry.type-cal::before     { background: #16a34a; }
+  .log-entry.type-action::before  { background: #dc2626; }
+  .log-entry.type-excel::before   { background: #d97706; }
+  .log-entry.type-system::before  { background: #64748b; }
+  .log-entry.type-gantt::before   { background: #7c3aed; }
+  .log-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .log-time { font-size: .7rem; color: #94a3b8; white-space: nowrap; margin-left: auto; }
+  .log-title { font-size: .84rem; font-weight: 600; color: #1e293b; }
+  .log-body  { font-size: .78rem; color: #475569; line-height: 1.45; }
+  .log-tag {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px; border-radius: 12px; font-size: .68rem; font-weight: 700;
+  }
+  .tag-email  { background: #dbeafe; color: #1d4ed8; }
+  .tag-cal    { background: #dcfce7; color: #166534; }
+  .tag-action { background: #fef2f2; color: #dc2626; }
+  .tag-excel  { background: #fef3c7; color: #92400e; }
+  .tag-system { background: #f1f5f9; color: #475569; }
+  .tag-gantt  { background: #ede9fe; color: #5b21b6; }
+  .log-empty  { text-align: center; color: #94a3b8; font-size: .85rem; padding: 32px 0; }
+
   /* ── Footer ── */
   footer { text-align: center; font-size: .74rem; color: #94a3b8; padding: 14px; }
 
@@ -223,6 +280,7 @@
   <button class="tab-btn" onclick="showTab('gantt',this)">📈 Gantt</button>
   <button class="tab-btn" onclick="showTab('verticali',this)">🏗 Verticali</button>
   <button class="tab-btn" onclick="showTab('storico',this)">🕐 Storico</button>
+  <button class="tab-btn" onclick="showTab('log',this)">📋 Log</button>
 </div>
 
 <main>
@@ -525,6 +583,200 @@
     </div>
   </div>
 
+  <!-- ═══ TAB: LOG ═══ -->
+  <div id="tab-log" class="tab-pane">
+    <div class="section">
+      <div class="section-title">📋 Log Attività PSN</div>
+
+      <!-- Toolbar filtri -->
+      <div class="log-toolbar">
+        <button class="log-filter-btn active" onclick="filterLog('all',this)">Tutti</button>
+        <button class="log-filter-btn" onclick="filterLog('email',this)">📧 Email</button>
+        <button class="log-filter-btn" onclick="filterLog('cal',this)">📅 Riunioni</button>
+        <button class="log-filter-btn" onclick="filterLog('action',this)">🔴 Azioni</button>
+        <button class="log-filter-btn" onclick="filterLog('excel',this)">📎 Excel</button>
+        <button class="log-filter-btn" onclick="filterLog('gantt',this)">📈 Gantt</button>
+        <button class="log-filter-btn" onclick="filterLog('system',this)">⚙️ Sistema</button>
+        <input class="log-search" id="log-search" type="text" placeholder="🔍 Cerca nel log..." oninput="searchLog(this.value)">
+      </div>
+
+      <div class="log-timeline" id="log-timeline">
+
+        <!-- ── 10 Marzo 2026 ── -->
+        <div class="log-day-header" data-day="20260310">10 Marzo 2026</div>
+
+        <div class="log-entry type-system" data-type="system" data-text="dashboard aggiornata tab log gantt excel fonte duale skill aggiornata">
+          <div class="log-header">
+            <span class="log-tag tag-system">⚙️ Sistema</span>
+            <span class="log-title">Dashboard aggiornata – Tab Log + Gantt fonte duale</span>
+            <span class="log-time">12:30</span>
+          </div>
+          <div class="log-body">Aggiunti tab <b>Log</b> e <b>Gantt</b> alla dashboard. SKILL aggiornata: Gantt ora acquisisce dati da allegati Excel Ferrari + analisi testo email. Login: solo password <code>DashDpc@26</code>.</div>
+        </div>
+
+        <div class="log-entry type-excel" data-type="excel" data-text="excel gantt utenze aws as-is ferrari allegato">
+          <div class="log-header">
+            <span class="log-tag tag-excel">📎 Excel</span>
+            <span class="log-title">Allegato Excel acquisito nel Gantt: DPC_Utenze_AWS_AS_IS_v2.xlsx</span>
+            <span class="log-time">12:15</span>
+          </div>
+          <div class="log-body">File Excel da Ferrari (5 Mar) caricato come riga Gantt <b>IAM/AWS</b>: "Abilitazione Utenze AWS AS-IS" – stato In Corso (50%). Colonna "Stato" rilevata con info su utenze già abilitate vs. da abilitare.</div>
+        </div>
+
+        <div class="log-entry type-system" data-type="system" data-text="run automatica sistema 12:07 nessuna email nuova">
+          <div class="log-header">
+            <span class="log-tag tag-system">⚙️ Sistema</span>
+            <span class="log-title">Run automatica completata – nessuna nuova email</span>
+            <span class="log-time">12:07</span>
+          </div>
+          <div class="log-body">Run schedulata (ore 12:07): 0 nuove email PSN, 4 riunioni in calendario. Stato: 7 action items aperti, 2 task bloccati. Dashboard e PDF aggiornati, bozza email creata in Gmail.</div>
+        </div>
+
+        <div class="log-entry type-cal" data-type="cal" data-text="riunione vpn aws psn accenture allushi teams">
+          <div class="log-header">
+            <span class="log-tag tag-cal">📅 Riunione</span>
+            <span class="log-title">DPC PSN | VPN AWS as-is → AWS PSN</span>
+            <span class="log-time">15:00</span>
+          </div>
+          <div class="log-body">Riunione Teams (15:00–15:55). Configurazione tunnel VPN site-to-site tra AWS AS-IS e AWS PSN. Organizzatore: Allushi (Accenture). In attesa di aggiornamento stato post-riunione.</div>
+        </div>
+
+        <div class="log-entry type-cal" data-type="cal" data-text="cynet onboarding sicurezza zoom dpc">
+          <div class="log-header">
+            <span class="log-tag tag-cal">📅 Riunione</span>
+            <span class="log-title">Cynet ↔ DPC: Onboarding Meeting (Sicurezza)</span>
+            <span class="log-time">12:00</span>
+          </div>
+          <div class="log-body">Riunione Zoom (12:00–13:00). Prima sessione onboarding con Cynet per piattaforma di sicurezza. Gantt: voce "Onboarding Sicurezza Cynet" avviata oggi al 5%.</div>
+        </div>
+
+        <div class="log-entry type-cal" data-type="cal" data-text="cima maturity level assessment teams">
+          <div class="log-header">
+            <span class="log-tag tag-cal">📅 Riunione</span>
+            <span class="log-title">Maturity Level Assessment – Incontro con CIMA</span>
+            <span class="log-time">11:00</span>
+          </div>
+          <div class="log-body">Riunione Teams (11:00–12:00). Assessment maturità livelli PSN con CIMA. Gantt: voce aggiornata al 20% in corso.</div>
+        </div>
+
+        <div class="log-entry type-cal" data-type="cal" data-text="extreme muxo dpc biweekly call rete network">
+          <div class="log-header">
+            <span class="log-tag tag-cal">📅 Riunione</span>
+            <span class="log-title">Extreme/MuXo/DPC bi-weekly Call</span>
+            <span class="log-time">11:00</span>
+          </div>
+          <div class="log-body">Riunione Teams ricorrente (11:00–11:30). Allineamento bisettimanale sul refresh dell'ambiente di rete DPC.</div>
+        </div>
+
+        <div class="log-entry type-system" data-type="system" data-text="run automatica 10:00 cluster via ulpiano eventi nuovi">
+          <div class="log-header">
+            <span class="log-tag tag-system">⚙️ Sistema</span>
+            <span class="log-title">Run automatica mattino – rilevati 2 nuovi eventi calendario</span>
+            <span class="log-time">10:00</span>
+          </div>
+          <div class="log-body">Run ore 10:00: 0 nuove email, +2 eventi rilevati – <b>Installazione Cluster Via Ulpiano</b> 16/03 e 17/03. Aggiunti al Gantt come "Pianificato".</div>
+        </div>
+
+        <!-- ── 9 Marzo 2026 ── -->
+        <div class="log-day-header" data-day="20260309">9 Marzo 2026</div>
+
+        <div class="log-entry type-action" data-type="action" data-text="assessment fornitori applicativi csrs sae budibase ferrari azione richiesta">
+          <div class="log-header">
+            <span class="log-tag tag-action">🔴 Azione</span>
+            <span class="log-title">ACTION ITEM – Confermare referente Budibase + coordinare CSRS/SAE</span>
+            <span class="log-time">15:47</span>
+          </div>
+          <div class="log-body">Estratto da email Ferrari "Assessment FA DPC". Necessità di coordinamento con CSRS, SAE. Per Budibase: DPC deve confermare referente e gruppo di sviluppo. <b>Stato: 🟡 Aperto</b>.</div>
+        </div>
+
+        <div class="log-entry type-email" data-type="email" data-text="assessment fa dpc ferrari sogei csrs sae budibase">
+          <div class="log-header">
+            <span class="log-tag tag-email">📧 Email PMO</span>
+            <span class="log-title">Assessment FA DPC – Ferrari/Sogei</span>
+            <span class="log-time">15:47</span>
+          </div>
+          <div class="log-body">Email da Ferrari (eferrari@sogei.it). Oggetto: Assessment Fornitori Applicativi DPC. Richiede coordinamento con CSRS, SAE. Budibase: chi è il referente DPC? Classificazione: 🟡 ATTENZIONE.</div>
+        </div>
+
+        <div class="log-entry type-action" data-type="action" data-text="accesso db as-is credenziali bloccate ferrari azione critica">
+          <div class="log-header">
+            <span class="log-tag tag-action">🔴 Azione</span>
+            <span class="log-title">ACTION ITEM CRITICO – Abilitare credenziali DB AS-IS su AWS</span>
+            <span class="log-time">15:44</span>
+          </div>
+          <div class="log-body">Estratto da email Ferrari "Accesso DB AS-IS". 6 database bloccati: dpc-emergency-database, dpc-emergency-db, dpc-emergency-management, dpc-emergency-tools, lcahq-cartis, moodle. <b>Stato: 🔴 Bloccante</b>.</div>
+        </div>
+
+        <div class="log-entry type-email" data-type="email" data-text="accesso db as-is ferrari sogei database aws bloccato">
+          <div class="log-header">
+            <span class="log-tag tag-email">📧 Email PMO</span>
+            <span class="log-title">Accesso DB AS-IS – Ferrari/Sogei → Giordano, Pietro, Accenture</span>
+            <span class="log-time">15:44</span>
+          </div>
+          <div class="log-body">Email da Ferrari. Credenziali DB AS-IS non disponibili nemmeno per il gruppo di conduzione. In cc: Orlandi e Scaparro (Accenture). Classificazione: 🔴 CRITICO – impatto bloccante sulla migrazione.</div>
+        </div>
+
+        <div class="log-entry type-gantt" data-type="gantt" data-text="gantt migrazione db bloccato aggiornato 15%">
+          <div class="log-header">
+            <span class="log-tag tag-gantt">📈 Gantt</span>
+            <span class="log-title">Gantt aggiornato – Migrazione DB AS-IS portata a "Bloccato" (15%)</span>
+            <span class="log-time">15:44</span>
+          </div>
+          <div class="log-body">In seguito all'email di Ferrari sulle credenziali, la voce Gantt "Migrazione DB AS-IS → AWS PSN" è stata aggiornata automaticamente da "In Corso" a <b>Bloccato (15%)</b>.</div>
+        </div>
+
+        <div class="log-entry type-action" data-type="action" data-text="variazione finanziamento rack dettaglio dtd verifica">
+          <div class="log-header">
+            <span class="log-tag tag-action">🟡 Azione</span>
+            <span class="log-title">ACTION ITEM – Verifica info rack + review doc finanziamento</span>
+            <span class="log-time">11:23</span>
+          </div>
+          <div class="log-body">Estratto da email Ferrari "Variazione domanda finanziamento". Manca tabella "Dettaglio rack". DPC deve verificare disponibilità info e fare review del documento prima della condivisione con DTD. <b>Stato: 🟡 Aperto</b>.</div>
+        </div>
+
+        <div class="log-entry type-email" data-type="email" data-text="variazione domanda finanziamento ferrari sogei dtd rack allegato docx">
+          <div class="log-header">
+            <span class="log-tag tag-email">📧 Email PMO</span>
+            <span class="log-title">Variazione domanda di finanziamento (v0.1) – Ferrari/Sogei</span>
+            <span class="log-time">11:23</span>
+          </div>
+          <div class="log-body">Email da Ferrari con allegato <b>Richiesta variazione progetto_0.1-DPC.docx</b>. Bozza quasi completa: manca solo tabella "Dettaglio rack". Da condividere con DTD dopo verifica. Classificazione: 🟡 ATTENZIONE.</div>
+        </div>
+
+        <div class="log-entry type-system" data-type="system" data-text="run automatica 17:30 3 nuove email rilevate">
+          <div class="log-header">
+            <span class="log-tag tag-system">⚙️ Sistema</span>
+            <span class="log-title">Run automatica sera – 3 nuove email PSN rilevate</span>
+            <span class="log-time">17:30</span>
+          </div>
+          <div class="log-body">Run ore 17:30: +3 email Ferrari/Sogei rilevate e classificate (Variazione finanziamento 🟡, Accesso DB 🔴, Assessment FA 🟡). PDF generato, bozza email inviata, dashboard aggiornata.</div>
+        </div>
+
+        <!-- ── 5 Marzo 2026 ── -->
+        <div class="log-day-header" data-day="20260305">5 Marzo 2026</div>
+
+        <div class="log-entry type-excel" data-type="excel" data-text="allegato excel utenze aws as-is ferrari v2 stato abilitazione">
+          <div class="log-header">
+            <span class="log-tag tag-excel">📎 Excel</span>
+            <span class="log-title">Allegato Excel ricevuto: DPC_Utenze_AWS_AS_IS_v2.xlsx</span>
+            <span class="log-time">13:34</span>
+          </div>
+          <div class="log-body">Ferrari ha inviato lista aggiornata utenze AWS AS-IS con colonna <b>Stato</b> (abilitato / da abilitare). Risposta alla richiesta precedente del 22/01. File acquisito nel Gantt sotto verticale IAM/AWS.</div>
+        </div>
+
+        <div class="log-entry type-email" data-type="email" data-text="abilitazione utenze aws on prem ferrari sogei lista aggiornata stato">
+          <div class="log-header">
+            <span class="log-tag tag-email">📧 Email PMO</span>
+            <span class="log-title">R: Abilitazione Utenze AWS ON PREM – Ferrari/Sogei</span>
+            <span class="log-time">13:34</span>
+          </div>
+          <div class="log-body">Email di risposta da Ferrari con lista aggiornata utenze AWS AS-IS (allegato xlsx). Aggiunta colonna "Stato" per facilitare la lettura. Classificazione: 🟡 ATTENZIONE.</div>
+        </div>
+
+      </div><!-- /log-timeline -->
+    </div>
+  </div>
+
 </main>
 
 <footer>
@@ -580,6 +832,61 @@ for (const [name, v] of Object.entries(verticali)) {
       <div class="vert-stats">Aperti: <b>${v.aperti}</b> &nbsp;|&nbsp; Chiusi: <b>${v.chiusi}</b></div>
       <div style="margin-top:6px"><span class="priority-badge ${bc}" style="font-size:.7rem">${stato}</span></div>
     </div>`;
+}
+
+/* ── Log: filter & search ──────────────── */
+let activeLogFilter = 'all';
+let activeLogSearch = '';
+
+function filterLog(type, btn) {
+  activeLogFilter = type;
+  document.querySelectorAll('.log-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyLog();
+}
+function searchLog(q) {
+  activeLogSearch = q.toLowerCase().trim();
+  applyLog();
+}
+function applyLog() {
+  const entries = document.querySelectorAll('.log-entry');
+  const headers = document.querySelectorAll('.log-day-header');
+  const visibleDays = new Set();
+
+  entries.forEach(el => {
+    const typeOk = activeLogFilter === 'all' || el.dataset.type === activeLogFilter;
+    const searchOk = !activeLogSearch || (el.dataset.text || '').includes(activeLogSearch)
+                     || el.textContent.toLowerCase().includes(activeLogSearch);
+    const show = typeOk && searchOk;
+    el.style.display = show ? '' : 'none';
+    if (show) {
+      // find preceding day header
+      let prev = el.previousElementSibling;
+      while (prev) {
+        if (prev.classList.contains('log-day-header')) { visibleDays.add(prev.dataset.day); break; }
+        prev = prev.previousElementSibling;
+      }
+    }
+  });
+
+  headers.forEach(h => {
+    h.style.display = visibleDays.has(h.dataset.day) ? '' : 'none';
+  });
+
+  const anyVisible = [...entries].some(e => e.style.display !== 'none');
+  let empty = document.getElementById('log-empty-msg');
+  if (!anyVisible) {
+    if (!empty) {
+      empty = document.createElement('div');
+      empty.id = 'log-empty-msg';
+      empty.className = 'log-empty';
+      empty.textContent = 'Nessun evento trovato per i filtri selezionati.';
+      document.getElementById('log-timeline').appendChild(empty);
+    }
+    empty.style.display = '';
+  } else if (empty) {
+    empty.style.display = 'none';
+  }
 }
 
 /* ── Timestamp ─────────────────────────── */
