@@ -25,7 +25,8 @@
     "19cc29aa923432ae",
     "19cb9455bf893e51",
     "19cb3502a1f76fd6",
-    "19cbee7662c13260"
+    "19cbee7662c13260",
+    "19cdcc96cc0edb6c"
   ],
   "processed_sent_ids": [
     "19cb9455bf893e51"
@@ -56,9 +57,54 @@
       "badge": "✉️ Email",
       "email_id": "19cd7e7427e7e069",
       "note": "Ferrari ok a inviare Gantt Excel con tag #dpc_gantt nell'oggetto"
+    },
+    {
+      "nome": "Approvazione Manvela VA-DAST-PT",
+      "stato": "pending",
+      "inizio": "2026-03-11",
+      "fine": "",
+      "owner": "DPC",
+      "pct": 0,
+      "verticale": "Sicurezza",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19cdcc96cc0edb6c",
+      "note": "Bozza Manvela per attivazione servizi VA-DAST-PT. In attesa di conferma doppio Dipartimento e doppia firma."
     }
   ],
   "log_entries": [
+    {
+      "tipo": "system",
+      "data": "2026-03-11",
+      "ora": "19:00",
+      "titolo": "Run automatica – 11/03/2026 19:00",
+      "descrizione": "Elaborazione completata: 1 nuova email Ferrari (Manvela VA-DAST-PT), 2 riunioni oggi, 3 Gantt items, PDF PSN_Report_20260311_1900.pdf generato.",
+      "badge": "🖥️ Sistema"
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-11",
+      "ora": "13:04",
+      "titolo": "🟡 Manvela attivazione servizi di sicurezza VA-DAST-PT",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: Sicurezza | Allegato: PSN_DPC-Manleva per VA-PT-DAST_v1.0.docx",
+      "badge": "📧 Email"
+    },
+    {
+      "tipo": "action",
+      "data": "2026-03-11",
+      "ora": "13:04",
+      "titolo": "🟡 Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT",
+      "descrizione": "Ferrari in attesa di sapere se nel documento va inserito il doppio Dipartimento e la doppia firma. Owner: DPC.",
+      "badge": "⚡ Azione"
+    },
+    {
+      "tipo": "gantt",
+      "data": "2026-03-11",
+      "ora": "19:00",
+      "titolo": "Gantt aggiornato: 1 nuova voce",
+      "descrizione": "Aggiunta: 'Approvazione Manvela VA-DAST-PT' (pending, DPC, Sicurezza)",
+      "badge": "📈 Gantt"
+    },
     {
       "tipo": "system",
       "data": "2026-03-11",
@@ -175,6 +221,15 @@
   "run_history": [
     {
       "data": "2026-03-11",
+      "ora": "19:00",
+      "nuove_email": 1,
+      "eventi_cal": 2,
+      "gantt": 3,
+      "pdf": "PSN_Report_20260311_1900.pdf",
+      "note": "1 nuova email Ferrari (Manvela VA-DAST-PT)."
+    },
+    {
+      "data": "2026-03-11",
       "ora": "09:00",
       "nuove_email": 0,
       "eventi_cal": 2,
@@ -269,13 +324,18 @@
     "PSN": {
       "aperti": 2,
       "chiusi": 1
+    },
+    "Sicurezza": {
+      "aperti": 1,
+      "chiusi": 0
     }
   },
   "last_run_date": "2026-03-11",
-  "last_run_time": "09:00",
+  "last_run_time": "19:00",
+  "last_fingerprint": "f9a2c3d1e4b5a678",
   "contatori": {
-    "totale_email_processate": 26,
-    "totale_gantt_items": 2,
-    "totale_log_entries": 14
+    "totale_email_processate": 27,
+    "totale_gantt_items": 3,
+    "totale_log_entries": 18
   }
 }
