@@ -61,6 +61,30 @@
   "log_entries": [
     {
       "tipo": "system",
+      "data": "2026-03-11",
+      "ora": "09:00",
+      "titolo": "Run automatica – 11/03/2026 09:00",
+      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 2 riunioni oggi (SAL PSN + MS Unified Support), 2 Gantt items invariati, PDF PSN_Report_20260311_0900.pdf generato.",
+      "badge": "🖥️ Sistema"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-11",
+      "ora": "11:00",
+      "titolo": "📅 SAL settimanale PCM-DPC – Progetto PSN",
+      "descrizione": "Riunione Teams 11:00–12:00 | ID: 331 771 225 424 53 | Passcode: dc2YJ6C7",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-11",
+      "ora": "17:00",
+      "titolo": "📅 Microsoft Services Unified Support",
+      "descrizione": "Riunione Teams 17:00–17:45 | ID: 378 239 269 819 06 | Passcode: SC7Vt77T",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "system",
       "data": "2026-03-10",
       "ora": "19:10",
       "titolo": "Run automatica – 10/03/2026 19:10",
@@ -100,82 +124,117 @@
       "badge": "⚡ Azione"
     },
     {
-      "tipo": "action",
-      "data": "2026-03-10",
-      "ora": "13:19",
-      "titolo": "🟢 Gantt Excel in arrivo da Ferrari",
-      "descrizione": "Ferrari conferma invio Gantt aggiornato Excel con tag #dpc_gantt",
-      "badge": "⚡ Azione"
-    },
-    {
       "tipo": "gantt",
       "data": "2026-03-10",
       "ora": "19:00",
-      "titolo": "📈 Gantt aggiornato: 2 nuove voci",
-      "descrizione": "'Accesso DB AS-IS Eustema - AWS' (pending) | 'Invio Gantt Excel #dpc_gantt' (pending)",
+      "titolo": "Gantt aggiornato: 2 nuove voci",
+      "descrizione": "Aggiunte: 'Accesso DB AS-IS Eustema' (pending, DPC/Eustema) | 'Invio Gantt Excel #dpc_gantt' (pending, Ferrari/Sogei)",
       "badge": "📈 Gantt"
     },
     {
-      "tipo": "cal",
+      "tipo": "system",
       "data": "2026-03-10",
-      "ora": "11:00",
-      "titolo": "📅 Extreme/MuXo/DPC bi-weekly Call",
-      "descrizione": "11:00–11:30 | Organizzatore: Extreme Networks | Teams",
-      "badge": "📅 Riunione"
+      "ora": "12:07",
+      "titolo": "Run automatica – 10/03/2026 12:07",
+      "descrizione": "3 nuove email Ferrari del 09/03, 2 riunioni, PDF generato.",
+      "badge": "🖥️ Sistema"
     },
     {
-      "tipo": "cal",
-      "data": "2026-03-10",
-      "ora": "11:00",
-      "titolo": "📅 Maturity Level Assessment - Incontro con CIMA",
-      "descrizione": "11:00–12:00 | Organizzatore: Ferrari/Sogei | Teams",
-      "badge": "📅 Riunione"
+      "tipo": "email",
+      "data": "2026-03-09",
+      "ora": "15:47",
+      "titolo": "🟡 Assessment FA DPC",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: Fornitori Appl.",
+      "badge": "📧 Email"
     },
     {
-      "tipo": "cal",
-      "data": "2026-03-10",
-      "ora": "12:00",
-      "titolo": "📅 Cynet <> DPC: Onboarding meeting",
-      "descrizione": "12:00–13:00 | Organizzatore: Cynet | Zoom",
-      "badge": "📅 Riunione"
+      "tipo": "email",
+      "data": "2026-03-09",
+      "ora": "15:44",
+      "titolo": "🟡 Accesso DB AS-IS",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS/DB",
+      "badge": "📧 Email"
     },
     {
-      "tipo": "cal",
-      "data": "2026-03-10",
-      "ora": "15:00",
-      "titolo": "📅 DPC PSN | VPN AWS as-is → AWS PSN",
-      "descrizione": "15:00–15:55 | Organizzatore: Accenture (Allushi Igli) | Teams",
-      "badge": "📅 Riunione"
+      "tipo": "action",
+      "data": "2026-03-09",
+      "ora": "15:47",
+      "titolo": "🟡 Organizzare incontri CSRS e SAE",
+      "descrizione": "Ferrari chiede cortocircuito con fornitori CSRS, SAE. Conferma gruppo Budibase necessaria.",
+      "badge": "⚡ Azione"
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-09",
+      "ora": "11:23",
+      "titolo": "🟡 Variazione domanda finanziamento",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Bozza variazione domanda. Manca tabella 'Dettaglio rack'.",
+      "badge": "📧 Email"
     }
   ],
   "run_history": [
     {
+      "data": "2026-03-11",
+      "ora": "09:00",
+      "nuove_email": 0,
+      "eventi_cal": 2,
+      "gantt": 2,
+      "pdf": "PSN_Report_20260311_0900.pdf",
+      "note": "Run mattutina. 2 riunioni oggi."
+    },
+    {
       "data": "2026-03-10",
       "ora": "19:10",
       "nuove_email": 0,
-      "nuovi_eventi_cal": 0,
-      "gantt_items": 2,
-      "pdf": "PSN_Report_20260310_1910.pdf"
+      "eventi_cal": 0,
+      "gantt": 2,
+      "pdf": "PSN_Report_20260310_1910.pdf",
+      "note": "Run serale. Nessuna modifica."
     },
     {
-      "date": "2026-03-10",
-      "time": "19:00",
-      "new_emails": 2,
-      "new_events": 4,
-      "pdf_generated": "PSN_Report_20260310_1900.pdf",
-      "gantt_updated": 2
+      "data": "2026-03-10",
+      "ora": "19:00",
+      "nuove_email": 2,
+      "eventi_cal": 4,
+      "gantt": 2,
+      "pdf": "PSN_Report_20260310_1900.pdf",
+      "note": "2 nuove email Ferrari, 4 riunioni."
     },
     {
-      "date": "2026-03-09",
-      "time": "17:30",
-      "new_emails": 3,
-      "new_events": 1
+      "data": "2026-03-10",
+      "ora": "12:07",
+      "nuove_email": 3,
+      "eventi_cal": 2,
+      "gantt": 0,
+      "pdf": "PSN_Report_20260310_1207.pdf",
+      "note": "3 email 09/03."
     },
     {
-      "date": "2026-03-10",
-      "time": "10:00",
-      "new_emails": 0,
-      "new_events": 2
+      "data": "2026-03-09",
+      "ora": "09:00",
+      "nuove_email": 5,
+      "eventi_cal": 3,
+      "gantt": 0,
+      "pdf": "Report_PMO_PSN_Ferrari_20260309.pdf",
+      "note": "Run mattutina."
+    },
+    {
+      "data": "2026-03-07",
+      "ora": "09:00",
+      "nuove_email": 4,
+      "eventi_cal": 2,
+      "gantt": 0,
+      "pdf": "Report_PMO_PSN_Ferrari_20260307.pdf",
+      "note": "Run mattutina."
+    },
+    {
+      "data": "2026-03-06",
+      "ora": "09:00",
+      "nuove_email": 8,
+      "eventi_cal": 3,
+      "gantt": 0,
+      "pdf": "Report_PMO_PSN_Ferrari_20260306.pdf",
+      "note": "Run mattutina."
     }
   ],
   "verticali_stato": {
@@ -212,11 +271,11 @@
       "chiusi": 1
     }
   },
-  "last_run_date": "2026-03-10",
-  "last_run_time": "19:10",
+  "last_run_date": "2026-03-11",
+  "last_run_time": "09:00",
   "contatori": {
     "totale_email_processate": 26,
     "totale_gantt_items": 2,
-    "totale_log_entries": 11
+    "totale_log_entries": 14
   }
 }
