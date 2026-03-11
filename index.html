@@ -3,448 +3,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PSN Dashboard – DPC</title>
+<title>Dashboard PSN – DPC</title>
 <style>
+:root{--blu:#1a3a5c;--blu2:#2563eb;--bg:#f1f5f9;--card:#fff;--border:#e2e8f0;--text:#1e293b;--muted:#64748b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f1f5f9;color:#1e293b;font-size:14px}
-#login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
-.login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.login-box h2{color:#1a3a5c;margin-bottom:8px;font-size:22px}
-.login-box p{color:#64748b;margin-bottom:24px;font-size:13px}
-.login-box input{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:8px;font-size:15px;margin-bottom:12px;outline:none;transition:border .2s}
-.login-box input:focus{border-color:#2563eb}
-.login-box button{width:100%;padding:12px;background:linear-gradient(135deg,#1a3a5c,#2563eb);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s}
-.login-box button:hover{opacity:.9}
-#login-err{color:#dc2626;font-size:13px;margin-top:8px;min-height:18px}
-.login-logo{font-size:36px;margin-bottom:12px}
-header{background:linear-gradient(135deg,#1a3a5c 0%,#2563eb 100%);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.header-title{display:flex;align-items:center;gap:10px}
-.header-title h1{font-size:18px;font-weight:700}
-.header-title .sub{font-size:12px;opacity:.8;margin-top:2px}
-.live-badge{background:#10b981;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;animation:pulse 2s infinite}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* LOGIN */
+#loginOverlay{position:fixed;inset:0;background:rgba(26,58,92,.97);display:flex;align-items:center;justify-content:center;z-index:9999}
+.loginBox{background:#fff;border-radius:16px;padding:40px 48px;text-align:center;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.loginBox h2{color:var(--blu);font-size:1.4rem;margin-bottom:6px}
+.loginBox p{color:var(--muted);font-size:.85rem;margin-bottom:24px}
+.loginBox input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:8px;font-size:1rem;margin-bottom:12px;outline:none}
+.loginBox input:focus{border-color:var(--blu2)}
+.loginBox button{width:100%;padding:12px;background:var(--blu2);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
+.loginBox button:hover{background:var(--blu)}
+.loginError{color:#dc2626;font-size:.85rem;margin-top:8px;min-height:20px}
+/* HEADER */
+header{background:linear-gradient(135deg,var(--blu) 0%,var(--blu2) 100%);color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header h1{font-size:1.2rem;font-weight:700;letter-spacing:.3px}
+.headerSub{font-size:.78rem;opacity:.8;margin-top:3px}
+.liveBadge{background:#22c55e;color:#fff;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:700;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
-.header-meta{text-align:right;font-size:12px;opacity:.85}
-.tabs-bar{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 20px;display:flex;gap:4px;overflow-x:auto;position:sticky;top:52px;z-index:99;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.tab-btn{padding:12px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;font-weight:500;color:#64748b;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
-.tab-btn:hover{color:#2563eb;background:#f8fafc}
-.tab-btn.active{color:#2563eb;border-bottom-color:#2563eb;background:#eff6ff;font-weight:600}
-main{padding:20px;max-width:1400px;margin:0 auto}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.kpi-card{background:#fff;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07);border-top:3px solid #2563eb}
-.kpi-card.red{border-top-color:#dc2626}
-.kpi-card.orange{border-top-color:#f59e0b}
-.kpi-card.green{border-top-color:#16a34a}
-.kpi-val{font-size:28px;font-weight:800;color:#1a3a5c}
-.kpi-lab{font-size:11px;color:#64748b;margin-top:4px}
-.section{background:#fff;border-radius:10px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.section h3{font-size:14px;font-weight:700;color:#1a3a5c;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #eff6ff}
-.data-table{width:100%;border-collapse:collapse;font-size:12.5px}
-.data-table th{background:#1a3a5c;color:#fff;padding:8px 10px;text-align:left;font-weight:600}
-.data-table td{padding:7px 10px;border-bottom:1px solid #f1f5f9;vertical-align:top}
-.data-table tr:nth-child(even){background:#f8fafc}
-.data-table tr:hover{background:#eff6ff}
-.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
-.badge-red{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5}
-.badge-orange{background:#fffbeb;color:#d97706;border:1px solid #fcd34d}
-.badge-green{background:#f0fdf4;color:#16a34a;border:1px solid #86efac}
-.badge-blue{background:#eff6ff;color:#2563eb;border:1px solid #93c5fd}
-.badge-purple{background:#faf5ff;color:#7c3aed;border:1px solid #c4b5fd}
-.badge-grey{background:#f8fafc;color:#64748b;border:1px solid #cbd5e1}
-.priority-row{display:flex;gap:8px;align-items:center;padding:10px;background:#f8fafc;border-radius:8px;margin-bottom:8px;border-left:4px solid #e2e8f0}
-.priority-row.warn{border-left-color:#f59e0b;background:#fffbeb}
-.priority-row.info{border-left-color:#16a34a;background:#f0fdf4}
-.pr-icon{font-size:18px;flex-shrink:0}
-.pr-body{flex:1}
-.pr-title{font-weight:600;font-size:13px}
-.pr-desc{font-size:11.5px;color:#64748b;margin-top:2px}
-.gantt-row{display:flex;align-items:center;gap:10px;padding:10px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px}
-.gantt-bar-wrap{flex:1;background:#e2e8f0;border-radius:4px;height:14px;overflow:hidden;min-width:120px}
-.gantt-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,#2563eb,#60a5fa)}
-.gantt-badge{font-size:11px;padding:2px 7px;border-radius:10px;background:#fffbeb;color:#d97706;border:1px solid #fcd34d;white-space:nowrap}
-.cal-item{display:flex;gap:12px;align-items:flex-start;padding:12px;background:#f8fafc;border-radius:8px;margin-bottom:8px;border-left:4px solid #2563eb}
-.cal-time{font-size:12px;font-weight:700;color:#2563eb;min-width:90px}
-.cal-body{flex:1}
-.cal-title{font-weight:600;font-size:13px}
-.cal-org{font-size:11px;color:#64748b;margin-top:3px}
-.vert-item{display:flex;align-items:center;gap:12px;padding:10px;background:#f8fafc;border-radius:8px;margin-bottom:8px}
-.vert-name{min-width:140px;font-weight:600;font-size:13px}
-.vert-bar-wrap{flex:1;background:#e2e8f0;border-radius:4px;height:18px;overflow:hidden}
-.vert-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:11px;color:#fff;font-weight:700}
-.vert-nums{font-size:12px;color:#64748b;min-width:100px;text-align:right}
-.run-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
-.run-icon{font-size:20px;flex-shrink:0}
-.run-body{flex:1}
-.run-title{font-weight:700;font-size:13px;color:#1a3a5c}
-.run-meta{font-size:11.5px;color:#64748b;margin-top:3px}
-.log-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
-.log-filter-btn{padding:5px 12px;border:1px solid #cbd5e1;border-radius:20px;background:#fff;cursor:pointer;font-size:12px;color:#64748b;transition:all .15s}
-.log-filter-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
-.log-search{flex:1;min-width:180px;padding:6px 12px;border:1px solid #cbd5e1;border-radius:20px;font-size:12px;outline:none}
-.log-search:focus{border-color:#2563eb}
-.timeline{position:relative;padding-left:28px}
-.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:#e2e8f0}
-.tl-group{margin-bottom:20px}
-.tl-date{font-size:12px;font-weight:700;color:#1a3a5c;margin-bottom:8px;padding:3px 10px;background:#eff6ff;border-radius:12px;display:inline-block}
-.tl-item{position:relative;padding:10px 12px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;margin-left:10px}
-.tl-item::before{content:'';position:absolute;left:-19px;top:14px;width:10px;height:10px;border-radius:50%;background:#2563eb;border:2px solid #fff;box-shadow:0 0 0 2px #2563eb}
-.tl-item.email::before{background:#f59e0b;box-shadow:0 0 0 2px #f59e0b}
-.tl-item.cal::before{background:#8b5cf6;box-shadow:0 0 0 2px #8b5cf6}
-.tl-item.action::before{background:#dc2626;box-shadow:0 0 0 2px #dc2626}
-.tl-item.excel::before{background:#16a34a;box-shadow:0 0 0 2px #16a34a}
-.tl-item.gantt::before{background:#0891b2;box-shadow:0 0 0 2px #0891b2}
-.tl-item.system::before{background:#64748b;box-shadow:0 0 0 2px #64748b}
-.tl-header{display:flex;gap:8px;align-items:center;margin-bottom:4px}
-.tl-time{font-size:11px;color:#94a3b8;min-width:40px}
-.tl-badge{font-size:10.5px;padding:1px 7px;border-radius:10px;font-weight:600}
-.tl-badge.email{background:#fffbeb;color:#d97706;border:1px solid #fcd34d}
-.tl-badge.cal{background:#faf5ff;color:#7c3aed;border:1px solid #c4b5fd}
-.tl-badge.action{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5}
-.tl-badge.excel{background:#f0fdf4;color:#16a34a;border:1px solid #86efac}
-.tl-badge.gantt{background:#ecfeff;color:#0891b2;border:1px solid #67e8f9}
-.tl-badge.system{background:#f8fafc;color:#64748b;border:1px solid #cbd5e1}
-.tl-title{font-weight:600;font-size:13px;color:#1e293b}
-.tl-desc{font-size:11.5px;color:#64748b;margin-top:2px}
-footer{text-align:center;padding:16px;font-size:11px;color:#94a3b8;border-top:1px solid #e2e8f0;background:#fff;margin-top:24px}
+/* TABS */
+.tabBar{background:#fff;border-bottom:2px solid var(--border);display:flex;padding:0 24px;gap:4px;overflow-x:auto}
+.tabBtn{padding:14px 18px;border:none;background:none;cursor:pointer;font-size:.88rem;font-weight:500;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.tabBtn.active{color:var(--blu2);border-bottom-color:var(--blu2);background:#eff6ff}
+.tabBtn:hover:not(.active){color:var(--text);background:#f8fafc}
+/* CONTENT */
+.tabContent{display:none;padding:24px;max-width:1400px;margin:0 auto}
+.tabContent.active{display:block}
+/* CARDS */
+.kpiRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+.kpiCard{background:var(--card);border-radius:12px;padding:20px;text-align:center;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.kpiVal{font-size:2rem;font-weight:800;color:var(--blu)}
+.kpiLbl{font-size:.78rem;color:var(--muted);margin-top:4px}
+/* TABLES */
+.tableWrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);background:var(--card)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--blu);color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:9px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#f8fafc}
+tr:hover td{background:#eff6ff}
+/* BADGES */
+.badge{padding:3px 9px;border-radius:12px;font-size:.75rem;font-weight:700;display:inline-block}
+.badge-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.badge-yellow{background:#fefce8;color:#92400e;border:1px solid #fde68a}
+.badge-green{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
+.badge-blue{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.badge-gray{background:#f8fafc;color:#475569;border:1px solid #e2e8f0}
+.badge-orange{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+/* GANTT */
+.ganttBar{height:18px;border-radius:9px;background:#bfdbfe;position:relative;min-width:20px}
+.ganttFill{height:100%;border-radius:9px;background:var(--blu2);transition:width .3s}
+/* SECTION TITLE */
+.sTitle{font-size:1rem;font-weight:700;color:var(--blu);margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+/* ALERT BOX */
+.alertBox{background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:.88rem}
+.alertBox b{color:#92400e}
+/* CAL CARD */
+.calCard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:16px}
+.calTime{font-size:1.1rem;font-weight:700;color:var(--blu2);min-width:120px}
+.calTitle{font-weight:600;font-size:.95rem}
+.calMeta{font-size:.8rem;color:var(--muted);margin-top:4px}
+.calLink{margin-top:6px;font-size:.8rem}
+.calLink a{color:var(--blu2);text-decoration:none}
+/* LOG TIMELINE */
+.logToolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.logFilter{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--card);cursor:pointer;font-size:.8rem;font-weight:500}
+.logFilter.active{background:var(--blu2);color:#fff;border-color:var(--blu2)}
+.logSearch{padding:8px 14px;border:1px solid var(--border);border-radius:20px;font-size:.85rem;outline:none;flex:1;min-width:200px}
+.logSearch:focus{border-color:var(--blu2)}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border)}
+.tlItem{position:relative;margin-bottom:20px}
+.tlDot{position:absolute;left:-27px;top:6px;width:14px;height:14px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 2px var(--border)}
+.tlDot.email{background:#2563eb}
+.tlDot.cal{background:#0891b2}
+.tlDot.action{background:#d97706}
+.tlDot.excel{background:#059669}
+.tlDot.gantt{background:#7c3aed}
+.tlDot.system{background:#64748b}
+.tlCard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px}
+.tlCard .tlHead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.tlCard .tlBadge{font-size:.72rem;padding:2px 8px;border-radius:10px;font-weight:700}
+.tlBadge.email{background:#eff6ff;color:#1d4ed8}
+.tlBadge.cal{background:#ecfeff;color:#0e7490}
+.tlBadge.action{background:#fffbeb;color:#92400e}
+.tlBadge.excel{background:#f0fdf4;color:#15803d}
+.tlBadge.gantt{background:#faf5ff;color:#6d28d9}
+.tlBadge.system{background:#f8fafc;color:#475569}
+.tlTitle{font-weight:600;font-size:.9rem}
+.tlDesc{font-size:.8rem;color:var(--muted)}
+.tlTime{font-size:.75rem;color:var(--muted);margin-left:auto}
+/* STORICO */
+.histCard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}
+.histDate{font-weight:700;color:var(--blu);font-size:.9rem}
+.histStats{font-size:.82rem;color:var(--muted)}
+.histPdf{font-size:.78rem;color:var(--blu2);text-decoration:none}
+.histPdf:hover{text-decoration:underline}
+/* VERTICALI BARS */
+.vertBar{margin-bottom:14px}
+.vertBarHead{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px}
+.vertBarTrack{height:14px;background:#e2e8f0;border-radius:7px;overflow:hidden}
+.vertBarFill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--blu2),var(--blu))}
+/* AZIONI */
+.azioneItem{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;font-size:.88rem}
+/* FOOTER */
+footer{background:var(--blu);color:rgba(255,255,255,.7);text-align:center;padding:12px;font-size:.75rem;margin-top:40px}
 </style>
 </head>
 <body>
 
-<div id="login-overlay">
-  <div class="login-box">
-    <div class="login-logo">🛡</div>
-    <h2>PSN Dashboard – DPC</h2>
-    <p>Polo Strategico Nazionale<br><small>Accesso riservato – Diffusione Limitata</small></p>
-    <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+  <div class="loginBox">
+    <div style="font-size:2.5rem;margin-bottom:8px">🔒</div>
+    <h2>Dashboard PSN – DPC</h2>
+    <p>Accesso riservato – Diffusione Limitata</p>
+    <input type="password" id="pwdInput" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
     <button onclick="doLogin()">Accedi</button>
-    <div id="login-err"></div>
+    <div class="loginError" id="loginError"></div>
   </div>
 </div>
 
-<div id="app" style="display:none">
+<!-- HEADER -->
 <header>
-  <div class="header-title">
-    <div>
-      <h1>🛡 PSN – Polo Strategico Nazionale</h1>
-      <div class="sub">Dipartimento della Protezione Civile – PMO Monitor Ferrari/Sogei</div>
-    </div>
-    <span class="live-badge">● LIVE</span>
+  <div>
+    <h1>🛡 Dashboard PSN – Polo Strategico Nazionale</h1>
+    <div class="headerSub">Dipartimento della Protezione Civile &nbsp;|&nbsp; Ultimo aggiornamento: 11/03/2026 ore 09:00</div>
   </div>
-  <div class="header-meta">Aggiornato: <b>10/03/2026 19:10</b><br>26 email | 4 riunioni oggi</div>
+  <span class="liveBadge">● LIVE</span>
 </header>
 
-<nav class="tabs-bar">
-  <button class="tab-btn active" onclick="showTab('overview',this)">📊 Overview</button>
-  <button class="tab-btn" onclick="showTab('email',this)">📧 Email PMO</button>
-  <button class="tab-btn" onclick="showTab('calendar',this)">📅 Calendario</button>
-  <button class="tab-btn" onclick="showTab('gantt',this)">📈 Gantt</button>
-  <button class="tab-btn" onclick="showTab('verticali',this)">🏗 Verticali</button>
-  <button class="tab-btn" onclick="showTab('storico',this)">🕐 Storico</button>
-  <button class="tab-btn" onclick="showTab('log',this)">📋 Log</button>
-</nav>
-
-<main>
-
-<div id="tab-overview" class="tab-panel active">
-  <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-val">26</div><div class="kpi-lab">Email Ferrari/Sogei totali</div></div>
-    <div class="kpi-card red"><div class="kpi-val">0</div><div class="kpi-lab">Email 🔴 Critiche</div></div>
-    <div class="kpi-card orange"><div class="kpi-val">8</div><div class="kpi-lab">Email 🟡 Attenzione</div></div>
-    <div class="kpi-card green"><div class="kpi-val">4</div><div class="kpi-lab">Riunioni Oggi</div></div>
-    <div class="kpi-card"><div class="kpi-val">2</div><div class="kpi-lab">Gantt Items</div></div>
-    <div class="kpi-card"><div class="kpi-val">8</div><div class="kpi-lab">Verticali Attivi</div></div>
-    <div class="kpi-card green"><div class="kpi-val">0</div><div class="kpi-lab">Nuove email questa run</div></div>
-    <div class="kpi-card"><div class="kpi-val">19:10</div><div class="kpi-lab">Run corrente</div></div>
-  </div>
-  <div class="section">
-    <h3>⚡ Azioni Prioritarie</h3>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Accesso DB AS-IS Eustema – AWS</div><div class="pr-desc">Ferrari chiede a F. Crisci (Eustema) credenziali per 5 DB AWS: Cartis, Check-in, Donazioni, Designa, Contributi – 10/03 15:14</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Assessment FA DPC</div><div class="pr-desc">Cortocircuito con fornitori CSRS, SAE; conferma gruppo AD per Budibase da DPC – 09/03 15:47</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Accesso DB AS-IS (Accenture)</div><div class="pr-desc">Credenziali DB AWS non disponibili al team tecnico – escalation richiesta – 09/03 15:44</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Variazione domanda finanziamento</div><div class="pr-desc">Bozza inviata; manca tabella "Dettaglio rack" – da completare con DPC – 09/03 11:23</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Rimodulazione PPdF – CPU extra</div><div class="pr-desc">Delivery pool CPU aggiuntiva in anticipata esecuzione (PPdF-P2R4) – richiesta firma DPC – 06/03</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Strategia cutover con FA</div><div class="pr-desc">Durata massima interruzione e SLA da definire – DPC deve rispondere a Ferrari – 06/03</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row warn"><div class="pr-icon">🟡</div><div class="pr-body"><div class="pr-title">Abilitazione utenze AWS ON PREM</div><div class="pr-desc">Lista aggiornata con colonna Stato inviata; in attesa azioni DPC/team tecnico – 05/03</div></div><span class="badge badge-orange">Attenzione</span></div>
-    <div class="priority-row info"><div class="pr-icon">🟢</div><div class="pr-body"><div class="pr-title">Gantt Excel in arrivo da Ferrari (#dpc_gantt)</div><div class="pr-desc">Ferrari conferma invio Gantt aggiornato – in attesa ricezione – 10/03 13:19</div></div><span class="badge badge-green">Info</span></div>
-  </div>
+<!-- TAB BAR -->
+<div class="tabBar">
+  <button class="tabBtn active" onclick="showTab('overview')">📊 Overview</button>
+  <button class="tabBtn" onclick="showTab('email')">📧 Email PMO</button>
+  <button class="tabBtn" onclick="showTab('calendario')">📅 Calendario</button>
+  <button class="tabBtn" onclick="showTab('gantt')">📈 Gantt</button>
+  <button class="tabBtn" onclick="showTab('verticali')">🏗 Verticali</button>
+  <button class="tabBtn" onclick="showTab('storico')">🕐 Storico</button>
+  <button class="tabBtn" onclick="showTab('log')">📋 Log</button>
 </div>
 
-<div id="tab-email" class="tab-panel">
-  <div class="section">
-    <h3>📧 Email PMO – Ferrari/Sogei (26 totali)</h3>
-    <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
-      <span class="badge badge-red">0 🔴 Critiche</span>
-      <span class="badge badge-orange">8 🟡 Attenzione</span>
-      <span class="badge badge-green">17 🟢 Info</span>
-    </div>
-    <table class="data-table">
-      <thead><tr><th>#</th><th>Data</th><th>Oggetto</th><th>Priorità</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>10/03 15:14</td><td>Accesso DB AS-IS - AWS<br><small style="color:#64748b">Crisci/Eustema: credenziali 5 DB AWS</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>2</td><td>10/03 13:19</td><td>R: Gantt con stato di avanzamento<br><small style="color:#64748b">Ferrari conferma invio Gantt Excel #dpc_gantt</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>3</td><td>09/03 15:47</td><td>Assessment FA DPC<br><small style="color:#64748b">Cortocircuito CSRS, SAE, Budibase</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>4</td><td>09/03 15:44</td><td>Accesso DB AS-IS<br><small style="color:#64748b">Accenture: credenziali DB AWS non disponibili</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>5</td><td>09/03 11:23</td><td>Variazione domanda finanziamento<br><small style="color:#64748b">Bozza inviata, manca "Dettaglio rack"</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>6</td><td>06/03 15:48</td><td>Verticale IAM – FA Accenture<br><small style="color:#64748b">Agenda incontro con Leonardo</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>7</td><td>06/03 10:03</td><td>R: Connettività VPN DPC (sched.)<br><small style="color:#64748b">VPN DPC team allargato</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>8</td><td>06/03 09:41</td><td>R: Rimodulazione PPdF – CPU extra<br><small style="color:#64748b">Delivery CPU aggiuntiva anticipata</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>9</td><td>06/03 09:39</td><td>Definizione strategia cutover con FA<br><small style="color:#64748b">Durata max interruzione, SLA da DPC</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>10</td><td>06/03 08:51</td><td>Re: PSN03159397 – Accesso PostgreSQL<br><small style="color:#64748b">Password DBPaaS Pa_admin da cambiare</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>11</td><td>05/03 16:52</td><td>Reservation VM AWS<br><small style="color:#64748b">Reserved instances AWS rilasciate</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>12</td><td>05/03 16:49</td><td>Re: Reservation VM AWS – PSN DPC<br><small style="color:#64748b">Librera/Leonardo conferma</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>13</td><td>05/03 13:34</td><td>R: Abilitazione Utenze AWS ON PREM 📎<br><small style="color:#64748b">Lista utenze con colonna Stato (Excel allegato)</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>14</td><td>05/03 10:22</td><td>Soluzione e specifiche IAM<br><small style="color:#64748b">Specifiche IAM da Leonardo per fornitori appl.</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>15</td><td>05/03 09:32</td><td>R: Connettività VPN DPC<br><small style="color:#64748b">Rischedulo incontro VPN AWS as-is vs PSN</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>16</td><td>04/03 14:32</td><td>R: Call – CIMA (rischedula)<br><small style="color:#64748b">Lun 15:30 DR, Mar 11:00 MLA con Leonardo</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>17</td><td>03/03 17:08</td><td>Utenza DBPaaS<br><small style="color:#64748b">Serve utenza Pa_admin non root</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>18</td><td>03/03 13:27</td><td>Re: Ingaggio fornitori WAVE II/III<br><small style="color:#64748b">In attesa Scaparro/Accenture</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>19</td><td>03/03 12:08</td><td>R: PSN: Piano di migrazione<br><small style="color:#64748b">Rischedulo CIMA in settimana</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>20</td><td>03/03 12:02</td><td>R: Reservation VM AWS – PSN DPC<br><small style="color:#64748b">Grazie a Di Palma/Leonardo</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>21</td><td>03/03 12:01</td><td>Richiesta rimodulazione PPdF CPU<br><small style="color:#64748b">Pool CPU aggiuntiva, piano fabbisogni 2024</small></td><td><span class="badge badge-orange">🟡 Attenzione</span></td></tr>
-        <tr><td>22</td><td>03/03 11:32</td><td>Ingaggio fornitori WAVE II e III<br><small style="color:#64748b">Validazione specifiche IAM con Accenture</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>23</td><td>03/03 10:47</td><td>R: PSN: Piano di migrazione<br><small style="color:#64748b">Conferma slot agende</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>24</td><td>03/03 09:08</td><td>R: SAL settimanale PCM-DPC – PSN<br><small style="color:#64748b">Presentazione e verbale SAL 25/02/2026</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-        <tr><td>25</td><td>02/03 15:07</td><td>R: test<br><small style="color:#64748b">Test sistema</small></td><td><span class="badge badge-green">🟢 Info</span></td></tr>
-      </tbody>
+<!-- ════════════════════════════════════════════════════════
+     TAB 1 – OVERVIEW
+════════════════════════════════════════════════════════ -->
+<div id="tab-overview" class="tabContent active">
+  <div class="kpiRow">
+    <div class="kpiCard"><div class="kpiVal">26</div><div class="kpiLbl">Email Totali Processate</div></div>
+    <div class="kpiCard"><div class="kpiVal">2</div><div class="kpiLbl">Gantt Items Aperti</div></div>
+    <div class="kpiCard"><div class="kpiVal" style="color:#22c55e">0</div><div class="kpiLbl">Nuove Email Oggi</div></div>
+    <div class="kpiCard"><div class="kpiVal" style="color:#0891b2">2</div><div class="kpiLbl">Riunioni Oggi</div></div>
+    <div class="kpiCard"><div class="kpiVal">8</div><div class="kpiLbl">Verticali Monitorati</div></div>
+    <div class="kpiCard"><div class="kpiVal">9</div><div class="kpiLbl">Run Totali</div></div>
+  </div>
+
+  <div class="alertBox">
+    <b>📌 Situazione attuale:</b> Nessuna nuova email da Ferrari/Sogei nelle ultime 18 ore.
+    Il Gantt rimane stabile con 2 voci a priorità ATTENZIONE.
+    2 riunioni in agenda oggi: SAL PSN (11:00) + MS Unified Support (17:00).
+  </div>
+
+  <div class="sTitle">⚡ Azioni Prioritarie</div>
+  <div class="azioneItem"><span>🟡</span><span>Richiedere a <b>Eustema (Federico Crisci)</b> credenziali per 5 DB AWS AS-IS: Cartis, Check-in, Donazioni, Designa, Contributi</span></div>
+  <div class="azioneItem"><span>🟡</span><span>Attendere <b>Gantt Excel aggiornato</b> da Ferrari con tag #dpc_gantt – sollecitare se non pervenuto</span></div>
+  <div class="azioneItem"><span>🟡</span><span>Verificare <b>variazione domanda finanziamento</b> (manca tabella 'Dettaglio rack') – email Ferrari 09/03</span></div>
+  <div class="azioneItem"><span>🟡</span><span>Organizzare incontri con <b>CSRS e SAE</b> per Assessment FA DPC (richiesta Ferrari 09/03)</span></div>
+  <div class="azioneItem"><span>🟢</span><span><b>SAL settimanale PSN</b> oggi ore 11:00 – Teams ID: 331 771 225 424 53</span></div>
+  <div class="azioneItem"><span>🟢</span><span><b>Microsoft Unified Support</b> oggi ore 17:00 – Teams ID: 378 239 269 819 06</span></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 2 – EMAIL PMO
+════════════════════════════════════════════════════════ -->
+<div id="tab-email" class="tabContent">
+  <div class="sTitle">📧 Email PMO – Ferrari/Sogei <span style="font-size:.8rem;color:var(--muted);font-weight:400">(totale: 25 email processate)</span></div>
+  <div class="tableWrap">
+    <table id="emailTable">
+      <thead><tr><th>Data</th><th>Oggetto</th><th>Priorità</th><th>Verticale</th></tr></thead>
+      <tbody id="emailTbody"></tbody>
     </table>
   </div>
 </div>
 
-<div id="tab-calendar" class="tab-panel">
-  <div class="section">
-    <h3>📅 Riunioni 10/03/2026 – Calendario DPC-LAVORO</h3>
-    <div class="cal-item"><div class="cal-time">11:00–11:30</div><div class="cal-body"><div class="cal-title">Extreme/MuXo/DPC bi-weekly Call</div><div class="cal-org">Microsoft Teams | Extreme Networks (Monika Goehler)</div><div style="margin-top:6px"><span class="badge badge-blue">Ricorrente bi-weekly</span></div></div></div>
-    <div class="cal-item"><div class="cal-time">11:00–12:00</div><div class="cal-body"><div class="cal-title">Maturity Level Assessment – Incontro con CIMA</div><div class="cal-org">Microsoft Teams | Ferrari/Sogei</div><div style="margin-top:6px"><span class="badge badge-orange">MLA</span></div></div></div>
-    <div class="cal-item" style="border-left-color:#8b5cf6"><div class="cal-time">12:00–13:00</div><div class="cal-body"><div class="cal-title">Cynet &lt;&gt; DPC: Onboarding meeting</div><div class="cal-org">Zoom | Aldo Qalliaj (Cynet Security)</div><div style="margin-top:6px"><span class="badge badge-purple">Cynet</span></div></div></div>
-    <div class="cal-item" style="border-left-color:#dc2626"><div class="cal-time">15:00–15:55</div><div class="cal-body"><div class="cal-title">DPC PSN | VPN AWS as-is to AWS PSN</div><div class="cal-org">Microsoft Teams | Igli Allushi (Accenture) – Configurazione tunnel VPN site-to-site</div><div style="margin-top:6px"><span class="badge badge-red">VPN critica</span></div></div></div>
+<!-- ════════════════════════════════════════════════════════
+     TAB 3 – CALENDARIO
+════════════════════════════════════════════════════════ -->
+<div id="tab-calendario" class="tabContent">
+  <div class="sTitle">📅 Riunioni Oggi – 11/03/2026</div>
+  <div id="calContainer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 4 – GANTT
+════════════════════════════════════════════════════════ -->
+<div id="tab-gantt" class="tabContent">
+  <div class="sTitle">📈 Gantt Attività <span style="font-size:.8rem;color:var(--muted);font-weight:400">(2 voci attive)</span></div>
+  <div class="tableWrap">
+    <table id="ganttTable">
+      <thead><tr><th>Attività</th><th>Stato</th><th>%</th><th>Owner</th><th>Inizio</th><th>Fine</th><th>Verticale</th><th>Fonte</th></tr></thead>
+      <tbody id="ganttTbody"></tbody>
+    </table>
   </div>
 </div>
 
-<div id="tab-gantt" class="tab-panel">
-  <div class="section">
-    <h3>📈 Gantt – Attività estratte da email + Excel Ferrari</h3>
-    <div style="margin-bottom:12px;font-size:12px;color:#64748b">
-      <span class="badge badge-blue">📎 Excel</span> = da allegato Excel &nbsp; <span class="badge badge-orange">✉️ Email</span> = da testo email
-    </div>
-    <div class="gantt-row">
-      <div style="flex:2"><div style="font-weight:600;font-size:13px">Accesso DB AS-IS Eustema – AWS</div><div style="font-size:11.5px;color:#64748b;margin-top:2px">Cartis, Check-in, Donazioni, Designa, Contributi | Owner: DPC/Eustema | Verticale: AWS</div></div>
-      <div class="gantt-bar-wrap"><div class="gantt-bar" style="width:0%"></div></div>
-      <div style="font-size:11px;color:#64748b;min-width:60px">0%</div>
-      <span class="badge badge-orange">⏳ Pending</span>
-      <span class="gantt-badge">✉️ Email</span>
-    </div>
-    <div class="gantt-row">
-      <div style="flex:2"><div style="font-weight:600;font-size:13px">Invio Gantt Excel aggiornato (#dpc_gantt)</div><div style="font-size:11.5px;color:#64748b;margin-top:2px">Ferrari conferma invio – in attesa allegato | Owner: Ferrari/Sogei | Verticale: PSN</div></div>
-      <div class="gantt-bar-wrap"><div class="gantt-bar" style="width:0%"></div></div>
-      <div style="font-size:11px;color:#64748b;min-width:60px">0%</div>
-      <span class="badge badge-orange">⏳ Pending</span>
-      <span class="gantt-badge">✉️ Email</span>
-    </div>
-    <div style="margin-top:16px;padding:12px;background:#fffbeb;border-radius:8px;border:1px solid #fcd34d">
-      <span style="font-size:12.5px;color:#92400e">⚠ <b>Excel Ferrari atteso:</b> Ferrari ha confermato l'invio del Gantt Excel con tag <code>#dpc_gantt</code>. Non ancora ricevuto. Il Gantt verrà aggiornato automaticamente alla prossima run.</span>
-    </div>
+<!-- ════════════════════════════════════════════════════════
+     TAB 5 – VERTICALI
+════════════════════════════════════════════════════════ -->
+<div id="tab-verticali" class="tabContent">
+  <div class="sTitle">🏗 Stato per Verticale</div>
+  <div id="vertContainer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 6 – STORICO
+════════════════════════════════════════════════════════ -->
+<div id="tab-storico" class="tabContent">
+  <div class="sTitle">🕐 Storico Run Automatici</div>
+  <div id="storicoContainer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     TAB 7 – LOG
+════════════════════════════════════════════════════════ -->
+<div id="tab-log" class="tabContent">
+  <div class="sTitle">📋 Log – Timeline Cronologica</div>
+  <div class="logToolbar">
+    <button class="logFilter active" onclick="filterLog('all',this)">Tutti</button>
+    <button class="logFilter" onclick="filterLog('email',this)">📧 Email</button>
+    <button class="logFilter" onclick="filterLog('cal',this)">📅 Riunioni</button>
+    <button class="logFilter" onclick="filterLog('action',this)">⚡ Azioni</button>
+    <button class="logFilter" onclick="filterLog('excel',this)">📎 Excel</button>
+    <button class="logFilter" onclick="filterLog('gantt',this)">📈 Gantt</button>
+    <button class="logFilter" onclick="filterLog('system',this)">🖥️ Sistema</button>
+    <input class="logSearch" id="logSearch" placeholder="🔍 Cerca nel log..." oninput="filterLog(currentLogFilter,null)">
   </div>
+  <div class="timeline" id="logTimeline"></div>
 </div>
 
-<div id="tab-verticali" class="tab-panel">
-  <div class="section">
-    <h3>🏗 Stato Verticali PSN</h3>
-    <div id="vert-container"></div>
-  </div>
-</div>
-
-<div id="tab-storico" class="tab-panel">
-  <div class="section">
-    <h3>🕐 Storico Run Automatiche</h3>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 10/03/2026 – 19:10 (corrente)</div><div class="run-meta">0 nuove email | 0 nuovi eventi cal | Gantt: 2 items | PDF: PSN_Report_20260310_1910.pdf</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 10/03/2026 – 19:00</div><div class="run-meta">2 nuove email Ferrari | 4 riunioni oggi | Gantt: 2 voci aggiunte | PDF: PSN_Report_20260310_1900.pdf</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 10/03/2026 – 12:07</div><div class="run-meta">Run mattutina | 3 email elaborate | PDF: PSN_Report_20260310_1207.pdf</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 09/03/2026</div><div class="run-meta">Report: Report_PMO_PSN_Ferrari_20260309.pdf</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 07/03/2026</div><div class="run-meta">Report: Report_PMO_PSN_Ferrari_20260307.pdf</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-    <div class="run-card"><div class="run-icon">🖥️</div><div class="run-body"><div class="run-title">Run 06/03/2026</div><div class="run-meta">Report: Report_PMO_PSN_Ferrari_20260306.pdf | Docx: Riepilogo_Email_Ferrari_PSN_20260306.docx</div><div style="margin-top:6px"><span class="badge badge-grey">Sistema</span> <span class="badge badge-green">OK</span></div></div></div>
-  </div>
-</div>
-
-<div id="tab-log" class="tab-panel">
-  <div class="section">
-    <h3>📋 Timeline Log – Tutti gli eventi PSN</h3>
-    <div class="log-toolbar">
-      <button class="log-filter-btn active" onclick="filterLog('all',this)">Tutti</button>
-      <button class="log-filter-btn" onclick="filterLog('email',this)">📧 Email</button>
-      <button class="log-filter-btn" onclick="filterLog('cal',this)">📅 Riunioni</button>
-      <button class="log-filter-btn" onclick="filterLog('action',this)">⚡ Azioni</button>
-      <button class="log-filter-btn" onclick="filterLog('excel',this)">📎 Excel</button>
-      <button class="log-filter-btn" onclick="filterLog('gantt',this)">📈 Gantt</button>
-      <button class="log-filter-btn" onclick="filterLog('system',this)">🖥 Sistema</button>
-      <input class="log-search" type="text" placeholder="🔍 Cerca nella timeline..." oninput="searchLog(this.value)">
-    </div>
-    <div class="timeline" id="timeline-container"></div>
-  </div>
-</div>
-
-</main>
-
-<footer>⚠ Diffusione Limitata – Dipartimento della Protezione Civile – PSN Dashboard v2.0 – Aggiornato 10/03/2026 19:10</footer>
-</div>
+<footer>🔒 DIFFUSIONE LIMITATA &nbsp;|&nbsp; Dashboard PSN – Dipartimento Protezione Civile &nbsp;|&nbsp; Aggiornamento: 11/03/2026 09:00 &nbsp;|&nbsp; Generato automaticamente</footer>
 
 <script>
+// ── DATA ──────────────────────────────────────────────────
+const emails = [{"data": "10/03 15:14", "oggetto": "Accesso DB AS-IS – AWS", "priorita": "attenzione", "badge": "🟡", "verticale": "AWS / DB"}, {"data": "10/03 13:19", "oggetto": "R: Gantt con stato di avanzamento", "priorita": "info", "badge": "🟢", "verticale": "PSN"}, {"data": "09/03 15:47", "oggetto": "Assessment FA DPC", "priorita": "attenzione", "badge": "🟡", "verticale": "Fornitori Appl."}, {"data": "09/03 15:44", "oggetto": "Accesso DB AS-IS", "priorita": "attenzione", "badge": "🟡", "verticale": "AWS / DB"}, {"data": "09/03 11:23", "oggetto": "Variazione domanda finanziamento", "priorita": "attenzione", "badge": "🟡", "verticale": "Finanziamento"}, {"data": "06/03 15:48", "oggetto": "Verticale IAM – FA Accenture", "priorita": "attenzione", "badge": "🟡", "verticale": "IAM"}, {"data": "06/03 10:03", "oggetto": "R: Connettività VPN DPC", "priorita": "attenzione", "badge": "🟡", "verticale": "VPN"}, {"data": "06/03 09:41", "oggetto": "R: Richiesta rimodulazione PPdF CPU", "priorita": "attenzione", "badge": "🟡", "verticale": "AWS"}, {"data": "06/03 09:39", "oggetto": "Definizione strategia cutover con FA", "priorita": "attenzione", "badge": "🟡", "verticale": "AWS"}, {"data": "06/03 08:51", "oggetto": "Re: Accesso servizio PostgreSQL", "priorita": "attenzione", "badge": "🟡", "verticale": "DB"}, {"data": "05/03 16:52", "oggetto": "Reservation VM AWS", "priorita": "info", "badge": "🟢", "verticale": "AWS"}, {"data": "05/03 16:49", "oggetto": "Re: Reservation VM AWS – PSN DPC", "priorita": "info", "badge": "🟢", "verticale": "AWS"}, {"data": "05/03 13:34", "oggetto": "R: Abilitazione Utenze AWS ON PREM", "priorita": "attenzione", "badge": "🟡", "verticale": "IAM"}, {"data": "05/03 10:22", "oggetto": "Soluzione e specifiche IAM", "priorita": "attenzione", "badge": "🟡", "verticale": "IAM"}, {"data": "05/03 09:32", "oggetto": "R: Connettività VPN DPC", "priorita": "attenzione", "badge": "🟡", "verticale": "VPN"}, {"data": "04/03 14:32", "oggetto": "R: Call – CIMA", "priorita": "info", "badge": "🟢", "verticale": "PSN"}, {"data": "03/03 17:08", "oggetto": "Utenza DBPaaS", "priorita": "attenzione", "badge": "🟡", "verticale": "DB"}, {"data": "03/03 13:27", "oggetto": "Re: Ingaggio fornitori applicativi WAVE II e III", "priorita": "attenzione", "badge": "🟡", "verticale": "Fornitori Appl."}, {"data": "03/03 12:08", "oggetto": "R: PSN: Piano di migrazione", "priorita": "info", "badge": "🟢", "verticale": "PSN"}, {"data": "03/03 12:02", "oggetto": "R: Reservation VM AWS – PSN DPC", "priorita": "info", "badge": "🟢", "verticale": "AWS"}, {"data": "03/03 12:01", "oggetto": "Richiesta rimodulazione PPdF CPU", "priorita": "attenzione", "badge": "🟡", "verticale": "AWS"}, {"data": "03/03 11:32", "oggetto": "Ingaggio fornitori applicativi WAVE II e III", "priorita": "attenzione", "badge": "🟡", "verticale": "Fornitori Appl."}, {"data": "03/03 10:47", "oggetto": "R: PSN: Piano di migrazione", "priorita": "info", "badge": "🟢", "verticale": "PSN"}, {"data": "03/03 09:08", "oggetto": "R: SAL settimanale PCM – DPC – Progetto PSN", "priorita": "info", "badge": "🟢", "verticale": "PSN"}, {"data": "02/03 15:07", "oggetto": "R: test", "priorita": "info", "badge": "🟢", "verticale": "PSN"}];
+const calEvents = [{"ora": "11:00–12:00", "titolo": "SAL settimanale PCM-DPC – Progetto PSN", "piattaforma": "Teams", "id_riunione": "331 771 225 424 53", "passcode": "dc2YJ6C7", "link": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_YjFmYWJiMDYtNzgwNS00MjRjLWE3N2MtYjk0OTgzNDNjOThh%40thread.v2/0"}, {"ora": "17:00–17:45", "titolo": "Microsoft Services Unified Support", "piattaforma": "Teams", "id_riunione": "378 239 269 819 06", "passcode": "SC7Vt77T", "link": "https://teams.microsoft.com/meet/37823926981906?p=yIa9H94TjQ5A36g7DA"}];
+const ganttItems = [{"nome": "Accesso DB AS-IS Eustema – AWS", "stato": "pending", "inizio": "10/03/2026", "fine": "–", "owner": "DPC/Eustema", "pct": 0, "verticale": "AWS", "badge": "✉️ Email", "note": "5 DB: Cartis, Check-in, Donazioni, Designa, Contributi"}, {"nome": "Invio Gantt Excel aggiornato #dpc_gantt", "stato": "pending", "inizio": "10/03/2026", "fine": "–", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "PSN", "badge": "✉️ Email", "note": "Ferrari ok a inviare Excel con tag #dpc_gantt"}];
+const verticali = [{"nome": "IAM", "aperti": 2, "chiusi": 1, "tot": 3}, {"nome": "AWS", "aperti": 4, "chiusi": 2, "tot": 6}, {"nome": "VPN", "aperti": 2, "chiusi": 1, "tot": 3}, {"nome": "DB", "aperti": 2, "chiusi": 1, "tot": 3}, {"nome": "Finanziamento", "aperti": 1, "chiusi": 0, "tot": 1}, {"nome": "SAL", "aperti": 1, "chiusi": 1, "tot": 2}, {"nome": "Fornitori App.", "aperti": 2, "chiusi": 0, "tot": 2}, {"nome": "PSN", "aperti": 2, "chiusi": 1, "tot": 3}];
+const runHistory = [{"data": "11/03/2026", "ora": "09:00", "nuove_email": 0, "eventi_cal": 2, "gantt": 2, "pdf": "PSN_Report_20260311_0900.pdf", "note": "Run mattutina. 2 riunioni oggi."}, {"data": "10/03/2026", "ora": "19:10", "nuove_email": 0, "eventi_cal": 0, "gantt": 2, "pdf": "PSN_Report_20260310_1910.pdf", "note": "Run serale. Nessuna modifica."}, {"data": "10/03/2026", "ora": "19:00", "nuove_email": 2, "eventi_cal": 4, "gantt": 2, "pdf": "PSN_Report_20260310_1900.pdf", "note": "2 nuove email Ferrari, 4 riunioni."}, {"data": "10/03/2026", "ora": "12:07", "nuove_email": 3, "eventi_cal": 2, "gantt": 0, "pdf": "PSN_Report_20260310_1207.pdf", "note": "3 email 09/03."}, {"data": "09/03/2026", "ora": "09:00", "nuove_email": 5, "eventi_cal": 3, "gantt": 0, "pdf": "Report_PMO_PSN_Ferrari_20260309.pdf", "note": "Run mattutina."}, {"data": "07/03/2026", "ora": "09:00", "nuove_email": 4, "eventi_cal": 2, "gantt": 0, "pdf": "Report_PMO_PSN_Ferrari_20260307.pdf", "note": "Run mattutina."}, {"data": "06/03/2026", "ora": "09:00", "nuove_email": 8, "eventi_cal": 3, "gantt": 0, "pdf": "Report_PMO_PSN_Ferrari_20260306.pdf", "note": "Run mattutina."}];
+const logEntries = [{"tipo": "system", "data": "11/03/2026", "ora": "09:00", "titolo": "Run automatica – 11/03/2026 09:00", "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 2 riunioni oggi (SAL + MS Unified Support), 2 Gantt items invariati, PDF PSN_Report_20260311_0900.pdf generato.", "badge": "🖥️ Sistema"}, {"tipo": "cal", "data": "11/03/2026", "ora": "11:00", "titolo": "📅 SAL settimanale PCM-DPC – Progetto PSN", "descrizione": "Riunione Teams 11:00–12:00 | ID: 331 771 225 424 53 | Passcode: dc2YJ6C7", "badge": "📅 Riunione"}, {"tipo": "cal", "data": "11/03/2026", "ora": "17:00", "titolo": "📅 Microsoft Services Unified Support", "descrizione": "Riunione Teams 17:00–17:45 | ID: 378 239 269 819 06 | Passcode: SC7Vt77T", "badge": "📅 Riunione"}, {"tipo": "system", "data": "10/03/2026", "ora": "19:10", "titolo": "Run automatica – 10/03/2026 19:10", "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 0 nuovi eventi calendario, 2 Gantt items invariati, PDF PSN_Report_20260310_1910.pdf generato. Nessuna modifica rispetto alla run 19:00.", "badge": "🖥️ Sistema"}, {"tipo": "system", "data": "10/03/2026", "ora": "19:00", "titolo": "Run automatica – 10/03/2026 19:00", "descrizione": "Elaborazione completata: 2 nuove email Ferrari, 4 riunioni oggi, 2 voci Gantt, PDF generato.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "10/03/2026", "ora": "15:14", "titolo": "🟡 Accesso DB AS-IS – AWS", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS", "badge": "📧 Email"}, {"tipo": "email", "data": "10/03/2026", "ora": "13:19", "titolo": "🟢 R: Gantt con stato di avanzamento", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: INFO | Verticale: PSN", "badge": "📧 Email"}, {"tipo": "action", "data": "10/03/2026", "ora": "15:14", "titolo": "🟡 Accesso DB AS-IS Eustema richiesto", "descrizione": "Ferrari chiede a Eustema (Federico Crisci) credenziali per 5 DB AWS: Cartis, Check-in, Donazioni, Designa, Contributi", "badge": "⚡ Azione"}, {"tipo": "gantt", "data": "10/03/2026", "ora": "19:00", "titolo": "Gantt aggiornato: 2 nuove voci", "descrizione": "Aggiunte: 'Accesso DB AS-IS Eustema' (pending, DPC/Eustema) | 'Invio Gantt Excel #dpc_gantt' (pending, Ferrari/Sogei)", "badge": "📈 Gantt"}, {"tipo": "system", "data": "10/03/2026", "ora": "12:07", "titolo": "Run automatica – 10/03/2026 12:07", "descrizione": "3 nuove email Ferrari del 09/03, 2 riunioni, PDF generato.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "09/03/2026", "ora": "15:47", "titolo": "🟡 Assessment FA DPC", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: Fornitori Appl.", "badge": "📧 Email"}, {"tipo": "email", "data": "09/03/2026", "ora": "15:44", "titolo": "🟡 Accesso DB AS-IS", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS/DB", "badge": "📧 Email"}, {"tipo": "action", "data": "09/03/2026", "ora": "15:47", "titolo": "🟡 Organizzare incontri CSRS e SAE", "descrizione": "Ferrari chiede cortocircuito con fornitori CSRS, SAE. Conferma gruppo Budibase necessaria.", "badge": "⚡ Azione"}, {"tipo": "email", "data": "09/03/2026", "ora": "11:23", "titolo": "🟡 Variazione domanda finanziamento", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Bozza variazione domanda. Manca tabella 'Dettaglio rack'.", "badge": "📧 Email"}];
+
+// ── LOGIN ─────────────────────────────────────────────────
 function doLogin(){
-  const v=document.getElementById('pwd-input').value;
-  if(v==='DashDpc@26'){
-    document.getElementById('login-overlay').style.display='none';
-    document.getElementById('app').style.display='block';
+  const pwd = document.getElementById('pwdInput').value;
+  if(pwd==='DashDpc@26'){
+    document.getElementById('loginOverlay').style.display='none';
     initDashboard();
-  } else {
-    document.getElementById('login-err').textContent='❌ Password non valida.';
-    document.getElementById('pwd-input').value='';
-    document.getElementById('pwd-input').focus();
+  }else{
+    document.getElementById('loginError').textContent='❌ Password non valida.';
+    document.getElementById('pwdInput').value='';
+    document.getElementById('pwdInput').focus();
   }
 }
+document.getElementById('pwdInput').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 
-function showTab(id,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
+// ── TABS ──────────────────────────────────────────────────
+function showTab(name){
+  document.querySelectorAll('.tabContent').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tabBtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const idx={'overview':0,'email':1,'calendario':2,'gantt':3,'verticali':4,'storico':5,'log':6}[name];
+  document.querySelectorAll('.tabBtn')[idx].classList.add('active');
 }
 
-const VERTICALI={
-  'IAM':{aperti:2,chiusi:1},'AWS':{aperti:4,chiusi:2},'VPN':{aperti:2,chiusi:1},
-  'DB':{aperti:2,chiusi:1},'Finanziamento':{aperti:1,chiusi:0},'SAL':{aperti:1,chiusi:1},
-  'Fornitori appl.':{aperti:2,chiusi:0},'PSN':{aperti:2,chiusi:1}
-};
-
-const LOG_ENTRIES=[
-  {tipo:'system',data:'2026-03-10',ora:'19:10',titolo:'🖥️ Run automatica – 10/03/2026 19:10',
-   descrizione:'Elaborazione completata: 0 nuove email Ferrari, 0 nuovi eventi cal, 2 Gantt items invariati, PDF generato.'},
-  {tipo:'system',data:'2026-03-10',ora:'19:00',titolo:'🖥️ Run automatica – 10/03/2026 19:00',
-   descrizione:'Elaborazione completata: 2 nuove email Ferrari, 4 riunioni oggi, 2 voci Gantt, PDF generato.'},
-  {tipo:'email',data:'2026-03-10',ora:'15:14',titolo:'🟡 Accesso DB AS-IS – AWS',
-   descrizione:'Da: FERRARI EMILIANO | Priorità: ATTENZIONE | Verticale: AWS | Credenziali 5 DB per Eustema'},
-  {tipo:'email',data:'2026-03-10',ora:'13:19',titolo:'🟢 R: Gantt con stato di avanzamento',
-   descrizione:'Da: FERRARI EMILIANO | Priorità: INFO | Verticale: PSN | Ferrari ok invio Gantt #dpc_gantt'},
-  {tipo:'action',data:'2026-03-10',ora:'15:14',titolo:'🟡 Accesso DB AS-IS Eustema richiesto',
-   descrizione:'Ferrari chiede a Eustema (F. Crisci) credenziali per 5 DB AWS: Cartis, Check-in, Donazioni, Designa, Contributi'},
-  {tipo:'action',data:'2026-03-10',ora:'13:19',titolo:'🟢 Gantt Excel in arrivo da Ferrari',
-   descrizione:'Ferrari conferma invio Gantt aggiornato Excel con tag #dpc_gantt nell\'oggetto'},
-  {tipo:'gantt',data:'2026-03-10',ora:'19:00',titolo:'📈 Gantt aggiornato: 2 nuove voci',
-   descrizione:'"Accesso DB AS-IS Eustema – AWS" (pending) | "Invio Gantt Excel #dpc_gantt" (pending)'},
-  {tipo:'cal',data:'2026-03-10',ora:'11:00',titolo:'📅 Extreme/MuXo/DPC bi-weekly Call',
-   descrizione:'11:00–11:30 | Organizzatore: Extreme Networks | Teams'},
-  {tipo:'cal',data:'2026-03-10',ora:'11:00',titolo:'📅 Maturity Level Assessment – Incontro con CIMA',
-   descrizione:'11:00–12:00 | Organizzatore: Ferrari/Sogei | Teams'},
-  {tipo:'cal',data:'2026-03-10',ora:'12:00',titolo:'📅 Cynet < > DPC: Onboarding meeting',
-   descrizione:'12:00–13:00 | Organizzatore: Cynet | Zoom'},
-  {tipo:'cal',data:'2026-03-10',ora:'15:00',titolo:'📅 DPC PSN | VPN AWS as-is to AWS PSN',
-   descrizione:'15:00–15:55 | Organizzatore: Accenture (Allushi Igli) | Teams | Tunnel VPN site-to-site'},
-  {tipo:'email',data:'2026-03-09',ora:'15:47',titolo:'🟢 Assessment FA DPC',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: FA | Cortocircuito CSRS, SAE, Budibase'},
-  {tipo:'email',data:'2026-03-09',ora:'15:44',titolo:'🟡 Accesso DB AS-IS (Accenture)',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: AWS | Credenziali DB non disponibili'},
-  {tipo:'email',data:'2026-03-09',ora:'11:23',titolo:'🟢 Variazione domanda finanziamento',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: Finanziamento | Bozza inviata, manca tabella rack'},
-  {tipo:'email',data:'2026-03-06',ora:'15:48',titolo:'🟢 Verticale IAM – FA Accenture',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: IAM | Agenda incontro con Leonardo'},
-  {tipo:'email',data:'2026-03-06',ora:'10:03',titolo:'🟡 R: Connettività VPN DPC (sched.)',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: VPN | Team allargato VPN DPC'},
-  {tipo:'email',data:'2026-03-06',ora:'09:41',titolo:'🟡 R: Rimodulazione PPdF – CPU extra',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: AWS | Delivery CPU aggiuntiva anticipata'},
-  {tipo:'email',data:'2026-03-06',ora:'09:39',titolo:'🟡 Strategia cutover con FA',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: PSN | Durata max interruzione da DPC'},
-  {tipo:'email',data:'2026-03-06',ora:'08:51',titolo:'🟢 Re: Accesso PostgreSQL DBPaaS',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: DB | Password Pa_admin inviata separatamente'},
-  {tipo:'excel',data:'2026-03-05',ora:'13:34',titolo:'📎 Excel – Utenze AWS ON PREM',
-   descrizione:'Da: FERRARI EMILIANO | Lista utenze AWS AS-IS con colonna Stato | Acquisito nel Gantt'},
-  {tipo:'email',data:'2026-03-05',ora:'16:52',titolo:'🟢 Reservation VM AWS',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: AWS | Reserved instances AWS rilasciate'},
-  {tipo:'email',data:'2026-03-05',ora:'10:22',titolo:'🟢 Soluzione e specifiche IAM',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: IAM | Specifiche IAM Leonardo per fornitori'},
-  {tipo:'email',data:'2026-03-05',ora:'09:32',titolo:'🟡 R: Connettività VPN DPC',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: VPN | Rischedulo incontro VPN AWS'},
-  {tipo:'email',data:'2026-03-04',ora:'14:32',titolo:'🟢 R: Call CIMA (rischedula)',
-   descrizione:'Da: FERRARI EMILIANO | Slot Lun 15:30 DR, Mar 11:00 MLA'},
-  {tipo:'email',data:'2026-03-03',ora:'17:08',titolo:'🟡 Utenza DBPaaS',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: DB | Serve Pa_admin non root'},
-  {tipo:'email',data:'2026-03-03',ora:'13:27',titolo:'🟢 Re: Ingaggio fornitori WAVE II/III',
-   descrizione:'Da: FERRARI EMILIANO | In attesa Scaparro/Accenture'},
-  {tipo:'email',data:'2026-03-03',ora:'12:08',titolo:'🟢 R: PSN: Piano di migrazione',
-   descrizione:'Da: FERRARI EMILIANO | Rischedulo CIMA in settimana'},
-  {tipo:'email',data:'2026-03-03',ora:'12:01',titolo:'🟡 Richiesta rimodulazione PPdF CPU',
-   descrizione:'Da: FERRARI EMILIANO | Verticale: AWS | Pool CPU aggiuntiva piano fabbisogni 2024'},
-  {tipo:'email',data:'2026-03-03',ora:'11:32',titolo:'🟢 Ingaggio fornitori WAVE II/III',
-   descrizione:'Da: FERRARI EMILIANO | Validazione specifiche IAM Accenture'},
-  {tipo:'email',data:'2026-03-03',ora:'09:08',titolo:'🟢 R: SAL settimanale PCM-DPC',
-   descrizione:'Da: FERRARI EMILIANO | Verbale SAL 25/02/2026'},
-  {tipo:'email',data:'2026-03-02',ora:'15:07',titolo:'🟢 R: test',
-   descrizione:'Da: FERRARI EMILIANO | Test sistema'}
-];
-
-let curFilter='all', curSearch='';
-
+// ── INIT ──────────────────────────────────────────────────
 function initDashboard(){
-  renderVerticali();
-  renderTimeline();
+  renderEmails(); renderCal(); renderGantt();
+  renderVerticali(); renderStorico(); renderLog();
 }
 
-function renderVerticali(){
-  const c=document.getElementById('vert-container');
-  const colors={'IAM':'#2563eb','AWS':'#0891b2','VPN':'#8b5cf6','DB':'#16a34a',
-    'Finanziamento':'#dc2626','SAL':'#16a34a','Fornitori appl.':'#f59e0b','PSN':'#1a3a5c'};
-  let html='';
-  for(const [name,v] of Object.entries(VERTICALI)){
-    const tot=v.aperti+v.chiusi;
-    const pct=tot>0?Math.round(v.chiusi/tot*100):0;
-    const col=colors[name]||'#2563eb';
-    const stato=v.aperti===0?'🟢 Completato':pct>=50?'🟡 In corso':'🔴 Aperto';
-    html+=`<div class="vert-item"><div class="vert-name">${name}</div>
-      <div class="vert-bar-wrap"><div class="vert-bar" style="width:${pct}%;background:${col}">${pct>15?pct+'%':''}</div></div>
-      <div class="vert-nums">${v.chiusi}/${tot} chiusi</div>
-      <span style="font-size:12px">${stato}</span></div>`;
-  }
-  c.innerHTML=html;
-}
-
-function renderTimeline(){
-  const c=document.getElementById('timeline-container');
-  const groups={};
-  LOG_ENTRIES.forEach(e=>{
-    const show=(curFilter==='all'||e.tipo===curFilter)&&
-      (!curSearch||(e.titolo+' '+e.descrizione).toLowerCase().includes(curSearch.toLowerCase()));
-    if(!show)return;
-    if(!groups[e.data])groups[e.data]=[];
-    groups[e.data].push(e);
+// ── EMAIL ─────────────────────────────────────────────────
+function renderEmails(){
+  const tb=document.getElementById('emailTbody'); tb.innerHTML='';
+  emails.forEach(e=>{
+    const cls=e.priorita==='critico'?'badge-red':e.priorita==='attenzione'?'badge-yellow':'badge-green';
+    const lbl=e.priorita==='critico'?'🔴 CRITICO':e.priorita==='attenzione'?'🟡 ATTENZIONE':'🟢 INFO';
+    tb.innerHTML+=`<tr><td>${e.data}</td><td>${e.oggetto}</td><td><span class="badge ${cls}">${lbl}</span></td><td>${e.verticale}</td></tr>`;
   });
-  const badgeMap={email:'📧 Email',cal:'📅 Riunione',action:'⚡ Azione',
-    excel:'📎 Excel',gantt:'📈 Gantt',system:'🖥 Sistema'};
-  let html='';
-  const dates=Object.keys(groups).sort((a,b)=>b.localeCompare(a));
-  if(!dates.length){html='<div style="text-align:center;padding:20px;color:#64748b">Nessun evento trovato.</div>';}
-  for(const d of dates){
-    const p=d.split('-');
-    html+=`<div class="tl-group"><div class="tl-date">📆 ${p[2]}/${p[1]}/${p[0]}</div>`;
-    for(const e of groups[d]){
-      html+=`<div class="tl-item ${e.tipo}"><div class="tl-header">
-        <span class="tl-time">${e.ora}</span>
-        <span class="tl-badge ${e.tipo}">${badgeMap[e.tipo]||e.tipo}</span>
-      </div><div class="tl-title">${e.titolo}</div>
-      <div class="tl-desc">${e.descrizione}</div></div>`;
+}
+
+// ── CALENDARIO ───────────────────────────────────────────
+function renderCal(){
+  const c=document.getElementById('calContainer'); c.innerHTML='';
+  if(calEvents.length===0){c.innerHTML='<p style="color:var(--muted);padding:20px">Nessuna riunione oggi.</p>';return;}
+  calEvents.forEach(ev=>{
+    c.innerHTML+=`
+    <div class="calCard">
+      <div class="calTime">🕐 ${ev.ora}</div>
+      <div>
+        <div class="calTitle">${ev.titolo}</div>
+        <div class="calMeta">📍 ${ev.piattaforma} &nbsp;|&nbsp; ID: ${ev.id_riunione} &nbsp;|&nbsp; PC: ${ev.passcode}</div>
+        <div class="calLink"><a href="${ev.link}" target="_blank">🔗 Partecipa alla riunione</a></div>
+      </div>
+    </div>`;
+  });
+}
+
+// ── GANTT ─────────────────────────────────────────────────
+function statoLabel(s){
+  const m={'completed':'🟢 Completato','in-progress':'🔵 In corso','blocked':'🔴 Bloccato','pending':'🟡 Pendente'};
+  return m[s]||s;
+}
+function renderGantt(){
+  const tb=document.getElementById('ganttTbody'); tb.innerHTML='';
+  ganttItems.forEach(g=>{
+    tb.innerHTML+=`<tr>
+      <td><b>${g.nome}</b><br><small style="color:var(--muted)">${g.note||''}</small></td>
+      <td>${statoLabel(g.stato)}</td>
+      <td>
+        <div class="ganttBar" style="width:80px">
+          <div class="ganttFill" style="width:${g.pct||0}%"></div>
+        </div>
+        <small>${g.pct||0}%</small>
+      </td>
+      <td>${g.owner}</td><td>${g.inizio}</td><td>${g.fine}</td><td>${g.verticale}</td>
+      <td><span class="badge badge-blue">${g.badge}</span></td>
+    </tr>`;
+  });
+}
+
+// ── VERTICALI ─────────────────────────────────────────────
+function renderVerticali(){
+  const c=document.getElementById('vertContainer'); c.innerHTML='';
+  verticali.forEach(v=>{
+    const pct=v.tot>0?Math.round((v.chiusi/v.tot)*100):0;
+    c.innerHTML+=`
+    <div class="vertBar">
+      <div class="vertBarHead">
+        <span><b>${v.nome}</b> &nbsp;<span class="badge badge-yellow">${v.aperti} aperti</span> <span class="badge badge-green">${v.chiusi} chiusi</span></span>
+        <span style="color:var(--muted);font-size:.8rem">${pct}% completato</span>
+      </div>
+      <div class="vertBarTrack"><div class="vertBarFill" style="width:${pct}%"></div></div>
+    </div>`;
+  });
+}
+
+// ── STORICO ───────────────────────────────────────────────
+function renderStorico(){
+  const c=document.getElementById('storicoContainer'); c.innerHTML='';
+  runHistory.forEach(r=>{
+    c.innerHTML+=`
+    <div class="histCard">
+      <div><div class="histDate">📅 ${r.data} ${r.ora}</div></div>
+      <div class="histStats">📧 ${r.nuove_email} nuove email &nbsp;|&nbsp; 📅 ${r.eventi_cal} eventi &nbsp;|&nbsp; 📈 ${r.gantt} gantt &nbsp;|&nbsp; ${r.note}</div>
+      <a class="histPdf" href="PSN_Report_${r.pdf.replace('PSN_Report_','').replace('Report_PMO_PSN_Ferrari_','').replace('Report_PSN_Ferrari_','').replace('.pdf','').replace('09mar2026','20260309')}.pdf" download="${r.pdf}">📄 ${r.pdf}</a>
+    </div>`;
+  });
+}
+
+// ── LOG ───────────────────────────────────────────────────
+let currentLogFilter='all';
+function renderLog(filter,search){
+  filter=filter||currentLogFilter;
+  search=(search||document.getElementById('logSearch').value||'').toLowerCase();
+  const tl=document.getElementById('logTimeline'); tl.innerHTML='';
+  let lastDate='';
+  logEntries.filter(e=>{
+    if(filter!=='all'&&e.tipo!==filter)return false;
+    if(search&&!(e.titolo+e.descrizione).toLowerCase().includes(search))return false;
+    return true;
+  }).forEach(e=>{
+    if(e.data!==lastDate){
+      lastDate=e.data;
+      tl.innerHTML+=`<div style="font-weight:700;color:var(--blu);margin:16px 0 8px;font-size:.9rem">📆 ${e.data}</div>`;
     }
-    html+='</div>';
-  }
-  c.innerHTML=html;
+    tl.innerHTML+=`
+    <div class="tlItem" data-type="${e.tipo}" data-text="${(e.titolo+' '+e.descrizione).toLowerCase()}">
+      <div class="tlDot ${e.tipo}"></div>
+      <div class="tlCard">
+        <div class="tlHead">
+          <span class="tlBadge ${e.tipo}">${e.badge}</span>
+          <span class="tlTitle">${e.titolo}</span>
+          <span class="tlTime">${e.ora}</span>
+        </div>
+        <div class="tlDesc">${e.descrizione}</div>
+      </div>
+    </div>`;
+  });
+  if(tl.innerHTML==='')tl.innerHTML='<p style="color:var(--muted);padding:20px">Nessun evento trovato.</p>';
 }
-
-function filterLog(type,btn){
-  curFilter=type;
-  document.querySelectorAll('.log-filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTimeline();
-}
-
-function searchLog(val){
-  curSearch=val;
-  renderTimeline();
+function filterLog(tipo,btn){
+  currentLogFilter=tipo;
+  document.querySelectorAll('.logFilter').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderLog(tipo,null);
 }
 </script>
 </body>
