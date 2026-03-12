@@ -22,6 +22,7 @@
   .headerRight{display:flex;align-items:center;gap:10px}
   .badge-secret{background:#dc2626;color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700}
   .badge-client{background:rgba(255,255,255,.15);color:#fff;padding:4px 10px;border-radius:20px;font-size:.68rem;font-weight:500;border:1px solid rgba(255,255,255,.3);white-space:nowrap;line-height:1.5}
+  @keyframes ipPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
   nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:57px;z-index:99}
   nav::-webkit-scrollbar{display:none}
   .tab-btn{padding:13px 18px;border:none;background:transparent;cursor:pointer;font-size:.82rem;font-weight:600;color:#64748b;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0}
@@ -106,9 +107,10 @@
         <span class="badge-client" id="lastUpdate" style="background:rgba(255,255,255,.18);font-weight:600">🕐 Agg. 12/03/2026 09:11</span>
         <span class="badge-secret">🔒 DIFFUSIONE LIMITATA</span>
       </div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <span class="badge-client" id="clientIP" title="IP pubblico">🌐 …</span>
-        <span class="badge-client" id="clientBrowser" title="Browser">🖥️ …</span>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <span class="badge-client" id="clientIP" title="IP pubblico della connessione corrente"><span id="ipDot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ade80;margin-right:5px;animation:ipPulse 2s infinite;vertical-align:middle"></span><span id="ipVal">…</span></span>
+        <span class="badge-client" id="clientBrowser" title="Browser in uso">🖥️ …</span>
+        <span class="badge-client" id="clientOS" title="Sistema operativo">💻 …</span>
       </div>
     </div>
   </div>
@@ -621,20 +623,52 @@ verts.forEach(function(v){
 
 // ── CLIENT INFO ───────────────────────────────────────────────────────
 (function(){
-  // Browser detection
-  var ua=navigator.userAgent,bname='Browser';
-  if(/Edg\//.test(ua)) bname='Edge '+(/Edg\/([\d.]+)/.exec(ua)||['',''])[1].split('.')[0];
-  else if(/OPR\/|Opera/.test(ua)) bname='Opera';
-  else if(/Chrome\//.test(ua)&&!/Chromium/.test(ua)) bname='Chrome '+(/Chrome\/([\d.]+)/.exec(ua)||['',''])[1].split('.')[0];
-  else if(/Firefox\//.test(ua)) bname='Firefox '+(/Firefox\/([\d.]+)/.exec(ua)||['',''])[1].split('.')[0];
-  else if(/Safari\//.test(ua)&&!/Chrome/.test(ua)) bname='Safari '+(/Version\/([\d.]+)/.exec(ua)||['',''])[1].split('.')[0];
+  var ua=navigator.userAgent;
+
+  // Browser
+  var bname='Browser';
+  if(/Edg\//.test(ua))       bname='Edge '+(/Edg\/([\d]+)/.exec(ua)||['','?'])[1];
+  else if(/OPR\//.test(ua))  bname='Opera '+(/OPR\/([\d]+)/.exec(ua)||['','?'])[1];
+  else if(/Chrome\//.test(ua)&&!/Chromium/.test(ua)) bname='Chrome '+(/Chrome\/([\d]+)/.exec(ua)||['','?'])[1];
+  else if(/Firefox\//.test(ua)) bname='Firefox '+(/Firefox\/([\d]+)/.exec(ua)||['','?'])[1];
+  else if(/Safari\//.test(ua)&&!/Chrome/.test(ua)) bname='Safari '+(/Version\/([\d]+)/.exec(ua)||['','?'])[1];
   document.getElementById('clientBrowser').textContent='🖥️ '+bname;
 
-  // IP via ipify (no auth, free)
+  // OS
+  var os='OS sconosciuto';
+  if(/Windows NT 10\.0/.test(ua)){
+    // Windows 10 vs 11: non distinguibile via UA, mostriamo Win 10/11
+    os='Windows 10/11';
+  } else if(/Windows NT 6\.3/.test(ua)) os='Windows 8.1';
+  else if(/Windows NT 6\.1/.test(ua)) os='Windows 7';
+  else if(/Mac OS X ([\d_]+)/.test(ua)){
+    var mv=(/Mac OS X ([\d_]+)/.exec(ua)||['',''])[1].replace(/_/g,'.');
+    os='macOS '+mv;
+  } else if(/Android ([\d.]+)/.test(ua)){
+    os='Android '+(/Android ([\d.]+)/.exec(ua)||['',''])[1];
+  } else if(/iPhone OS ([\d_]+)/.test(ua)){
+    os='iOS '+(/iPhone OS ([\d_]+)/.exec(ua)||['',''])[1].replace(/_/g,'.');
+  } else if(/Linux/.test(ua)) os='Linux';
+  // Windows 11 hint via userAgentData (Chrome 90+)
+  if(navigator.userAgentData&&navigator.userAgentData.getHighEntropyValues){
+    navigator.userAgentData.getHighEntropyValues(['platformVersion']).then(function(h){
+      if(navigator.userAgentData.platform==='Windows'){
+        var maj=parseInt((h.platformVersion||'0').split('.')[0]);
+        document.getElementById('clientOS').textContent='💻 '+(maj>=13?'Windows 11':'Windows 10');
+      }
+    }).catch(function(){});
+  }
+  document.getElementById('clientOS').textContent='💻 '+os;
+
+  // IP via ipify
   fetch('https://api.ipify.org?format=json')
     .then(function(r){return r.json();})
-    .then(function(d){document.getElementById('clientIP').textContent='🌐 '+d.ip;})
-    .catch(function(){document.getElementById('clientIP').textContent='🌐 N/D';});
+    .then(function(d){document.getElementById('ipVal').textContent=d.ip;})
+    .catch(function(){
+      document.getElementById('ipVal').textContent='N/D';
+      document.getElementById('ipDot').style.background='#f87171';
+      document.getElementById('ipDot').style.animation='none';
+    });
 })();
 
 var currentFilter='all';
