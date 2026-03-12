@@ -20,10 +20,8 @@
   .headerLeft h1{font-size:1.05rem;font-weight:700}
   .headerLeft p{font-size:.75rem;opacity:.85;margin-top:2px}
   .headerRight{display:flex;align-items:center;gap:10px}
-  .badge-live{background:#22c55e;color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;animation:pulse 2s infinite}
   .badge-secret{background:#dc2626;color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700}
   .badge-client{background:rgba(255,255,255,.15);color:#fff;padding:4px 10px;border-radius:20px;font-size:.68rem;font-weight:500;border:1px solid rgba(255,255,255,.3);white-space:nowrap;line-height:1.5}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
   nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:57px;z-index:99}
   nav::-webkit-scrollbar{display:none}
   .tab-btn{padding:13px 18px;border:none;background:transparent;cursor:pointer;font-size:.82rem;font-weight:600;color:#64748b;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0}
@@ -105,7 +103,7 @@
   <div class="headerRight">
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
       <div style="display:flex;gap:8px;align-items:center">
-        <span class="badge-live">● LIVE</span>
+        <span class="badge-client" id="lastUpdate" style="background:rgba(255,255,255,.18);font-weight:600">🕐 Agg. 12/03/2026 09:11</span>
         <span class="badge-secret">🔒 DIFFUSIONE LIMITATA</span>
       </div>
       <div style="display:flex;gap:6px;align-items:center">
