@@ -90,6 +90,46 @@
   "log_entries": [
     {
       "tipo": "system",
+      "data": "2026-03-12",
+      "ora": "09:11",
+      "titolo": "Run automatica – 12/03/2026 09:11",
+      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 4 riunioni oggi, 4 Gantt items invariati, PDF PSN_Report_20260312_0911.pdf generato.",
+      "badge": "🖥️ Sistema"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-12",
+      "ora": "15:30",
+      "titolo": "📅 Passaggio in operatività it-alert: maremoto e Stromboli",
+      "descrizione": "Riunione Teams 15:30–16:30 | ID: 383 338 086 022 05 | Passcode: fb6PG7JW",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-12",
+      "ora": "14:00",
+      "titolo": "📅 DPC PSN | VPN OnPrem to Industry Standard PSN",
+      "descrizione": "Riunione Teams 14:00–15:00 | ID: 210 615 842 939 3 | Passcode: UX2Dw7ET",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-12",
+      "ora": "12:00",
+      "titolo": "📅 [DPC] - V13 NTNX - Configurazione componenti",
+      "descrizione": "Riunione Teams 12:00–16:00 | ID: 264 935 995 785 10 | Passcode: JS3iv9fQ",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-12",
+      "ora": "09:00",
+      "titolo": "📅 [DPC] Approfondimento MAPLITE - Radar - Budibase",
+      "descrizione": "Riunione Teams 09:00–10:00 | ID: 279 514 768 307 67 | Passcode: Th9MV3Ho",
+      "badge": "📅 Riunione"
+    },
+    {
+      "tipo": "system",
       "data": "2026-03-11",
       "ora": "18:20",
       "titolo": "Run automatica – 11/03/2026 18:20",
@@ -275,6 +315,15 @@
   ],
   "run_history": [
     {
+      "data": "2026-03-12",
+      "ora": "09:11",
+      "nuove_email": 0,
+      "eventi_cal": 4,
+      "gantt": 4,
+      "pdf": "PSN_Report_20260312_0911.pdf",
+      "note": "Run mattutina. 4 riunioni DPC oggi."
+    },
+    {
       "data": "2026-03-11",
       "ora": "18:20",
       "nuove_email": 1,
@@ -394,12 +443,12 @@
       "chiusi": 0
     }
   },
-  "last_run_date": "2026-03-11",
-  "last_run_time": "18:20",
-  "last_fingerprint": "4ed6bcfcbf57b57a11aee14e0373e5bd",
+  "last_run_date": "2026-03-12",
+  "last_run_time": "09:11",
+  "last_fingerprint": "8bd229ec5da9f543e558abb682023337",
   "contatori": {
     "totale_email_processate": 29,
     "totale_gantt_items": 4,
-    "totale_log_entries": 23
+    "totale_log_entries": 28
   }
 }
