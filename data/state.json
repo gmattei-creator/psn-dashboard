@@ -1,8 +1,8 @@
 {
   "meta": {
     "last_run_date": "2026-03-16",
-    "last_run_time": "18:47",
-    "run_type": "piena",
+    "last_run_time": "19:07",
+    "run_type": "media",
     "pdf_filename": "PSN_Report_20260316_1847.pdf"
   },
   "kpi": {
@@ -21,7 +21,7 @@
       "teams_pw": "",
       "tel_it": "",
       "tel_code": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "09:30",
@@ -32,7 +32,7 @@
       "teams_pw": "776009",
       "tel_it": "",
       "tel_code": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "10:30",
@@ -43,7 +43,7 @@
       "teams_pw": "SY94D3o7",
       "tel_it": "+39 02 3045 6404",
       "tel_code": "447223505#",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "11:00",
@@ -54,7 +54,7 @@
       "teams_pw": "Sd26hX7u",
       "tel_it": "",
       "tel_code": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "14:30",
@@ -65,11 +65,11 @@
       "teams_pw": "901425404",
       "tel_it": "+39 02 3046 1253",
       "tel_code": "901425404",
-      "is_new": true
+      "is_new": false
     },
     {
-      "ora_inizio": "16:00",
-      "ora_fine": "17:00",
+      "ora_inizio": "17:00",
+      "ora_fine": "18:00",
       "summary": "[DPC] VPN AWS as-is to AWS PSN - Sovrapposizione subnet",
       "teams_url": "https://teams.microsoft.com/meet/28687462682167",
       "teams_id": "286 874 626 821 67",
@@ -87,7 +87,7 @@
       "teams_pw": "",
       "tel_it": "",
       "tel_code": "",
-      "is_new": true
+      "is_new": false
     }
   ],
   "email_log": [
@@ -602,6 +602,15 @@
     }
   ],
   "log_entries": [
+    {
+      "tipo": "cal",
+      "data": "2026-03-16",
+      "ora": "19:07",
+      "titolo": "📅 Calendario aggiornato – 16/03/2026 19:03",
+      "descrizione": "Orario riunione aggiornato: [DPC] VPN AWS as-is to AWS PSN spostato a 17:00–18:00. Nessuna nuova email Ferrari.",
+      "badge": "📅 Calendario",
+      "is_new": true
+    },
     {
       "tipo": "system",
       "data": "2026-03-16",
