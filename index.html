@@ -23,6 +23,7 @@
   .badge-secret{background:#dc2626;color:#fff;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700}
   .badge-client{background:rgba(255,255,255,.15);color:#fff;padding:4px 10px;border-radius:20px;font-size:.68rem;font-weight:500;border:1px solid rgba(255,255,255,.3);white-space:nowrap;line-height:1.5}
   @keyframes ipPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+  @keyframes pulse-live{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)}70%{box-shadow:0 0 0 6px rgba(22,163,74,0)}}
   nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:57px;z-index:99}
   nav::-webkit-scrollbar{display:none}
   .tab-btn{padding:13px 18px;border:none;background:transparent;cursor:pointer;font-size:.82rem;font-weight:600;color:#64748b;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0}
@@ -30,12 +31,81 @@
   .tab-btn.active{color:#2563eb;border-bottom-color:#2563eb;background:#eff6ff}
   main{padding:20px 24px;max-width:1400px;margin:0 auto}
   .tab-panel{display:none}.tab-panel.active{display:block}
+  /* ── KPI GRID ── */
   .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
   .kpi-card{background:#fff;border-radius:12px;padding:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08);border-top:4px solid #2563eb}
   .kpi-val{font-size:2.2rem;font-weight:700;color:#1a3a5c}
   .kpi-label{font-size:.75rem;color:#64748b;margin-top:4px}
+  /* ── OVERVIEW KPI ENHANCED ── */
+  .kpi-card-ov{background:#fff;border-radius:14px;padding:20px 18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.09);border-top:4px solid #2563eb;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
+  .kpi-card-ov:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+  .kpi-card-ov::after{content:'';position:absolute;top:-18px;right:-18px;width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.035)}
+  .kpi-ov-icon{font-size:1.5rem;margin-bottom:8px;display:block}
+  .kpi-ov-val{font-size:2.4rem;font-weight:800;line-height:1;color:#1a3a5c}
+  .kpi-ov-label{font-size:.73rem;color:#64748b;margin-top:5px;font-weight:500}
+  .kpi-ov-sub{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:12px;font-size:.68rem;font-weight:600}
+  /* ── OVERVIEW GRID LAYOUTS ── */
+  .ov-row2{display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-bottom:18px}
+  .ov-row2b{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+  @media(max-width:860px){.ov-row2,.ov-row2b{grid-template-columns:1fr}}
+  /* ── CARD BASE ── */
   .card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:18px}
-  .card h3{font-size:.9rem;font-weight:700;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0}
+  .card h3{font-size:.9rem;font-weight:700;color:#1a3a5c;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e2e8f0;display:flex;align-items:center;gap:8px}
+  /* ── GANTT DISTRIBUTION ── */
+  .gd-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .gd-label{font-size:.76rem;color:#1e293b;width:110px;flex-shrink:0;font-weight:500}
+  .gd-bar-wrap{flex:1;background:#f1f5f9;border-radius:6px;height:16px;overflow:hidden}
+  .gd-bar{height:16px;border-radius:6px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+  .gd-count{font-size:.8rem;font-weight:700;width:22px;text-align:right;flex-shrink:0}
+  .gd-stacked{display:flex;height:22px;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);margin-top:14px}
+  .gd-stacked>div{transition:width .7s;cursor:default}
+  /* ── VERTICALI MINI ── */
+  .vm-row{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+  .vm-header{display:flex;justify-content:space-between;align-items:center}
+  .vm-name{font-size:.78rem;font-weight:600;color:#1e293b}
+  .vm-info{font-size:.7rem;color:#64748b}
+  .vm-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px}
+  /* ── AGENDA / MEETING BLOCKS ── */
+  .mtg-block{display:flex;align-items:center;gap:12px;background:#f8fafc;border-radius:12px;padding:12px 16px;margin-bottom:10px;border-left:4px solid #7c3aed;transition:all .2s}
+  .mtg-block:hover{background:#fff;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+  .mtg-block.mtg-live{border-left-color:#16a34a;background:#f0fdf4;animation:pulse-live 2s infinite}
+  .mtg-block.mtg-done{border-left-color:#cbd5e1;background:#f8fafc;opacity:.65}
+  .mtg-block.mtg-zoom{border-left-color:#2d8cff}
+  .mtg-block.mtg-onsite{border-left-color:#f59e0b;background:#fffbeb}
+  .mtg-block.mtg-new{border-left-color:#f59e0b;background:#fffbeb}
+  .mtg-time-col{flex-shrink:0;text-align:center;min-width:74px}
+  .mtg-time{font-size:.82rem;font-weight:800;color:#1a3a5c}
+  .mtg-block.mtg-live .mtg-time{color:#16a34a}
+  .mtg-block.mtg-done .mtg-time{color:#94a3b8}
+  .mtg-status{display:inline-flex;align-items:center;gap:4px;margin-top:5px;padding:2px 8px;border-radius:10px;font-size:.67rem;font-weight:700;white-space:nowrap}
+  .ms-live{background:#dcfce7;color:#15803d}
+  .ms-upcoming{background:#dbeafe;color:#1d4ed8}
+  .ms-done{background:#f1f5f9;color:#94a3b8}
+  .mtg-body{flex:1;min-width:0}
+  .mtg-title{font-size:.86rem;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mtg-detail{font-size:.72rem;color:#64748b;margin-top:3px;line-height:1.4}
+  .mtg-cta{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;font-size:.73rem;font-weight:700;text-decoration:none;color:#fff;background:linear-gradient(135deg,#464EB8,#7c3aed);white-space:nowrap;transition:opacity .2s}
+  .mtg-cta:hover{opacity:.85}
+  .mtg-cta.cta-zoom{background:linear-gradient(135deg,#2d8cff,#1a7fe8)}
+  .mtg-cta.cta-onsite{background:linear-gradient(135deg,#d97706,#f59e0b)}
+  /* ── AZIONE CARD ── */
+  .az-card{background:#f8fafc;border-radius:10px;padding:13px 14px;border-left:4px solid #f59e0b;margin-bottom:8px;transition:all .2s}
+  .az-card:hover{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+  .az-card.az-red{border-left-color:#dc2626;background:#fff5f5}
+  .az-card.az-green{border-left-color:#16a34a;background:#f0fdf4}
+  .az-titolo{font-size:.83rem;font-weight:700;color:#1e293b}
+  .az-note{font-size:.74rem;color:#64748b;margin-top:3px;line-height:1.4}
+  .az-owner{display:inline-block;margin-top:5px;padding:1px 9px;border-radius:8px;font-size:.68rem;font-weight:600;background:#dbeafe;color:#1d4ed8}
+  /* ── EMAIL MINI ROW ── */
+  .email-mini{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#f8fafc;border-radius:8px;border-left:3px solid #e2e8f0;margin-bottom:7px;transition:all .2s}
+  .email-mini:hover{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  .email-mini.em-new{background:#fffbeb;border-left-color:#f59e0b}
+  .email-mini-prio{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+  .email-mini-subj{font-size:.81rem;font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .email-mini-meta{font-size:.69rem;color:#94a3b8;margin-top:2px}
+  /* ── RUN STRIP ── */
+  .run-strip{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:11px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:4px}
+  /* ── TABLE ── */
   table{width:100%;border-collapse:collapse;font-size:.81rem}
   th{background:#1a3a5c;color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:.78rem}
   td{padding:8px 10px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
@@ -69,9 +139,9 @@
   .tl-meta{font-size:.7rem;color:#94a3b8;margin-left:auto;white-space:nowrap}
   .azioni-list{display:grid;gap:10px}
   .azione-item{background:#fff;border-radius:10px;padding:14px 16px;border-left:4px solid #f59e0b;display:flex;gap:12px;align-items:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-  .az-titolo{font-size:.85rem;font-weight:700;color:#1e293b}
-  .az-note{font-size:.76rem;color:#64748b;margin-top:3px}
-  .az-owner{display:inline-block;margin-top:5px;background:#dbeafe;color:#1d4ed8;padding:1px 8px;border-radius:8px;font-size:.7rem;font-weight:600}
+  .az-titolo-lg{font-size:.85rem;font-weight:700;color:#1e293b}
+  .az-note-lg{font-size:.76rem;color:#64748b;margin-top:3px}
+  .az-owner-lg{display:inline-block;margin-top:5px;background:#dbeafe;color:#1d4ed8;padding:1px 8px;border-radius:8px;font-size:.7rem;font-weight:600}
   .riun-card{background:#fff;border-radius:12px;padding:16px;border-left:4px solid #7c3aed;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);display:flex;gap:14px;align-items:flex-start}
   .riun-card.r-new{border-left-color:#f59e0b;background:#fffbeb}
   .riun-ora{background:#7c3aed;color:#fff;border-radius:8px;padding:8px 12px;font-size:.75rem;font-weight:700;text-align:center;min-width:80px;flex-shrink:0}
@@ -81,7 +151,7 @@
   .riun-link{font-size:.72rem;color:#2563eb;text-decoration:none;display:inline-block;margin-top:4px}
   #loadingMsg{text-align:center;padding:60px;color:#64748b;font-size:.9rem}
   footer{text-align:center;padding:14px;font-size:.72rem;color:#94a3b8;border-top:1px solid #e2e8f0;margin-top:20px}
-  @media(max-width:640px){main{padding:12px}.kpi-val{font-size:1.6rem}}
+  @media(max-width:640px){main{padding:12px}.kpi-ov-val{font-size:1.8rem}.kpi-val{font-size:1.6rem}}
 </style>
 </head>
 <body>
@@ -173,40 +243,207 @@ var ICON_MAP={email:'📧',cal:'📅',action:'⚡',gantt:'📈',excel:'📎',sys
 
 // ── RENDER OVERVIEW ───────────────────────────────────────────────────
 function renderOverview(d){
-  var k=d.kpi, newCount=d.cal_oggi.filter(function(e){return e.is_new;}).length;
-  var html='<div class="kpi-grid">'
-    +'<div class="kpi-card"><div class="kpi-val">'+k.email_totali+'</div><div class="kpi-label">📧 Email PMO totali</div></div>'
-    +'<div class="kpi-card"><div class="kpi-val">'+k.gantt_aperti+'</div><div class="kpi-label">📋 Gantt aperti</div></div>'
-    +'<div class="kpi-card" style="border-top-color:#22c55e"><div class="kpi-val" style="color:#16a34a">'+k.nuove_email_oggi+'</div><div class="kpi-label">✉️ Nuove email oggi</div></div>'
-    +'<div class="kpi-card" style="border-top-color:#7c3aed"><div class="kpi-val" style="color:#7c3aed">'+k.riunioni_oggi+'</div><div class="kpi-label">📅 Riunioni oggi</div></div>'
-    +'</div>';
-  if(d.cal_oggi.length){
-    html+='<div class="card"><h3>📅 Riunioni di Oggi – '+fmtDate(d.meta.last_run_date)
-      +(newCount?' <span class="badge-new">'+newCount+' OGGI</span>':'')+'</h3><div style="display:grid;gap:10px">';
-    d.cal_oggi.forEach(function(e){
-      html+='<div class="riun-card'+(e.is_new?' r-new':'')+'"><div class="riun-ora'+(e.is_new?' r-new':'')+'">'+esc(e.ora_inizio)+'<br>'+esc(e.ora_fine)+'</div><div>'
-        +'<div class="riun-title">'+(e.is_new?'🆕 ':'')+esc(e.summary)+'</div>'
-        +'<div class="riun-meta">📍 Microsoft Teams | ID: <strong>'+esc(e.teams_id)+'</strong> | Passcode: <strong>'+esc(e.teams_pw)+'</strong></div>'
-        +'<a class="riun-link" href="'+esc(e.teams_url)+'" target="_blank">▶ Unisciti alla riunione</a>'
-        +(e.tel_it?'<div class="riun-meta" style="margin-top:4px">Tel: '+esc(e.tel_it)+' | Code: '+esc(e.tel_code)+'</div>':'')
-        +'</div></div>';
-    });
-    html+='</div></div>';
-  }
-  html+='<div class="card"><h3>⚡ Azioni Prioritarie</h3><div class="azioni-list">';
-  d.azioni.forEach(function(a){
-    var borderC=a.prio==='🟢'?'#16a34a':'#f59e0b';
-    html+='<div class="azione-item" style="border-left-color:'+borderC+'"><div style="font-size:1.1rem">'+esc(a.prio)+'</div><div>'
-      +'<div class="az-titolo">'+esc(a.titolo)+'</div>'
-      +'<div class="az-note">'+esc(a.note)+'</div>'
-      +'<span class="az-owner">Owner: '+esc(a.owner)+'</span></div></div>';
+  var k=d.kpi;
+
+  // ── Avanzamento globale dai verticali
+  var totAp=0, totCh=0;
+  Object.keys(d.verticali).forEach(function(vk){var v=d.verticali[vk];totAp+=v.a;totCh+=v.c;});
+  var pctGlobal=totAp+totCh>0?Math.round(totCh/(totAp+totCh)*100):0;
+
+  // ── Gantt distribution
+  var gDist={pending:0,'in-progress':0,blocked:0,completed:0};
+  d.gantt_items.forEach(function(g){if(gDist.hasOwnProperty(g.stato))gDist[g.stato]++;else gDist.pending++;});
+  var gTot=d.gantt_items.length||1;
+
+  // ─────────────────────────────────────────────────────
+  // SEZIONE 1 – KPI CARDS POTENZIATE
+  // ─────────────────────────────────────────────────────
+  var html='<div class="kpi-grid" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr));margin-bottom:20px">';
+
+  // KPI 1 – Email totali (dark gradient)
+  html+='<div class="kpi-card-ov" style="background:linear-gradient(135deg,#1a3a5c,#2563eb);border-top:none;color:#fff">'
+    +'<span class="kpi-ov-icon">📧</span>'
+    +'<div class="kpi-ov-val" style="color:#fff">'+k.email_totali+'</div>'
+    +'<div class="kpi-ov-label" style="color:rgba(255,255,255,.75)">Email PMO totali</div>'
+    +'<span class="kpi-ov-sub" style="background:rgba(255,255,255,.15);color:#fff">Ferrari / Sogei</span></div>';
+
+  // KPI 2 – Nuove email oggi
+  var ne=k.nuove_email_oggi, neClr=ne>0?'#16a34a':'#94a3b8', neBdr=ne>0?'#22c55e':'#cbd5e1';
+  html+='<div class="kpi-card-ov" style="border-top-color:'+neBdr+'">'
+    +'<span class="kpi-ov-icon">✉️</span>'
+    +'<div class="kpi-ov-val" style="color:'+neClr+'">'+ne+'</div>'
+    +'<div class="kpi-ov-label">Nuove email oggi</div>'
+    +'<span class="kpi-ov-sub" style="background:'+(ne>0?'#dcfce7':'#f1f5f9')+';color:'+(ne>0?'#15803d':'#64748b')+'">'+(ne>0?'🆕 Aggiornato':'Nessuna novità')+'</span></div>';
+
+  // KPI 3 – Gantt aperti
+  var blk=gDist.blocked;
+  html+='<div class="kpi-card-ov" style="border-top-color:#f59e0b">'
+    +'<span class="kpi-ov-icon">📋</span>'
+    +'<div class="kpi-ov-val" style="color:#d97706">'+k.gantt_aperti+'</div>'
+    +'<div class="kpi-ov-label">Attività Gantt aperte</div>'
+    +'<span class="kpi-ov-sub" style="background:'+(blk>0?'#fee2e2':'#fef3c7')+';color:'+(blk>0?'#dc2626':'#d97706')+'">'+(blk>0?'🔴 '+blk+' bloccate':'✓ Nessun blocco')+'</span></div>';
+
+  // KPI 4 – Riunioni oggi
+  html+='<div class="kpi-card-ov" style="border-top-color:#7c3aed">'
+    +'<span class="kpi-ov-icon">📅</span>'
+    +'<div class="kpi-ov-val" style="color:#7c3aed">'+k.riunioni_oggi+'</div>'
+    +'<div class="kpi-ov-label">Riunioni oggi</div>'
+    +'<span class="kpi-ov-sub" style="background:#ede9fe;color:#7c3aed">'+fmtDate(d.meta.last_run_date)+'</span></div>';
+
+  // KPI 5 – Avanzamento globale
+  html+='<div class="kpi-card-ov" style="border-top-color:#0891b2">'
+    +'<span class="kpi-ov-icon">📊</span>'
+    +'<div class="kpi-ov-val" style="color:#0891b2">'+pctGlobal+'%</div>'
+    +'<div class="kpi-ov-label">Avanzamento globale</div>'
+    +'<div class="prog-wrap" style="margin-top:8px;height:6px"><div class="prog-bar" style="width:'+pctGlobal+'%;background:linear-gradient(90deg,#0891b2,#22d3ee)"></div></div>'
+    +'<span class="kpi-ov-sub" style="background:#cffafe;color:#0e7490;margin-top:6px">'+totCh+' chiuse / '+(totAp+totCh)+' tot.</span></div>';
+
+  html+='</div>'; // end kpi-grid
+
+  // ─────────────────────────────────────────────────────
+  // SEZIONE 2 – GANTT DISTRIBUTION + VERTICALI COMPACT
+  // ─────────────────────────────────────────────────────
+  html+='<div class="ov-row2">';
+
+  // — Gantt Distribution
+  var gdCol={pending:'#f59e0b','in-progress':'#3b82f6',blocked:'#dc2626',completed:'#16a34a'};
+  var gdLbl={pending:'⏳ In Attesa','in-progress':'🔄 In Corso',blocked:'🔴 Bloccato',completed:'✅ Completato'};
+  html+='<div class="card" style="margin-bottom:0"><h3>📊 Distribuzione Attività Gantt</h3>';
+  Object.keys(gDist).forEach(function(st){
+    var cnt=gDist[st], pct=Math.round(cnt/gTot*100);
+    html+='<div class="gd-row">'
+      +'<div class="gd-label">'+gdLbl[st]+'</div>'
+      +'<div class="gd-bar-wrap"><div class="gd-bar" style="width:'+pct+'%;background:'+gdCol[st]+'"></div></div>'
+      +'<div class="gd-count" style="color:'+gdCol[st]+'">'+cnt+'</div></div>';
+  });
+  // Stacked bar totale
+  html+='<div style="margin-top:6px"><div style="font-size:.72rem;color:#94a3b8;margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Distribuzione complessiva</div>'
+    +'<div class="gd-stacked" title="'+gTot+' attività totali">';
+  Object.keys(gDist).forEach(function(st){
+    var pct=Math.round(gDist[st]/gTot*100);
+    if(pct>0) html+='<div style="width:'+pct+'%;background:'+gdCol[st]+'" title="'+gdLbl[st]+': '+gDist[st]+'"></div>';
   });
   html+='</div></div>';
-  html+='<div class="card"><h3>📧 Ultime Email PMO</h3><table><thead><tr><th>Data</th><th>P.</th><th>Oggetto</th><th>Mittente</th></tr></thead><tbody>';
-  d.email_log.slice(0,4).forEach(function(e){
-    html+='<tr'+(e.is_new?' class="tr-new"':'')+'><td>'+esc(e.data)+'</td><td>'+esc(e.prio)+'</td><td>'+esc(e.oggetto)+(e.is_new?' <span class="badge-new">NEW</span>':'')+'</td><td>Ferrari/Sogei</td></tr>';
+  // Legenda
+  html+='<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">';
+  Object.keys(gdCol).forEach(function(st){
+    html+='<span style="font-size:.7rem;display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:'+gdCol[st]+'"></span>'+gdLbl[st]+'</span>';
   });
-  html+='</tbody></table></div>';
+  html+='</div></div>'; // end Gantt Distribution card
+
+  // — Verticali compact
+  var vKeys=Object.keys(d.verticali).sort(function(a,b){return d.verticali[b].a-d.verticali[a].a;});
+  html+='<div class="card" style="margin-bottom:0"><h3>🏗️ Verticali – Avanzamento</h3>';
+  vKeys.slice(0,9).forEach(function(vk){
+    var v=d.verticali[vk], tot=v.a+v.c, pct=tot>0?Math.round(v.c/tot*100):0;
+    var barClr=v.a===0?'#16a34a':(pct>=50?'#2563eb':'#f59e0b');
+    var dotClr=v.a===0?'#16a34a':(pct>=50?'#2563eb':'#dc2626');
+    html+='<div class="vm-row">'
+      +'<div class="vm-header">'
+      +'<span class="vm-name"><span class="vm-dot" style="background:'+dotClr+'"></span>'+esc(vk)+'</span>'
+      +'<span class="vm-info">'+pct+'%&nbsp; <span style="color:#dc2626;font-size:.67rem">▼'+v.a+'</span>'
+      +(v.c>0?'&nbsp;<span style="color:#16a34a;font-size:.67rem">✓'+v.c+'</span>':'')+'</span></div>'
+      +'<div class="prog-wrap" style="height:5px"><div class="prog-bar" style="width:'+pct+'%;background:'+barClr+'"></div></div></div>';
+  });
+  html+='</div>'; // end verticali card
+
+  html+='</div>'; // end ov-row2
+
+  // ─────────────────────────────────────────────────────
+  // SEZIONE 3 – AGENDA VISUALE DEL GIORNO
+  // ─────────────────────────────────────────────────────
+  if(d.cal_oggi.length){
+    var now=new Date();
+    var nowMins=now.getHours()*60+now.getMinutes();
+    html+='<div class="card"><h3>🗓️ Agenda del Giorno &nbsp;<span style="font-size:.78rem;font-weight:400;color:#64748b">'+fmtDate(d.meta.last_run_date)+'</span></h3>';
+    d.cal_oggi.forEach(function(e){
+      var sH=parseInt(e.ora_inizio.split(':')[0]), sM=parseInt(e.ora_inizio.split(':')[1]||0);
+      var eH=parseInt(e.ora_fine.split(':')[0]),   eM=parseInt(e.ora_fine.split(':')[1]||0);
+      var startMins=sH*60+sM, endMins=eH*60+eM;
+      var isLive=(nowMins>=startMins&&nowMins<endMins);
+      var isDone=(nowMins>=endMins);
+      var dur=endMins-startMins;
+      var durStr=dur>=60?Math.floor(dur/60)+'h'+(dur%60>0?' '+dur%60+'min':''):dur+'min';
+
+      var isZoom=e.teams_url&&e.teams_url.toLowerCase().includes('zoom');
+      var isOnsite=!e.teams_url||e.teams_url==='';
+      var blockCls='mtg-block'+(isLive?' mtg-live':(isDone?' mtg-done':(isZoom?' mtg-zoom':(isOnsite?' mtg-onsite':''))))+(e.is_new&&!isLive&&!isDone?' mtg-new':'');
+
+      // Status pill
+      var statusHtml='';
+      if(isLive) statusHtml='<span class="mtg-status ms-live">🟢 In corso</span>';
+      else if(isDone) statusHtml='<span class="mtg-status ms-done">✓ Terminata</span>';
+      else{var diff=startMins-nowMins;statusHtml='<span class="mtg-status ms-upcoming">'+(diff<60?'⏰ Tra '+diff+'min':'▶ '+e.ora_inizio)+'</span>';}
+
+      // Platform
+      var platIcon='', platLabel='', ctaCls='mtg-cta';
+      if(isZoom){platIcon='🎥';platLabel='Zoom Meeting';ctaCls='mtg-cta cta-zoom';}
+      else if(isOnsite){platIcon='🏢';platLabel='Incontro in Presenza';}
+      else{platIcon='💼';platLabel='Microsoft Teams';}
+
+      html+='<div class="'+blockCls+'">'
+        +'<div class="mtg-time-col">'
+        +'<div class="mtg-time">'+esc(e.ora_inizio)+'<br><span style="font-size:.68rem;font-weight:500;color:#94a3b8">'+esc(e.ora_fine)+'</span></div>'
+        +statusHtml
+        +'</div>'
+        +'<div class="mtg-body">'
+        +'<div class="mtg-title">'+(e.is_new?'🆕 ':'')+esc(e.summary)+'</div>'
+        +'<div class="mtg-detail">'+platIcon+' '+platLabel
+        +(e.teams_id?' &nbsp;|&nbsp; ID: <strong>'+esc(e.teams_id)+'</strong>':'')
+        +(e.teams_pw?' &nbsp;|&nbsp; Codice: <strong>'+esc(e.teams_pw)+'</strong>':'')
+        +(e.tel_it?' &nbsp;|&nbsp; Tel: '+esc(e.tel_it):'')
+        +' &nbsp;|&nbsp; <span style="color:#94a3b8">'+durStr+'</span></div>'
+        +'</div>'
+        +(e.teams_url?'<a class="'+ctaCls+'" href="'+esc(e.teams_url)+'" target="_blank">▶ Partecipa</a>':'');
+      html+='</div>';
+    });
+    html+='</div>'; // end card agenda
+  }
+
+  // ─────────────────────────────────────────────────────
+  // SEZIONE 4 – AZIONI PRIORITARIE + ULTIME EMAIL (2 col)
+  // ─────────────────────────────────────────────────────
+  html+='<div class="ov-row2b">';
+
+  // — Azioni prioritarie
+  html+='<div class="card" style="margin-bottom:0"><h3>⚡ Azioni Prioritarie <span style="font-size:.73rem;font-weight:400;color:#64748b">'+d.azioni.length+' pendenti</span></h3>';
+  d.azioni.slice(0,6).forEach(function(a){
+    var isRed=a.prio==='🔴', isGreen=a.prio==='🟢';
+    html+='<div class="az-card'+(isRed?' az-red':(isGreen?' az-green':''))+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px">'
+      +'<div class="az-titolo">'+esc(a.prio)+' '+esc(a.titolo)+'</div>'
+      +'<span class="az-owner">'+esc(a.owner)+'</span></div>'
+      +'<div class="az-note">'+esc(a.note)+'</div>'
+      +'</div>';
+  });
+  html+='</div>';
+
+  // — Ultime email PMO
+  html+='<div class="card" style="margin-bottom:0"><h3>📧 Ultime Email PMO <span style="font-size:.73rem;font-weight:400;color:#64748b">'+d.email_log.length+' totali</span></h3>';
+  d.email_log.slice(0,6).forEach(function(e){
+    html+='<div class="email-mini'+(e.is_new?' em-new':'')+'">'
+      +'<span class="email-mini-prio">'+esc(e.prio)+'</span>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div class="email-mini-subj">'+esc(e.oggetto)+(e.is_new?'&nbsp;<span class="badge-new">NEW</span>':'')+'</div>'
+      +'<div class="email-mini-meta">'+esc(e.data)+' · '+esc(e.verticale)+'</div>'
+      +'</div></div>';
+  });
+  html+='</div>';
+
+  html+='</div>'; // end ov-row2b
+
+  // ─────────────────────────────────────────────────────
+  // SEZIONE 5 – RUN INFO STRIP
+  // ─────────────────────────────────────────────────────
+  html+='<div class="run-strip">'
+    +'<span style="font-size:1.1rem">🖥️</span>'
+    +'<span style="font-size:.78rem;color:#64748b">Ultimo aggiornamento: <strong style="color:#1e293b">'+esc(d.meta.last_run_date)+' ore '+esc(d.meta.last_run_time)+'</strong>'
+    +' &nbsp;·&nbsp; Tipo run: <strong style="color:#1e293b">'+esc(d.meta.run_type).toUpperCase()+'</strong>'
+    +(d.meta.pdf_filename?' &nbsp;·&nbsp; PDF: <span style="color:#2563eb">'+esc(d.meta.pdf_filename)+'</span>':'')
+    +'</span>'
+    +'<span style="margin-left:auto;font-size:.69rem;padding:3px 12px;background:#dbeafe;color:#1d4ed8;border-radius:10px;font-weight:700">🔒 DIFFUSIONE LIMITATA</span>'
+    +'</div>';
+
   document.getElementById('tab-overview').innerHTML=html;
 }
 
