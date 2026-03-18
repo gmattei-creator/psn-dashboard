@@ -1,67 +1,56 @@
 {
   "meta": {
-    "last_run_date": "2026-03-17",
-    "last_run_time": "09:11",
-    "run_type": "media",
-    "pdf_filename": "PSN_Report_20260316_1847.pdf"
+    "last_run_date": "2026-03-18",
+    "last_run_time": "09:14",
+    "run_type": "piena",
+    "pdf_filename": ""
   },
   "kpi": {
-    "email_totali": 42,
-    "gantt_aperti": 10,
-    "nuove_email_oggi": 6,
-    "riunioni_oggi": 3
+    "email_totali": 43,
+    "gantt_aperti": 11,
+    "nuove_email_oggi": 1,
+    "riunioni_oggi": 2
   },
   "cal_oggi": [
     {
       "ora_inizio": "09:30",
       "ora_fine": "11:00",
-      "summary": "Document Platform Overview – SIMpara",
-      "teams_url": "https://teams.microsoft.com/meet/37036228161116",
-      "teams_id": "370 362 281 611 16",
-      "teams_pw": "bT9iA3Zo",
+      "summary": "Dataiku Platform Overview – SIMpara",
+      "teams_url": "https://teams.microsoft.com/meet/3160604399811?p=kNcWdsANcPYr0H5WeX",
+      "teams_id": "316 060 439 981 1",
+      "teams_pw": "Jh37iq6i",
       "tel_it": "",
       "tel_code": "",
       "is_new": true
     },
     {
-      "ora_inizio": "09:30",
-      "ora_fine": "17:30",
-      "summary": "DPC Installazione Cluster Via Ulpiano (RM) On Site",
-      "teams_url": "https://nutanix.zoom.us/j/98737364724",
-      "teams_id": "987 3736 4724",
-      "teams_pw": "366022",
-      "tel_it": "+39 020 066 7245",
-      "tel_code": "",
-      "is_new": true
-    },
-    {
-      "ora_inizio": "11:15",
-      "ora_fine": "12:30",
-      "summary": "Assessment - SAE E CSRS",
-      "teams_url": "https://teams.microsoft.com/meet/37214942671870",
-      "teams_id": "372 149 426 718 70",
-      "teams_pw": "DC6gR7Nf",
-      "tel_it": "",
-      "tel_code": "",
+      "ora_inizio": "15:00",
+      "ora_fine": "15:30",
+      "summary": "Meeting di allineamento AIM",
+      "teams_url": "https://teams.microsoft.com/meet/35177668630683?p=qlbIBYQK7L6Rl0hhyS",
+      "teams_id": "351 776 686 306 83",
+      "teams_pw": "k2Xo2Xw3",
+      "tel_it": "+39 02 0062 4036",
+      "tel_code": "405 673 976",
       "is_new": true
     }
   ],
   "email_log": [
+    {
+      "data": "2026-03-17",
+      "prio": "🟡",
+      "oggetto": "Creazione utenze secondarie",
+      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
+      "verticale": "IaaS",
+      "is_new": true
+    },
     {
       "data": "2026-03-16",
       "prio": "🟡",
       "oggetto": "Assessment - SAE E CSRS",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "Fornitori Appl.",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-16",
-      "prio": "🟢",
-      "oggetto": "SAL settimanale PCM - DPC - Progetto PSN",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "SAL",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-16",
@@ -69,79 +58,31 @@
       "oggetto": "Domanda finanziamento DPC - Variazione",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "Finanziamento",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-16",
       "prio": "🟡",
-      "oggetto": "R: Richiesta TT INC000007651467 e INC000007651466",
+      "oggetto": "Richiesta TT INC000007651467 e INC000007651466 - CaaS",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "CaaS",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-16",
       "prio": "🟡",
-      "oggetto": "Richiesta TT INC000007651467 e INC000007651466",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "CaaS",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-16",
-      "prio": "🟡",
-      "oggetto": "R: Incontro in presenza (confermato 17/03 10:30)",
+      "oggetto": "Incontro in presenza confermato - 17/03 ore 10:30",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "Fornitori Appl.",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-13",
-      "prio": "🟢",
-      "oggetto": "Domanda finanziamento DPC - Variazione (calendar invite)",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Finanziamento",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-13",
-      "prio": "🟢",
-      "oggetto": "R: Incontro in presenza (ok Ferrari)",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Fornitori Appl.",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-12",
-      "prio": "🟢",
-      "oggetto": "Incontro per documento variazione di finanziamento",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Finanziamento",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-12",
-      "prio": "🟢",
-      "oggetto": "Incontro in presenza (SAE e CSRS)",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Fornitori Appl.",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-12",
       "prio": "🟡",
-      "oggetto": "Conferma approvazione sottomissione infrastruttura IS - III WAVE",
+      "oggetto": "Conferma approvazione infrastruttura IS - III WAVE",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "Infrastruttura",
-      "is_new": true
-    },
-    {
-      "data": "2026-03-12",
-      "prio": "🟢",
-      "oggetto": "R: SAL settimanale PCM - DPC (verbale+PPT 04/03)",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "SAL",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-12",
@@ -149,12 +90,12 @@
       "oggetto": "Utenze da creare CaaS",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "CaaS",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-11",
       "prio": "🟡",
-      "oggetto": "Utenze per accesso al CaaS - IT ALERT",
+      "oggetto": "Utenze per accesso al Caas - IT ALERT",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "PSN",
       "is_new": false
@@ -181,30 +122,6 @@
       "oggetto": "R: Gantt con stato di avanzamento",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "PSN",
-      "is_new": false
-    },
-    {
-      "data": "2026-03-09",
-      "prio": "🟡",
-      "oggetto": "Assessment FA DPC",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Fornitori Appl.",
-      "is_new": false
-    },
-    {
-      "data": "2026-03-09",
-      "prio": "🟡",
-      "oggetto": "Accesso DB AS-IS",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "AWS/DB",
-      "is_new": false
-    },
-    {
-      "data": "2026-03-09",
-      "prio": "🟡",
-      "oggetto": "Variazione domanda finanziamento",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "Finanziamento",
       "is_new": false
     }
   ],
@@ -276,8 +193,8 @@
       "fonte": "email",
       "badge": "✉️ Email",
       "email_id": "19ce1c4d130e6468",
-      "note": "Ferrari richiede approvazione DPC per attivazione Housing III Wave: DC Acilia, San Stefano (IT-Alert), Pomezia. Allegato: Export configuratore wave3 IS.xls",
-      "is_new": true
+      "note": "Ferrari richiede approvazione DPC per attivazione Housing III Wave: DC Acilia, San Stefano (IT-Alert), Pomezia.",
+      "is_new": false
     },
     {
       "nome": "Creazione utenza CaaS - Maurizio Natalia (Leonardo)",
@@ -290,8 +207,8 @@
       "fonte": "email",
       "badge": "✉️ Email",
       "email_id": "19ce1236f353548a",
-      "note": "Creare utenza secondaria su TGU PSN03173885 e PSN03173849 per Maurizio Natalia (maurizio.natalia@leonardo.com, +39 3666732642). Poi aprire TT abilitazione.",
-      "is_new": true
+      "note": "Creare utenza secondaria su TGU PSN03173885 e PSN03173849 per Maurizio Natalia (maurizio.natalia@leonardo.com).",
+      "is_new": false
     },
     {
       "nome": "Abilitazione TT CaaS - INC000007651467/466",
@@ -305,7 +222,7 @@
       "badge": "✉️ Email",
       "email_id": "19cf6cd6e0e74596",
       "note": "Ticket TT aperti al PSN per abilitazione utenza CaaS Maurizio Natalia. In attesa di riscontro da assistenza PSN.",
-      "is_new": true
+      "is_new": false
     },
     {
       "nome": "Revisione documento variazione finanziamento",
@@ -318,8 +235,8 @@
       "fonte": "email",
       "badge": "✉️ Email",
       "email_id": "19cf70e3b7b32fd4",
-      "note": "Ferrari invia bozza v0.2. DPC deve revisionare e approvare. Allegato: Richiesta variazione progetto_0.2-DPC.docx",
-      "is_new": true
+      "note": "Ferrari invia bozza v0.2. DPC deve revisionare e approvare.",
+      "is_new": false
     },
     {
       "nome": "Incontro in presenza SAE/CSRS - 17/03 ore 10:30",
@@ -333,7 +250,7 @@
       "badge": "✉️ Email",
       "email_id": "19cf63f5b795a070",
       "note": "Confermato. Ferrari, Ciano, Perfumo (Sogei) a DPC Via Vitorchiano 4. Predisporre badge/accesso.",
-      "is_new": true
+      "is_new": false
     },
     {
       "nome": "Assessment SAE e CSRS (Teams)",
@@ -347,105 +264,132 @@
       "badge": "✉️ Email",
       "email_id": "19cf74e3bb555cfe",
       "note": "Ferrari fissa agenda assessment SAE e CSRS con Accenture/Avanade/Leonardo. Teams ID: 372 149 426 718 70",
+      "is_new": false
+    },
+    {
+      "nome": "Creazione utenze secondarie IaaS - Leonardo (5 utenti)",
+      "stato": "pending",
+      "inizio": "2026-03-17",
+      "fine": "",
+      "owner": "DPC",
+      "pct": 0,
+      "verticale": "IaaS",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19cfb352e081cdb4",
+      "note": "Ferrari invia lista utenze IaaS Leonardo: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri. DPC deve creare utenze secondarie.",
       "is_new": true
     }
   ],
   "azioni": [
     {
       "prio": "🟡",
+      "titolo": "Creare utenze secondarie IaaS - 5 utenti Leonardo",
+      "note": "Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (@leonardo.com). Dati ricevuti da Ferrari.",
+      "owner": "DPC"
+    },
+    {
+      "prio": "🟡",
       "titolo": "Confermare sottomissione infrastruttura IS III WAVE",
-      "note": "TIM ha preparato export configuratore per DC Acilia, S.Stefano IT-Alert, Pomezia. In attesa approvazione DPC.",
+      "note": "TIM ha preparato export configuratore OL per DC Acilia, San Stefano IT-Alert, Pomezia. DPC deve dare approvazione a Ferrari.",
       "owner": "DPC"
     },
     {
       "prio": "🟡",
       "titolo": "Creare utenza CaaS Maurizio Natalia + TT abilitazione",
-      "note": "TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN.",
-      "owner": "DPC"
-    },
-    {
-      "prio": "🟡",
-      "titolo": "Revisionare bozza variazione finanziamento v0.2",
-      "note": "Ferrari ha inviato bozza 16/03. Da revisionare e approvare con DPC/Innovazione.",
-      "owner": "DPC"
-    },
-    {
-      "prio": "🟡",
-      "titolo": "Preparare accessi incontro SAE/CSRS (17/03 10:30)",
-      "note": "Ferrari, Ciano, Perfumo (Sogei) in presenza a Via Vitorchiano 4.",
+      "note": "Utenza su TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN.",
       "owner": "DPC"
     },
     {
       "prio": "🟡",
       "titolo": "Fornire lista utenti CaaS IT ALERT",
-      "note": "A Cosimo Versace: Nome, Cognome, Mail, Telefono.",
+      "note": "Lista utenti da abilitare al CaaS: Nome, Cognome, Mail, Telefono.",
       "owner": "DPC"
     },
     {
       "prio": "🟡",
-      "titolo": "Conferma doppio Dipartimento e firma Manvela VA-DAST-PT",
-      "note": "Ferrari in attesa risposta su struttura firma documento.",
+      "titolo": "Revisione documento variazione finanziamento v0.2",
+      "note": "Bozza ricevuta da Ferrari. DPC deve revisionare e approvare.",
+      "owner": "DPC"
+    },
+    {
+      "prio": "🟡",
+      "titolo": "Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT",
+      "note": "Ferrari in attesa di risposta DPC sulla firma del documento.",
       "owner": "DPC"
     }
   ],
   "verticali": {
     "IAM": {
-      "i": 2,
-      "a": 0,
-      "c": 1
+      "aperti": 2,
+      "chiusi": 1
     },
     "AWS": {
-      "i": 4,
-      "a": 0,
-      "c": 2
+      "aperti": 4,
+      "chiusi": 2
     },
     "VPN": {
-      "i": 2,
-      "a": 0,
-      "c": 1
+      "aperti": 2,
+      "chiusi": 1
     },
     "DB": {
-      "i": 2,
-      "a": 0,
-      "c": 1
+      "aperti": 2,
+      "chiusi": 1
     },
     "Finanziamento": {
-      "i": 2,
-      "a": 0,
-      "c": 0
+      "aperti": 2,
+      "chiusi": 0
     },
     "SAL": {
-      "i": 1,
-      "a": 0,
-      "c": 1
+      "aperti": 1,
+      "chiusi": 1
     },
     "Fornitori Appl.": {
-      "i": 2,
-      "a": 0,
-      "c": 0
+      "aperti": 2,
+      "chiusi": 0
     },
     "PSN": {
-      "i": 3,
-      "a": 0,
-      "c": 1
+      "aperti": 3,
+      "chiusi": 1
     },
     "Sicurezza": {
-      "i": 1,
-      "a": 0,
-      "c": 0
+      "aperti": 1,
+      "chiusi": 0
     },
     "Infrastruttura": {
-      "i": 1,
-      "a": 0,
-      "c": 0
+      "aperti": 1,
+      "chiusi": 0
     },
     "CaaS": {
-      "i": 2,
-      "a": 0,
-      "c": 0
+      "aperti": 2,
+      "chiusi": 0
+    },
+    "IaaS": {
+      "aperti": 1,
+      "chiusi": 0
     }
   },
   "run_history": [
+    {
+      "data": "2026-03-18",
+      "ora": "09:14",
+      "nuove_email": 1,
+      "eventi_cal": 2,
+      "gantt": 11,
+      "pdf": "",
+      "note": "1 nuova email Ferrari (Creazione utenze secondarie IaaS Leonardo 5 utenti), 2 riunioni oggi.",
+      "is_current": true
+    },
+    {
+      "data": "2026-03-17",
+      "ora": "09:11",
+      "nuove_email": 0,
+      "eventi_cal": 3,
+      "gantt": 10,
+      "pdf": "",
+      "note": "TIER MEDIA: 3 riunioni 17/03. Nessuna nuova email Ferrari.",
+      "is_current": false
+    },
     {
       "data": "2026-03-16",
       "ora": "18:47",
@@ -454,7 +398,7 @@
       "gantt": 10,
       "pdf": "PSN_Report_20260316_1847.pdf",
       "note": "13 nuove email Ferrari 12-16/03, 6 nuovi Gantt items, 7 riunioni oggi.",
-      "is_current": true
+      "is_current": false
     },
     {
       "data": "2026-03-12",
@@ -487,26 +431,6 @@
       "is_current": false
     },
     {
-      "data": "2026-03-11",
-      "ora": "09:00",
-      "nuove_email": 0,
-      "eventi_cal": 2,
-      "gantt": 2,
-      "pdf": "PSN_Report_20260311_0900.pdf",
-      "note": "Run mattutina. 2 riunioni oggi.",
-      "is_current": false
-    },
-    {
-      "data": "2026-03-10",
-      "ora": "19:10",
-      "nuove_email": 0,
-      "eventi_cal": 0,
-      "gantt": 2,
-      "pdf": "PSN_Report_20260310_1910.pdf",
-      "note": "Run serale. Nessuna modifica.",
-      "is_current": false
-    },
-    {
       "data": "2026-03-10",
       "ora": "19:00",
       "nuove_email": 2,
@@ -525,39 +449,54 @@
       "pdf": "PSN_Report_20260310_1207.pdf",
       "note": "3 email 09/03.",
       "is_current": false
-    },
-    {
-      "data": "2026-03-09",
-      "ora": "09:00",
-      "nuove_email": 5,
-      "eventi_cal": 3,
-      "gantt": 0,
-      "pdf": "Report_PMO_PSN_Ferrari_20260309.pdf",
-      "note": "Run mattutina.",
-      "is_current": false
-    },
-    {
-      "data": "2026-03-07",
-      "ora": "09:00",
-      "nuove_email": 4,
-      "eventi_cal": 2,
-      "gantt": 0,
-      "pdf": "Report_PMO_PSN_Ferrari_20260307.pdf",
-      "note": "Run mattutina.",
-      "is_current": false
-    },
-    {
-      "data": "2026-03-06",
-      "ora": "09:00",
-      "nuove_email": 8,
-      "eventi_cal": 3,
-      "gantt": 0,
-      "pdf": "Report_PMO_PSN_Ferrari_20260306.pdf",
-      "note": "Run mattutina.",
-      "is_current": false
     }
   ],
   "log_entries": [
+    {
+      "tipo": "system",
+      "data": "2026-03-18",
+      "ora": "09:14",
+      "titolo": "Run automatica – 18/03/2026 09:14",
+      "descrizione": "Elaborazione completata: 1 nuova email Ferrari/Sogei (Creazione utenze secondarie IaaS Leonardo), 2 riunioni oggi, 1 nuovo Gantt item (tot 11). Ora < 17: nessun PDF.",
+      "badge": "🖥️ Sistema",
+      "is_new": true
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-17",
+      "ora": "10:50",
+      "titolo": "🟡 Creazione utenze secondarie",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari invia lista 5 utenze IaaS Leonardo (Borghesi, Galletti, Viscomi, Di Girolamo, Arcuri). DPC deve creare utenze secondarie.",
+      "badge": "📧 Email PMO",
+      "is_new": true
+    },
+    {
+      "tipo": "action",
+      "data": "2026-03-18",
+      "ora": "09:14",
+      "titolo": "🟡 Creare utenze secondarie IaaS - 5 utenti Leonardo",
+      "descrizione": "Ferrari ha inviato lista: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (tutti @leonardo.com). DPC deve creare le utenze secondarie IaaS. Owner: DPC.",
+      "badge": "⚡ Azione",
+      "is_new": true
+    },
+    {
+      "tipo": "gantt",
+      "data": "2026-03-18",
+      "ora": "09:14",
+      "titolo": "Gantt aggiornato: 1 nuova voce",
+      "descrizione": "Aggiunta: 'Creazione utenze secondarie IaaS - Leonardo (5 utenti)' (pending, DPC, IaaS)",
+      "badge": "📈 Gantt",
+      "is_new": true
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-18",
+      "ora": "09:14",
+      "titolo": "📅 Calendario aggiornato – 18/03/2026 09:14",
+      "descrizione": "TIER PIENA: 1 nuova email Ferrari. 2 riunioni oggi: Dataiku Platform Overview 09:30 (Teams ID: 316 060 439 981 1), Meeting AIM 15:00 (Teams ID: 351 776 686 306 83).",
+      "badge": "📅 Calendario",
+      "is_new": true
+    },
     {
       "tipo": "cal",
       "data": "2026-03-17",
@@ -565,14 +504,14 @@
       "titolo": "📅 Calendario aggiornato – 17/03/2026 09:11",
       "descrizione": "TIER MEDIA: Nuovo giorno 17/03. 3 riunioni: Document Platform Overview 09:30 (Teams), DPC Cluster Ulpiano On Site 09:30–17:30 (Zoom), Assessment SAE/CSRS 11:15 (Teams ID 372 149 426 718 70). Nessuna nuova email Ferrari.",
       "badge": "📅 Calendario",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "cal",
       "data": "2026-03-16",
       "ora": "19:07",
-      "titolo": "📅 Calendario aggiornato – 16/03/2026 19:03",
-      "descrizione": "Orario riunione aggiornato: [DPC] VPN AWS as-is to AWS PSN spostato a 17:00–18:00. Nessuna nuova email Ferrari.",
+      "titolo": "Calendario aggiornato – 16/03/2026 19:07",
+      "descrizione": "TIER MEDIA: orario VPN AWS corretto (17:00–18:00). Nessuna nuova email Ferrari.",
       "badge": "📅 Calendario",
       "is_new": false
     },
@@ -626,7 +565,7 @@
       "data": "2026-03-12",
       "ora": "12:17",
       "titolo": "🟡 Conferma approvazione infrastruttura IS - III WAVE",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Richiesta approvazione DPC per Housing III Wave (DC Acilia, S.Stefano IT-Alert, Pomezia). Allegato: Export configuratore wave3 IS.xls",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Richiesta approvazione DPC per Housing III Wave (DC Acilia, S.Stefano IT-Alert, Pomezia).",
       "badge": "📧 Email",
       "is_new": false
     },
@@ -664,258 +603,6 @@
       "titolo": "Gantt aggiornato: 6 nuove voci",
       "descrizione": "Aggiunte: Conferma infrastruttura IS III Wave | Creazione utenza CaaS Natalia | TT CaaS INC7651467/466 | Revisione doc variazione finanziamento | Incontro SAE/CSRS 17/03 | Assessment SAE CSRS",
       "badge": "📈 Gantt",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-12",
-      "ora": "09:11",
-      "titolo": "Run automatica – 12/03/2026 09:11",
-      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 4 riunioni oggi, 4 Gantt items invariati, PDF PSN_Report_20260312_0911.pdf generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-12",
-      "ora": "15:30",
-      "titolo": "📅 Passaggio in operatività it-alert: maremoto e Stromboli",
-      "descrizione": "Riunione Teams 15:30–16:30 | ID: 383 338 086 022 05 | Passcode: fb6PG7JW",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-12",
-      "ora": "14:00",
-      "titolo": "📅 DPC PSN | VPN OnPrem to Industry Standard PSN",
-      "descrizione": "Riunione Teams 14:00–15:00 | ID: 210 615 842 939 3 | Passcode: UX2Dw7ET",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-12",
-      "ora": "12:00",
-      "titolo": "📅 [DPC] - V13 NTNX - Configurazione componenti",
-      "descrizione": "Riunione Teams 12:00–16:00 | ID: 264 935 995 785 10 | Passcode: JS3iv9fQ",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-12",
-      "ora": "09:00",
-      "titolo": "📅 [DPC] Approfondimento MAPLITE - Radar - Budibase",
-      "descrizione": "Riunione Teams 09:00–10:00 | ID: 279 514 768 307 67 | Passcode: Th9MV3Ho",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-11",
-      "ora": "18:20",
-      "titolo": "Run automatica – 11/03/2026 18:20",
-      "descrizione": "Elaborazione completata: 1 nuova email Ferrari (Utenze CaaS IT ALERT), 2 riunioni oggi, 4 Gantt items, PDF PSN_Report_20260311_1813.pdf generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-11",
-      "ora": "17:20",
-      "titolo": "🟡 Utenze per accesso al Caas - IT ALERT",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: PSN/CaaS | Ferrari chiede lista utenti per abilitazione CaaS IT ALERT a Cosimo Versace (CIMA Foundation).",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "action",
-      "data": "2026-03-11",
-      "ora": "17:20",
-      "titolo": "🟡 Fornire lista utenti CaaS IT ALERT",
-      "descrizione": "Giordano deve preparare e fornire a Ferrari lista utenti da abilitare al CaaS: Nome, Cognome, Mail, Numero di telefono. Owner: DPC.",
-      "badge": "⚡ Azione",
-      "is_new": false
-    },
-    {
-      "tipo": "gantt",
-      "data": "2026-03-11",
-      "ora": "18:20",
-      "titolo": "Gantt aggiornato: 1 nuova voce",
-      "descrizione": "Aggiunta: 'Lista utenti CaaS - IT ALERT' (pending, DPC, PSN)",
-      "badge": "📈 Gantt",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-11",
-      "ora": "19:30",
-      "titolo": "Run automatica – 11/03/2026 19:30 (nessuna novità)",
-      "descrizione": "Fingerprint precedente era placeholder (migrazione a MD5 reale). Nessuna nuova email Ferrari, calendario e Gantt invariati. Fingerprint aggiornato al valore reale.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-11",
-      "ora": "19:00",
-      "titolo": "Run automatica – 11/03/2026 19:00",
-      "descrizione": "Elaborazione completata: 1 nuova email Ferrari (Manvela VA-DAST-PT), 2 riunioni oggi, 3 Gantt items, PDF PSN_Report_20260311_1900.pdf generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-11",
-      "ora": "13:04",
-      "titolo": "🟡 Manvela attivazione servizi di sicurezza VA-DAST-PT",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: Sicurezza | Allegato: PSN_DPC-Manleva per VA-PT-DAST_v1.0.docx",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "action",
-      "data": "2026-03-11",
-      "ora": "13:04",
-      "titolo": "🟡 Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT",
-      "descrizione": "Ferrari in attesa di sapere se nel documento va inserito il doppio Dipartimento e la doppia firma. Owner: DPC.",
-      "badge": "⚡ Azione",
-      "is_new": false
-    },
-    {
-      "tipo": "gantt",
-      "data": "2026-03-11",
-      "ora": "19:00",
-      "titolo": "Gantt aggiornato: 1 nuova voce",
-      "descrizione": "Aggiunta: 'Approvazione Manvela VA-DAST-PT' (pending, DPC, Sicurezza)",
-      "badge": "📈 Gantt",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-11",
-      "ora": "09:00",
-      "titolo": "Run automatica – 11/03/2026 09:00",
-      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 2 riunioni oggi (SAL PSN + MS Unified Support), 2 Gantt items invariati, PDF PSN_Report_20260311_0900.pdf generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-11",
-      "ora": "11:00",
-      "titolo": "📅 SAL settimanale PCM-DPC – Progetto PSN",
-      "descrizione": "Riunione Teams 11:00–12:00 | ID: 331 771 225 424 53 | Passcode: dc2YJ6C7",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "cal",
-      "data": "2026-03-11",
-      "ora": "17:00",
-      "titolo": "📅 Microsoft Services Unified Support",
-      "descrizione": "Riunione Teams 17:00–17:45 | ID: 378 239 269 819 06 | Passcode: SC7Vt77T",
-      "badge": "📅 Riunione",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-10",
-      "ora": "19:10",
-      "titolo": "Run automatica – 10/03/2026 19:10",
-      "descrizione": "Elaborazione completata: 0 nuove email Ferrari, 0 nuovi eventi calendario, 2 Gantt items invariati. Nessuna modifica rispetto alla run 19:00.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-10",
-      "ora": "19:00",
-      "titolo": "Run automatica – 10/03/2026 19:00",
-      "descrizione": "Elaborazione completata: 2 nuove email Ferrari, 4 riunioni oggi, 2 voci Gantt, PDF generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-10",
-      "ora": "15:14",
-      "titolo": "🟡 Accesso DB AS-IS - AWS",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-10",
-      "ora": "13:19",
-      "titolo": "🟢 R: Gantt con stato di avanzamento",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: INFO | Verticale: PSN",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "action",
-      "data": "2026-03-10",
-      "ora": "15:14",
-      "titolo": "🟡 Accesso DB AS-IS Eustema richiesto",
-      "descrizione": "Ferrari chiede a Eustema (Federico Crisci) credenziali per 5 DB AWS: Cartis, Check-in, Donazioni, Designa, Contributi di autosostentamento",
-      "badge": "⚡ Azione",
-      "is_new": false
-    },
-    {
-      "tipo": "gantt",
-      "data": "2026-03-10",
-      "ora": "19:00",
-      "titolo": "Gantt aggiornato: 2 nuove voci",
-      "descrizione": "Aggiunte: 'Accesso DB AS-IS Eustema' (pending, DPC/Eustema) | 'Invio Gantt Excel #dpc_gantt' (pending, Ferrari/Sogei)",
-      "badge": "📈 Gantt",
-      "is_new": false
-    },
-    {
-      "tipo": "system",
-      "data": "2026-03-10",
-      "ora": "12:07",
-      "titolo": "Run automatica – 10/03/2026 12:07",
-      "descrizione": "3 nuove email Ferrari del 09/03, 2 riunioni, PDF generato.",
-      "badge": "🖥️ Sistema",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-09",
-      "ora": "15:47",
-      "titolo": "🟡 Assessment FA DPC",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: Fornitori Appl.",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-09",
-      "ora": "15:44",
-      "titolo": "🟡 Accesso DB AS-IS",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Priorità: ATTENZIONE | Verticale: AWS/DB",
-      "badge": "📧 Email",
-      "is_new": false
-    },
-    {
-      "tipo": "action",
-      "data": "2026-03-09",
-      "ora": "15:47",
-      "titolo": "🟡 Organizzare incontri CSRS e SAE",
-      "descrizione": "Ferrari chiede cortocircuito con fornitori CSRS, SAE. Conferma gruppo Budibase necessaria.",
-      "badge": "⚡ Azione",
-      "is_new": false
-    },
-    {
-      "tipo": "email",
-      "data": "2026-03-09",
-      "ora": "11:23",
-      "titolo": "🟡 Variazione domanda finanziamento",
-      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Bozza variazione domanda. Manca tabella 'Dettaglio rack'.",
-      "badge": "📧 Email",
       "is_new": false
     }
   ]
