@@ -226,17 +226,25 @@ function _logLoginFail(){
   sessionStorage.setItem('_fail_count',String(total));
   var ua=navigator.userAgent;
   var browser='Unknown', os='Unknown';
-  if(/Chrome/.test(ua)&&!/Chromium|Edge/.test(ua))browser='Chrome';
-  else if(/Firefox/.test(ua))browser='Firefox';
-  else if(/Safari/.test(ua)&&!/Chrome/.test(ua))browser='Safari';
-  else if(/Edge/.test(ua))browser='Edge';
-  if(/Windows/.test(ua))os='Windows';
-  else if(/Mac OS X/.test(ua))os='macOS';
+  if(/Chrome\//.test(ua)&&!/Chromium|Edg/.test(ua))browser='Chrome '+((ua.match(/Chrome\/([\d.]+)/)||[])[1]||'').split('.')[0];
+  else if(/Firefox\//.test(ua))browser='Firefox '+((ua.match(/Firefox\/([\d.]+)/)||[])[1]||'').split('.')[0];
+  else if(/Safari\//.test(ua)&&!/Chrome/.test(ua))browser='Safari '+((ua.match(/Version\/([\d.]+)/)||[])[1]||'').split('.')[0];
+  else if(/Edg\//.test(ua))browser='Edge '+((ua.match(/Edg\/([\d.]+)/)||[])[1]||'').split('.')[0];
+  if(/Windows NT ([\d.]+)/.test(ua)){var wv={'10.0':'11/10','6.3':'8.1','6.1':'7'};var wm=ua.match(/Windows NT ([\d.]+)/);os='Windows '+(wv[wm[1]]||wm[1]);}
+  else if(/Mac OS X ([\d_]+)/.test(ua))os='macOS '+ua.match(/Mac OS X ([\d_]+)/)[1].replace(/_/g,'.');
   else if(/Linux/.test(ua))os='Linux';
-  else if(/iPhone|iPad/.test(ua))os='iOS';
-  fails.unshift({ts:now.toISOString(),count:total,browser:browser,os:os});
+  else if(/iPhone/.test(ua))os='iPhone iOS '+((ua.match(/OS ([\d_]+)/)||[])[1]||'').replace(/_/g,'.');
+  else if(/iPad/.test(ua))os='iPad iOS '+((ua.match(/OS ([\d_]+)/)||[])[1]||'').replace(/_/g,'.');
+  var entry={ts:now.toISOString(),count:total,browser:browser,os:os,ip:'—'};
+  fails.unshift(entry);
   if(fails.length>20)fails=fails.slice(0,20);
   sessionStorage.setItem('_fail_log',JSON.stringify(fails));
+  // Fetch IP pubblico
+  fetch('https://api.ipify.org?format=json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+    var stored=JSON.parse(sessionStorage.getItem('_fail_log')||'[]');
+    if(stored.length&&stored[0].count===total){stored[0].ip=d.ip||'—';sessionStorage.setItem('_fail_log',JSON.stringify(stored));}
+    _renderFailBanner();
+  }).catch(function(){_renderFailBanner();});
 }
 function _renderFailBanner(){
   var total=parseInt(sessionStorage.getItem('_fail_count')||'0');
@@ -253,9 +261,14 @@ function _renderFailBanner(){
   var rows=fails.map(function(f){
     var dt=new Date(f.ts);
     var fmt=dt.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    return '<div style="padding:3px 0;border-bottom:1px solid #f5c6cb;">🚫 '+fmt+' — Tentativo #'+f.count+' ('+f.browser+'/'+f.os+')</div>';
+    return '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px 0;border-bottom:1px solid #f5c6cb;font-size:11px;">'
+      +'<div><span style="color:#999">Ora</span><br>'+fmt+'</div>'
+      +'<div><span style="color:#999">IP</span><br>'+f.ip+'</div>'
+      +'<div><span style="color:#999">Browser</span><br>'+f.browser+'</div>'
+      +'<div><span style="color:#999">OS</span><br>'+f.os+'</div>'
+      +'</div>';
   }).join('');
-  el.innerHTML='<strong>⚠ '+total+' tentativo/i di accesso fallito questa sessione</strong>'+rows;
+  el.innerHTML='<div style="font-weight:700;margin-bottom:6px;">🚫 '+total+' tentativo/i di accesso fallito questa sessione</div>'+rows;
 }
 
 try{if(localStorage.getItem('psn_auth')==='1')document.getElementById('loginOverlay').style.display='none';}catch(e){}
