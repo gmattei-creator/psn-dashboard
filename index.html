@@ -216,8 +216,48 @@ function doLogin(){
   } else {
     document.getElementById('loginError').textContent='❌ Password non valida.';
     document.getElementById('pwInput').value='';
+    _logLoginFail();
   }
 }
+function _logLoginFail(){
+  var now=new Date();
+  var fails=JSON.parse(sessionStorage.getItem('_fail_log')||'[]');
+  var total=(parseInt(sessionStorage.getItem('_fail_count')||'0')+1);
+  sessionStorage.setItem('_fail_count',String(total));
+  var ua=navigator.userAgent;
+  var browser='Unknown', os='Unknown';
+  if(/Chrome/.test(ua)&&!/Chromium|Edge/.test(ua))browser='Chrome';
+  else if(/Firefox/.test(ua))browser='Firefox';
+  else if(/Safari/.test(ua)&&!/Chrome/.test(ua))browser='Safari';
+  else if(/Edge/.test(ua))browser='Edge';
+  if(/Windows/.test(ua))os='Windows';
+  else if(/Mac OS X/.test(ua))os='macOS';
+  else if(/Linux/.test(ua))os='Linux';
+  else if(/iPhone|iPad/.test(ua))os='iOS';
+  fails.unshift({ts:now.toISOString(),count:total,browser:browser,os:os});
+  if(fails.length>20)fails=fails.slice(0,20);
+  sessionStorage.setItem('_fail_log',JSON.stringify(fails));
+}
+function _renderFailBanner(){
+  var total=parseInt(sessionStorage.getItem('_fail_count')||'0');
+  if(!total)return;
+  var el=document.getElementById('_fail_banner');
+  if(!el){
+    el=document.createElement('div');
+    el.id='_fail_banner';
+    el.style.cssText='background:#fdf2f2;border:1px solid #f5c6cb;color:#721c24;border-radius:6px;padding:10px 16px;margin:12px 0;font-size:12px;';
+    var logPanel=document.querySelector('#tab-log,.tab-panel[id*="log"]');
+    if(logPanel)logPanel.insertBefore(el,logPanel.firstChild);
+  }
+  var fails=JSON.parse(sessionStorage.getItem('_fail_log')||'[]');
+  var rows=fails.map(function(f){
+    var dt=new Date(f.ts);
+    var fmt=dt.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    return '<div style="padding:3px 0;border-bottom:1px solid #f5c6cb;">🚫 '+fmt+' — Tentativo #'+f.count+' ('+f.browser+'/'+f.os+')</div>';
+  }).join('');
+  el.innerHTML='<strong>⚠ '+total+' tentativo/i di accesso fallito questa sessione</strong>'+rows;
+}
+
 try{if(localStorage.getItem('psn_auth')==='1')document.getElementById('loginOverlay').style.display='none';}catch(e){}
 
 // ── TABS ──────────────────────────────────────────────────────────────
@@ -552,6 +592,7 @@ function renderLog(d){
   });
   html+='</ul></div>';
   document.getElementById('tab-log').innerHTML=html;
+  _renderFailBanner();
 }
 
 // ── LOG FILTER ────────────────────────────────────────────────────────
