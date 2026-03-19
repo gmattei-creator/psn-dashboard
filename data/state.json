@@ -1,14 +1,17 @@
 {
   "meta": {
     "last_run_date": "2026-03-19",
-    "last_run_time": "06:45",
+    "last_run_time": "12:59",
     "run_type": "piena",
-    "pdf_filename": ""
+    "pdf_filename": "",
+    "processed_message_ids": [
+      "19d058fa68c82418"
+    ]
   },
   "kpi": {
-    "email_totali": 46,
-    "gantt_aperti": 12,
-    "nuove_email_oggi": 3,
+    "email_totali": 47,
+    "gantt_aperti": 13,
+    "nuove_email_oggi": 4,
     "riunioni_oggi": 4
   },
   "cal_oggi": [
@@ -19,9 +22,7 @@
       "teams_url": "https://teams.microsoft.com/meet/33919009074740?p=bLliHmyKQFFgbi8uz5",
       "teams_id": "339 190 090 747 40",
       "teams_pw": "FB9QU2dN",
-      "tel_it": "",
-      "tel_code": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "11:00",
@@ -30,9 +31,7 @@
       "teams_url": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_YjFmYWJiMDYtNzgwNS00MjRjLWE3N2MtYjk0OTgzNDNjOThh%40thread.v2/0?context=%7b%22Tid%22%3a%22e2628090-5865-4e15-a2c3-1367e1ce7dd2%22%2c%22Oid%22%3a%22992d46c5-4128-4576-b48d-211a498776ca%22%7d",
       "teams_id": "331 771 225 424 53",
       "teams_pw": "dc2YJ6C7",
-      "tel_it": "",
-      "tel_code": "",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "14:00",
@@ -43,7 +42,7 @@
       "teams_pw": "?Z9nW",
       "tel_it": "",
       "tel_code": "239715",
-      "is_new": true
+      "is_new": false
     },
     {
       "ora_inizio": "15:00",
@@ -54,17 +53,26 @@
       "teams_pw": "LS97Zi7e",
       "tel_it": "+39 02 0062 4053",
       "tel_code": "785 087 994",
-      "is_new": true
+      "is_new": false
     }
   ],
   "email_log": [
+    {
+      "data": "2026-03-19",
+      "prio": "🟡",
+      "oggetto": "Proposta licenza infrastruttura TO-BE",
+      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
+      "verticale": "PSN/Fornitori",
+      "id": "19d058fa68c82418",
+      "is_new": true
+    },
     {
       "data": "2026-03-18",
       "prio": "🟡",
       "oggetto": "dpc_gantt - SAL 19/03/2026",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "PSN",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-18",
@@ -72,7 +80,7 @@
       "oggetto": "Abilitazione TT Leonardo su tutte TGU (Bani, Natalia, Battaglia)",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "CaaS",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-18",
@@ -80,7 +88,7 @@
       "oggetto": "Richiesta abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)",
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "CaaS",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-17",
@@ -172,6 +180,16 @@
     }
   ],
   "gantt_items": [
+    {
+      "nome": "Approvazione proposta licenze TO-BE (ArcGIS, Oracle, SQL Server, RedHat)",
+      "stato": "pending",
+      "owner": "DPC",
+      "data_fine": "",
+      "pct": 0,
+      "verticale": "PSN/Fornitori",
+      "fonte": "✉️ Email",
+      "is_new": true
+    },
     {
       "nome": "Accesso DB AS-IS Eustema - AWS",
       "stato": "pending",
@@ -338,7 +356,7 @@
       "badge": "📎 Excel",
       "email_id": "19d017b3a0cb7023",
       "note": "Ferrari invia Gantt Excel SAL avanzamento lavori (DPC - SAL Gantt 19032026.xlsx). SAL oggi 19/03 ore 11:00.",
-      "is_new": true
+      "is_new": false
     },
     {
       "nome": "Abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)",
@@ -352,57 +370,71 @@
       "badge": "✉️ Email",
       "email_id": "19d00b024765d296",
       "note": "Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia su tutte le TGU PSN per apertura TT assistenza.",
-      "is_new": true
+      "is_new": false
     }
   ],
   "azioni": [
     {
+      "titolo": "Rispondere a Ferrari su proposta licenze TO-BE",
+      "prio": "🟡",
+      "verticale": "PSN/Fornitori",
+      "is_new": true
+    },
+    {
       "prio": "🟡",
       "titolo": "Partecipare SAL PSN con Gantt Ferrari – oggi ore 11:00",
       "note": "SAL settimanale PCM-DPC-PSN. Ferrari presenta Gantt avanzamento lavori. Teams ID: 331 771 225 424 53, Passcode: dc2YJ6C7.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Verificare abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)",
       "note": "Ferrari ha chiesto a Stripoli (TIM) di abilitare Davide Bani, Natalia Maurizio, Andrea Battaglia su tutte le TGU PSN. In attesa di conferma TIM.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Creare utenze secondarie IaaS - 5 utenti Leonardo",
       "note": "Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (@leonardo.com). Dati ricevuti da Ferrari.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Confermare sottomissione infrastruttura IS III WAVE",
       "note": "TIM ha preparato export configuratore OL per DC Acilia, San Stefano IT-Alert, Pomezia. DPC deve dare approvazione a Ferrari.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Creare utenza CaaS Maurizio Natalia + TT abilitazione",
       "note": "Utenza su TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Fornire lista utenti CaaS IT ALERT",
       "note": "Lista utenti da abilitare al CaaS: Nome, Cognome, Mail, Telefono.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Revisione documento variazione finanziamento v0.2",
       "note": "Bozza ricevuta da Ferrari. DPC deve revisionare e approvare.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     },
     {
       "prio": "🟡",
       "titolo": "Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT",
       "note": "Ferrari in attesa di risposta DPC sulla firma del documento.",
-      "owner": "DPC"
+      "owner": "DPC",
+      "is_new": false
     }
   ],
   "verticali": {
@@ -549,13 +581,22 @@
   ],
   "log_entries": [
     {
+      "tipo": "email",
+      "data": "2026-03-19",
+      "ora": "12:59",
+      "titolo": "Email PMO: Proposta licenza infrastruttura TO-BE",
+      "descrizione": "Ferrari/Sogei propone mapping licenze AS-IS→TO-BE: ArcGIS (BYOL), RedHat (Included), Oracle (BYOL), SQL Server (Included). Attende ok DPC.",
+      "badge": "🟡 Attenzione",
+      "is_new": true
+    },
+    {
       "tipo": "system",
       "data": "2026-03-19",
       "ora": "06:39",
       "titolo": "Run automatica – 19/03/2026 06:39",
       "descrizione": "TIER PIENA: 3 nuove email Ferrari/Sogei (SAL Gantt 19/03 + abilitazione TT Leonardo), 4 riunioni oggi, 2 nuovi Gantt items (tot 13). Ora < 17: nessun PDF.",
       "badge": "🖥️ Sistema",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
@@ -564,7 +605,7 @@
       "titolo": "🟡 dpc_gantt - SAL 19/03/2026",
       "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Gantt Excel avanzamento lavori per SAL 19/03. Allegato: DPC - SAL Gantt 19032026.xlsx",
       "badge": "📧 Email PMO",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
@@ -573,7 +614,7 @@
       "titolo": "🟡 Abilitazione TT Leonardo su tutte TGU",
       "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari conferma a TIM (Stripoli): abilitare Bani, Natalia, Battaglia su tutte le TGU PSN.",
       "badge": "📧 Email PMO",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
@@ -582,7 +623,7 @@
       "titolo": "🟡 Richiesta abilitazione TT PSN – Leonardo",
       "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia per apertura TT PSN.",
       "badge": "📧 Email PMO",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "gantt",
@@ -591,7 +632,7 @@
       "titolo": "Gantt aggiornato: 2 nuove voci, 1 completata",
       "descrizione": "Nuove: 'SAL Gantt PSN 19/03/2026' (📎 Excel) | 'Abilitazione TT PSN Leonardo'. Completata: 'Invio Gantt Excel aggiornato #dpc_gantt'.",
       "badge": "📈 Gantt",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "cal",
@@ -600,7 +641,7 @@
       "titolo": "📅 Calendario aggiornato – 19/03/2026 06:39",
       "descrizione": "4 riunioni oggi: BI Platform Overview 09:30 (Teams 339 190 090 747 40), SAL PSN 11:00 (Teams 331 771 225 424 53), Tenable 14:00 (Zoom 917 1007 2267), Colloquio Pricoco 15:00 (Teams 378 373 359 806 64).",
       "badge": "📅 Calendario",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "system",
