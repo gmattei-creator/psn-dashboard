@@ -1,62 +1,58 @@
 {
   "meta": {
-    "last_run_date": "2026-03-19",
-    "last_run_time": "12:59",
+    "last_run_date": "2026-03-20",
+    "last_run_time": "05:13",
     "run_type": "piena",
     "pdf_filename": "",
     "processed_message_ids": [
-      "19d058fa68c82418"
+      "19d058fa68c82418",
+      "19d07080ba47f4bc",
+      "19d069e53cf1235f"
     ]
   },
   "kpi": {
-    "email_totali": 47,
-    "gantt_aperti": 13,
-    "nuove_email_oggi": 4,
-    "riunioni_oggi": 4
+    "email_totali": 49,
+    "gantt_aperti": 15,
+    "nuove_email_oggi": 2,
+    "riunioni_oggi": 1
   },
   "cal_oggi": [
     {
+      "ora_inizio": "00:00",
+      "ora_fine": "23:59",
+      "summary": "🏖️ FERIE n.1",
+      "all_day": true,
+      "is_new": true
+    },
+    {
       "ora_inizio": "09:30",
-      "ora_fine": "11:00",
-      "summary": "BI Platform Overview – SIMpara",
-      "teams_url": "https://teams.microsoft.com/meet/33919009074740?p=bLliHmyKQFFgbi8uz5",
-      "teams_id": "339 190 090 747 40",
-      "teams_pw": "FB9QU2dN",
-      "is_new": false
-    },
-    {
-      "ora_inizio": "11:00",
       "ora_fine": "12:00",
-      "summary": "SAL settimanale PCM – DPC – Progetto PSN",
-      "teams_url": "https://teams.microsoft.com/l/meetup-join/19%3ameeting_YjFmYWJiMDYtNzgwNS00MjRjLWE3N2MtYjk0OTgzNDNjOThh%40thread.v2/0?context=%7b%22Tid%22%3a%22e2628090-5865-4e15-a2c3-1367e1ce7dd2%22%2c%22Oid%22%3a%22992d46c5-4128-4576-b48d-211a498776ca%22%7d",
-      "teams_id": "331 771 225 424 53",
-      "teams_pw": "dc2YJ6C7",
-      "is_new": false
-    },
-    {
-      "ora_inizio": "14:00",
-      "ora_fine": "14:30",
-      "summary": "Protezione Civile x Tenable | Aggiornamenti",
-      "teams_url": "https://tenable.zoom.us/j/91710072267?pwd=A1uT2OGvHL7e3yhx2LkP7Ar9JNPLL8.1",
-      "teams_id": "917 1007 2267",
-      "teams_pw": "?Z9nW",
-      "tel_it": "",
-      "tel_code": "239715",
-      "is_new": false
-    },
-    {
-      "ora_inizio": "15:00",
-      "ora_fine": "15:30",
-      "summary": "Colloquio Conoscitivo – Federico Pricoco – Servizio H24 DPC",
-      "teams_url": "https://teams.microsoft.com/meet/37837335980664?p=jvzEjrwsbq1jk4Drbx",
-      "teams_id": "378 373 359 806 64",
-      "teams_pw": "LS97Zi7e",
-      "tel_it": "+39 02 0062 4053",
-      "tel_code": "785 087 994",
-      "is_new": false
+      "summary": "Sessione 2 Document Platform Funzionalità – SIMpara",
+      "teams_url": "https://teams.microsoft.com/meet/37036241782044?p=Oy4msdv1TZiTCCWQI6",
+      "teams_id": "370 362 417 820 44",
+      "teams_pw": "zt7fy3j4",
+      "is_new": true
     }
   ],
   "email_log": [
+    {
+      "data": "2026-03-19",
+      "prio": "🟡",
+      "oggetto": "Richiesta VPN C2S",
+      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
+      "verticale": "VPN",
+      "id": "19d07080ba47f4bc",
+      "is_new": true
+    },
+    {
+      "data": "2026-03-19",
+      "prio": "🟢",
+      "oggetto": "Pianificazione incontro per integrazione IAM",
+      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
+      "verticale": "IAM",
+      "id": "19d069e53cf1235f",
+      "is_new": true
+    },
     {
       "data": "2026-03-19",
       "prio": "🟡",
@@ -64,7 +60,7 @@
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "PSN/Fornitori",
       "id": "19d058fa68c82418",
-      "is_new": true
+      "is_new": false
     },
     {
       "data": "2026-03-18",
@@ -161,25 +157,37 @@
       "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
       "verticale": "Sicurezza",
       "is_new": false
-    },
-    {
-      "data": "2026-03-10",
-      "prio": "🟡",
-      "oggetto": "Accesso DB AS-IS - AWS",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "AWS",
-      "is_new": false
-    },
-    {
-      "data": "2026-03-10",
-      "prio": "🟢",
-      "oggetto": "R: Gantt con stato di avanzamento",
-      "mittente": "FERRARI EMILIANO <eferrari@sogei.it>",
-      "verticale": "PSN",
-      "is_new": false
     }
   ],
   "gantt_items": [
+    {
+      "nome": "Abilitazione VPN C2S - 8 utenti Accenture/Avanade",
+      "stato": "pending",
+      "inizio": "2026-03-19",
+      "fine": "",
+      "owner": "Scaparro/RTI",
+      "pct": 0,
+      "verticale": "VPN",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19d07080ba47f4bc",
+      "note": "Ferrari chiede a Scaparro supporto per abilitazione VPN C2S: Micciché, Scordio, Moroniti, Cellamare (Accenture), Paolini, Pagliai, Palomba (Avanade), Vernile (Accenture).",
+      "is_new": true
+    },
+    {
+      "nome": "Pianificazione incontro verticale IAM - Eustema/Leonardo",
+      "stato": "pending",
+      "inizio": "2026-03-19",
+      "fine": "",
+      "owner": "Ferrari/Sogei",
+      "pct": 0,
+      "verticale": "IAM",
+      "fonte": "email",
+      "badge": "✉️ Email",
+      "email_id": "19d069e53cf1235f",
+      "note": "Ferrari organizza incontro IAM con Crisci (Eustema) e Leonardo. Slot proposti: Lun 23, Mar 24, Mer 25 marzo.",
+      "is_new": true
+    },
     {
       "nome": "Approvazione proposta licenze TO-BE (ArcGIS, Oracle, SQL Server, RedHat)",
       "stato": "pending",
@@ -188,7 +196,7 @@
       "pct": 0,
       "verticale": "PSN/Fornitori",
       "fonte": "✉️ Email",
-      "is_new": true
+      "is_new": false
     },
     {
       "nome": "Accesso DB AS-IS Eustema - AWS",
@@ -375,10 +383,17 @@
   ],
   "azioni": [
     {
+      "titolo": "Abilitare VPN C2S per 8 utenti Accenture/Avanade",
+      "prio": "🟡",
+      "verticale": "VPN",
+      "note": "Ferrari ha chiesto a Scaparro. Verificare abilitazione reti: DPC Onprem, AWS AS-IS, AWS TO-BE, IS.",
+      "is_new": true
+    },
+    {
       "titolo": "Rispondere a Ferrari su proposta licenze TO-BE",
       "prio": "🟡",
       "verticale": "PSN/Fornitori",
-      "is_new": true
+      "is_new": false
     },
     {
       "prio": "🟡",
@@ -439,7 +454,7 @@
   ],
   "verticali": {
     "IAM": {
-      "aperti": 2,
+      "aperti": 3,
       "chiusi": 1
     },
     "AWS": {
@@ -447,7 +462,7 @@
       "chiusi": 2
     },
     "VPN": {
-      "aperti": 2,
+      "aperti": 3,
       "chiusi": 1
     },
     "DB": {
@@ -489,6 +504,16 @@
   },
   "run_history": [
     {
+      "data": "2026-03-20",
+      "ora": "05:13",
+      "nuove_email": 2,
+      "eventi_cal": 2,
+      "gantt": 16,
+      "pdf": "",
+      "note": "2 nuove email Ferrari (Richiesta VPN C2S + Pianificazione IAM), 2 eventi cal (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.",
+      "is_current": true
+    },
+    {
       "data": "2026-03-19",
       "ora": "06:39",
       "nuove_email": 3,
@@ -496,7 +521,7 @@
       "gantt": 13,
       "pdf": "",
       "note": "3 nuove email Ferrari (SAL Gantt 19/03, abilitazione TT Leonardo Bani/Natalia/Battaglia). 4 riunioni oggi incl. SAL PSN.",
-      "is_current": true
+      "is_current": false
     },
     {
       "data": "2026-03-18",
@@ -581,13 +606,58 @@
   ],
   "log_entries": [
     {
+      "tipo": "system",
+      "data": "2026-03-20",
+      "ora": "05:13",
+      "titolo": "Run automatica – 2026/03/20 05:13 (schedulata)",
+      "descrizione": "TIER PIENA: 2 nuove email Ferrari/Sogei (Richiesta VPN C2S + Pianificazione IAM), 2 eventi calendario (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.",
+      "badge": "🖥️ Sistema",
+      "is_new": true
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-19",
+      "ora": "17:57",
+      "titolo": "🟡 Richiesta VPN C2S",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari chiede a Scaparro abilitazione VPN C2S per 8 utenti Accenture/Avanade per accedere a DPC Onprem, AWS AS-IS, AWS TO-BE e IS.",
+      "badge": "📧 Email PMO",
+      "is_new": true
+    },
+    {
+      "tipo": "email",
+      "data": "2026-03-19",
+      "ora": "16:01",
+      "titolo": "🟢 Pianificazione incontro verticale IAM",
+      "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> → Crisci/Eustema | Ferrari organizza incontro IAM con Leonardo. Disponibilità: Lun 23 pm, Mar 24, Mer 25.",
+      "badge": "📧 Email PMO",
+      "is_new": true
+    },
+    {
+      "tipo": "cal",
+      "data": "2026-03-20",
+      "ora": "05:13",
+      "titolo": "📅 Calendario aggiornato – 2026/03/20 05:13",
+      "descrizione": "FERIE n.1 (tutto il giorno). Sessione 2 Document Platform Funzionalità – SIMpara ore 09:30–12:00 (Teams ID: 370 362 417 820 44, pw: zt7fy3j4).",
+      "badge": "📅 Calendario",
+      "is_new": true
+    },
+    {
+      "tipo": "gantt",
+      "data": "2026-03-20",
+      "ora": "05:13",
+      "titolo": "Gantt aggiornato: 2 nuove voci",
+      "descrizione": "Aggiunte: 'Abilitazione VPN C2S 8 utenti Accenture/Avanade' (pending, VPN) | 'Pianificazione incontro IAM Eustema/Leonardo' (pending, IAM).",
+      "badge": "📈 Gantt",
+      "is_new": true
+    },
+    {
       "tipo": "email",
       "data": "2026-03-19",
       "ora": "12:59",
       "titolo": "Email PMO: Proposta licenza infrastruttura TO-BE",
       "descrizione": "Ferrari/Sogei propone mapping licenze AS-IS→TO-BE: ArcGIS (BYOL), RedHat (Included), Oracle (BYOL), SQL Server (Included). Attende ok DPC.",
       "badge": "🟡 Attenzione",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "system",
