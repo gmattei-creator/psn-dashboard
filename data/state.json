@@ -1,8 +1,8 @@
 {
   "meta": {
-    "last_run_date": "2026-03-20",
-    "last_run_time": "05:13",
-    "run_type": "piena",
+    "last_run_date": "2026-03-24",
+    "last_run_time": "06:09",
+    "run_type": "degradata",
     "pdf_filename": "",
     "processed_message_ids": [
       "19d058fa68c82418",
@@ -504,6 +504,16 @@
   },
   "run_history": [
     {
+      "data": "2026-03-24",
+      "ora": "06:09",
+      "nuove_email": 0,
+      "eventi_cal": 0,
+      "gantt": 16,
+      "pdf": "",
+      "note": "Run degradata: MCP Gmail/Calendar non disponibili in sessione. Nessun dato aggiornato.",
+      "is_current": true
+    },
+    {
       "data": "2026-03-20",
       "ora": "05:13",
       "nuove_email": 2,
@@ -511,7 +521,7 @@
       "gantt": 16,
       "pdf": "",
       "note": "2 nuove email Ferrari (Richiesta VPN C2S + Pianificazione IAM), 2 eventi cal (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.",
-      "is_current": true
+      "is_current": false
     },
     {
       "data": "2026-03-19",
@@ -607,12 +617,21 @@
   "log_entries": [
     {
       "tipo": "system",
+      "data": "2026-03-24",
+      "ora": "06:09",
+      "titolo": "Run automatica – 2026-03-24 06:09 (MCP non disponibile)",
+      "descrizione": "I tool MCP Gmail e Google Calendar non sono stati caricati in questa sessione. Impossibile verificare nuove email Ferrari/Sogei o eventi calendario. Fingerprint non ricalcolabile. Stato invariato rispetto a 2026-03-20 05:13.",
+      "badge": "🖥️ Sistema",
+      "is_new": true
+    },
+    {
+      "tipo": "system",
       "data": "2026-03-20",
       "ora": "05:13",
       "titolo": "Run automatica – 2026/03/20 05:13 (schedulata)",
       "descrizione": "TIER PIENA: 2 nuove email Ferrari/Sogei (Richiesta VPN C2S + Pianificazione IAM), 2 eventi calendario (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.",
       "badge": "🖥️ Sistema",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
@@ -621,7 +640,7 @@
       "titolo": "🟡 Richiesta VPN C2S",
       "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari chiede a Scaparro abilitazione VPN C2S per 8 utenti Accenture/Avanade per accedere a DPC Onprem, AWS AS-IS, AWS TO-BE e IS.",
       "badge": "📧 Email PMO",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
@@ -630,7 +649,7 @@
       "titolo": "🟢 Pianificazione incontro verticale IAM",
       "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> → Crisci/Eustema | Ferrari organizza incontro IAM con Leonardo. Disponibilità: Lun 23 pm, Mar 24, Mer 25.",
       "badge": "📧 Email PMO",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "cal",
@@ -639,7 +658,7 @@
       "titolo": "📅 Calendario aggiornato – 2026/03/20 05:13",
       "descrizione": "FERIE n.1 (tutto il giorno). Sessione 2 Document Platform Funzionalità – SIMpara ore 09:30–12:00 (Teams ID: 370 362 417 820 44, pw: zt7fy3j4).",
       "badge": "📅 Calendario",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "gantt",
@@ -648,7 +667,7 @@
       "titolo": "Gantt aggiornato: 2 nuove voci",
       "descrizione": "Aggiunte: 'Abilitazione VPN C2S 8 utenti Accenture/Avanade' (pending, VPN) | 'Pianificazione incontro IAM Eustema/Leonardo' (pending, IAM).",
       "badge": "📈 Gantt",
-      "is_new": true
+      "is_new": false
     },
     {
       "tipo": "email",
