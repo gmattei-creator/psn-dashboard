@@ -5,412 +5,1419 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PSN Dashboard – DPC</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f1f5f9;color:#1e293b;font-size:14px}
-  /* Login */
-  #login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#1a3a5c,#2563eb);display:flex;align-items:center;justify-content:center;z-index:9999}
-  .login-box{background:white;border-radius:12px;padding:2rem 2.5rem;min-width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center}
-  .login-box h2{color:#1a3a5c;margin-bottom:0.5rem;font-size:1.4rem}
-  .login-box p{color:#64748b;font-size:0.85rem;margin-bottom:1.5rem}
-  .login-box input{width:100%;padding:0.75rem 1rem;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;margin-bottom:0.8rem;outline:none}
-  .login-box input:focus{border-color:#2563eb}
-  .login-box button{width:100%;padding:0.75rem;background:#2563eb;color:white;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:600}
-  .login-box button:hover{background:#1d4ed8}
-  #login-err{color:#dc2626;font-size:0.85rem;margin-bottom:0.5rem;display:none}
-  /* Header */
-  #app{display:none}
-  .hdr{background:linear-gradient(90deg,#1a3a5c,#2563eb);color:white;padding:0.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
-  .hdr-title{font-size:1.2rem;font-weight:700}
-  .hdr-meta{font-size:0.78rem;color:#bfdbfe;text-align:right}
-  .badge-live{background:#10b981;color:white;font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-left:8px;animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
-  .badge-dl{background:#dc2626;color:white;font-size:0.65rem;padding:2px 7px;border-radius:10px}
-  /* Tabs */
-  .tabs{background:white;border-bottom:2px solid #e2e8f0;display:flex;gap:0;overflow-x:auto;padding:0 1rem}
-  .tab-btn{padding:0.75rem 1rem;border:none;background:none;cursor:pointer;font-size:0.82rem;white-space:nowrap;color:#64748b;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s}
-  .tab-btn:hover{color:#2563eb;background:#f8fafc}
-  .tab-btn.active{color:#2563eb;border-bottom-color:#2563eb;background:#eff6ff;font-weight:600}
-  /* Content */
-  .tab-pane{display:none;padding:1.5rem;max-width:1200px;margin:0 auto}
-  .tab-pane.active{display:block}
-  /* Cards */
-  .card{background:white;border-radius:10px;padding:1.2rem;box-shadow:0 1px 4px rgba(0,0,0,0.08);margin-bottom:1rem}
-  .card-title{font-size:0.9rem;font-weight:700;color:#1a3a5c;margin-bottom:0.8rem;display:flex;align-items:center;gap:6px}
-  /* KPI */
-  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem}
-  .kpi-card{background:white;border-radius:10px;padding:1rem;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.08);border-top:3px solid #2563eb}
-  .kpi-val{font-size:2rem;font-weight:800;color:#2563eb}
-  .kpi-lbl{font-size:0.75rem;color:#64748b;margin-top:4px}
-  /* Email list */
-  .email-item{border:1px solid #e2e8f0;border-radius:8px;padding:0.75rem 1rem;margin-bottom:0.5rem;display:flex;align-items:flex-start;gap:0.75rem}
-  .email-item.new{background:#fef9c3;border-color:#fbbf24}
-  .email-prio{font-size:1.1rem;flex-shrink:0}
-  .email-meta{font-size:0.72rem;color:#94a3b8}
-  .email-subj{font-weight:600;font-size:0.85rem;color:#1e293b}
-  .badge-new{background:#f59e0b;color:white;font-size:0.65rem;padding:1px 6px;border-radius:8px;margin-left:6px}
-  .badge-vert{background:#eff6ff;color:#2563eb;font-size:0.7rem;padding:2px 7px;border-radius:8px}
-  /* Gantt */
-  .gantt-table{width:100%;border-collapse:collapse;font-size:0.82rem}
-  .gantt-table th{background:#1a3a5c;color:white;padding:8px 10px;text-align:left}
-  .gantt-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0}
-  .gantt-table tr:hover td{background:#f8fafc}
-  .gantt-table tr.new-row td{background:#fef3c7}
-  .stato-pending{color:#d97706;font-weight:600}
-  .stato-in-progress{color:#2563eb;font-weight:600}
-  .stato-blocked{color:#dc2626;font-weight:600}
-  .stato-completed{color:#10b981;font-weight:600}
-  /* Calendar */
-  .cal-item{border-left:4px solid #2563eb;padding:0.75rem 1rem;margin-bottom:0.75rem;background:white;border-radius:0 8px 8px 0;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
-  .cal-item.new{border-left-color:#f59e0b;background:#fffbeb}
-  .cal-time{font-size:0.78rem;font-weight:700;color:#2563eb}
-  .cal-title{font-weight:600;font-size:0.88rem;margin:2px 0}
-  .cal-teams{font-size:0.72rem;color:#64748b;font-family:monospace}
-  /* Verticali */
-  .vert-item{background:white;border-radius:8px;padding:1rem;margin-bottom:0.6rem;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
-  .vert-name{font-weight:700;color:#1a3a5c;font-size:0.9rem}
-  .vert-bar{height:8px;background:#e2e8f0;border-radius:4px;margin:6px 0}
-  .vert-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:4px}
-  /* Log */
-  .log-filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
-  .log-filter{padding:4px 12px;border:1px solid #e2e8f0;border-radius:20px;background:white;cursor:pointer;font-size:0.78rem;color:#64748b}
-  .log-filter.active{background:#2563eb;color:white;border-color:#2563eb}
-  .log-search{padding:6px 12px;border:1px solid #e2e8f0;border-radius:20px;font-size:0.82rem;outline:none;width:200px}
-  .log-item{border-left:3px solid #e2e8f0;padding:0.6rem 1rem;margin-bottom:0.4rem;background:white;border-radius:0 6px 6px 0;font-size:0.82rem}
-  .log-item.new{background:#fef9c3;border-left-color:#fbbf24}
-  .log-item.email{border-left-color:#2563eb}
-  .log-item.cal{border-left-color:#10b981}
-  .log-item.gantt{border-left-color:#7c3aed}
-  .log-item.system{border-left-color:#64748b}
-  .log-item.action{border-left-color:#f59e0b}
-  .log-title{font-weight:600;color:#1e293b}
-  .log-desc{color:#64748b;font-size:0.78rem;margin-top:2px}
-  .log-badge{display:inline-block;font-size:0.65rem;padding:2px 7px;border-radius:10px;margin-right:4px}
-  .log-badge.email{background:#eff6ff;color:#2563eb}
-  .log-badge.cal{background:#dcfce7;color:#166534}
-  .log-badge.gantt{background:#f3e8ff;color:#7c3aed}
-  .log-badge.system{background:#f1f5f9;color:#475569}
-  /* Storico */
-  .hist-item{background:white;border-radius:8px;padding:1rem;margin-bottom:0.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.07);display:flex;gap:1rem;align-items:flex-start}
-  .hist-item.current{border-left:4px solid #2563eb;background:#eff6ff}
-  .hist-date{font-weight:700;font-size:0.85rem;color:#1a3a5c;min-width:80px}
-  .hist-note{font-size:0.82rem;color:#475569}
-  /* Azioni */
-  .action-item{border:1px solid #e2e8f0;border-radius:8px;padding:0.75rem 1rem;margin-bottom:0.5rem;display:flex;gap:0.75rem}
-  .action-item.new{background:#fef9c3;border-color:#fbbf24}
-  /* Footer */
-  .footer{text-align:center;padding:1rem;font-size:0.72rem;color:#94a3b8;border-top:1px solid #e2e8f0;background:white;margin-top:2rem}
-  @media(max-width:640px){.tab-btn{padding:0.5rem 0.7rem;font-size:0.75rem}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  :root {
+    --blu: #1a3a5c;
+    --blu2: #2563eb;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+  /* ── LOGIN OVERLAY ── */
+  #login-overlay {
+    position: fixed; inset: 0; background: var(--blu);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+  }
+  .login-box {
+    background: white; border-radius: 12px; padding: 2rem 2.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4); min-width: 320px; text-align: center;
+  }
+  .login-box h2 { color: var(--blu); margin-bottom: 1.5rem; font-size: 1.1rem; }
+  .login-box input {
+    width: 100%; padding: 0.7rem 1rem; border: 1.5px solid var(--border);
+    border-radius: 6px; font-size: 1rem; margin-bottom: 0.5rem;
+  }
+  .login-box button {
+    width: 100%; padding: 0.7rem; background: var(--blu2); color: white;
+    border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; margin-top: 0.5rem;
+  }
+  .login-box button:hover { background: var(--blu); }
+  #login-error { color: #dc2626; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--blu) 0%, #1e4d8c 100%);
+    color: white; padding: 0.8rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-title { font-size: 1.1rem; font-weight: 700; }
+  .header-sub { font-size: 0.75rem; opacity: 0.8; }
+  .live-badge {
+    background: #22c55e; color: white; padding: 0.2rem 0.6rem;
+    border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+
+  /* ── TABS ── */
+  .tabs { background: white; border-bottom: 2px solid var(--border); padding: 0 1rem; display: flex; }
+  .tab-btn {
+    padding: 0.7rem 1rem; border: none; background: none; cursor: pointer;
+    font-size: 0.85rem; color: var(--muted); border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--blu2); }
+  .tab-btn.active { color: var(--blu2); border-bottom-color: var(--blu2); background: #eff6ff; font-weight: 600; }
+
+  /* ── CONTENT ── */
+  .tab-content { display: none; padding: 1.2rem 1.5rem; }
+  .tab-content.active { display: block; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+  .kpi-card {
+    background: white; border-radius: 8px; padding: 0.9rem 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center;
+    border-top: 3px solid var(--blu2);
+  }
+  .kpi-card .kpi-num { font-size: 1.8rem; font-weight: 700; color: var(--blu2); }
+  .kpi-card .kpi-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+  .badge-critical { background: #fee2e2; color: #dc2626; }
+  .badge-warn { background: #fef3c7; color: #d97706; }
+  .badge-info { background: #dbeafe; color: #1d4ed8; }
+  .badge-progress { background: #e0f2fe; color: #0369a1; }
+  .badge-ok { background: #dcfce7; color: #16a34a; }
+  .badge-new { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+
+  /* ── TABLES ── */
+  .data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .data-table th { background: var(--blu); color: white; padding: 0.5rem 0.7rem; font-size: 0.8rem; text-align: left; }
+  .data-table td { padding: 0.45rem 0.7rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #f8fafc; }
+  .row-new td { background: #fef9c3 !important; }
+  .row-new td:first-child { border-left: 3px solid #f59e0b; }
+  .row-blocked td { background: #fee2e2 !important; }
+  .row-current td { background: #eff6ff !important; font-weight: 600; }
+
+  /* ── AZIONI ── */
+  .azioni-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .azione-card { background: white; border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border-left: 4px solid var(--blu2); }
+  .azione-critica { border-left-color: #dc2626; background: #fff5f5; }
+  .azione-new { border-left-color: #f59e0b; background: #fffbeb; }
+  .azione-title { font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .azione-note { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.15rem; }
+  .azione-meta { font-size: 0.72rem; color: #94a3b8; }
+
+  /* ── CALENDARIO ── */
+  .cal-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+  .cal-card { background: white; border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border-left: 4px solid var(--blu2); }
+  .cal-new { border-left-color: #f59e0b; background: #fffbeb; }
+  .cal-time { font-size: 1rem; font-weight: 700; color: var(--blu2); }
+  .cal-title { font-size: 0.9rem; font-weight: 600; }
+  .cal-note { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+  .cal-card a { color: var(--blu2); text-decoration: none; }
+
+  /* ── VERTICALI ── */
+  .vert-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+  .vert-card { background: white; border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+  .vert-name { font-weight: 700; color: var(--blu); margin-bottom: 0.4rem; }
+  .vert-bar-bg { background: var(--border); border-radius: 4px; height: 8px; margin-bottom: 0.3rem; }
+  .vert-bar { background: var(--blu2); border-radius: 4px; height: 8px; transition: width 0.5s; }
+  .vert-stats { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── LOG ── */
+  .log-toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; align-items: center; }
+  .log-filter-btn { padding: 0.3rem 0.7rem; border: 1px solid var(--border); background: white; border-radius: 20px; cursor: pointer; font-size: 0.78rem; }
+  .log-filter-btn.active { background: var(--blu2); color: white; border-color: var(--blu2); }
+  .log-search { padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 20px; font-size: 0.78rem; min-width: 200px; }
+  .log-entries { display: flex; flex-direction: column; gap: 0.4rem; }
+  .log-entry { background: white; border-radius: 8px; padding: 0.6rem 0.8rem; box-shadow: 0 1px 2px rgba(0,0,0,0.06); display: flex; gap: 0.7rem; align-items: flex-start; }
+  .log-new { background: #fffbeb; border-left: 3px solid #f59e0b; }
+  .log-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .log-title { font-size: 0.83rem; font-weight: 600; }
+  .log-desc { font-size: 0.78rem; color: var(--muted); }
+  .log-meta { font-size: 0.72rem; color: #94a3b8; margin-top: 0.15rem; }
+
+  /* ── OVERVIEW EMAIL MINI ── */
+  .email-mini { background: white; border-radius: 6px; padding: 0.6rem 0.8rem; margin-bottom: 0.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.06); border-left: 3px solid #f59e0b; }
+
+  /* ── SECTION TITLE ── */
+  .section-title { font-size: 1rem; font-weight: 700; color: var(--blu); margin: 1rem 0 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--blu); color: white; text-align: center; padding: 0.5rem; font-size: 0.75rem; opacity: 0.9; }
+
+  @media(max-width:768px) {
+    .kpi-grid { grid-template-columns: repeat(3,1fr); }
+    .vert-grid { grid-template-columns: repeat(2,1fr); }
+    .tabs { overflow-x: auto; }
+  }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN OVERLAY -->
 <div id="login-overlay">
   <div class="login-box">
-    <h2>🔒 PSN Dashboard</h2>
-    <p>Dipartimento della Protezione Civile<br>Polo Strategico Nazionale</p>
-    <div id="login-err">❌ Password non valida.</div>
-    <input type="password" id="pwd-input" placeholder="Password" autocomplete="current-password">
+    <h2>🛡️ PSN Dashboard – DPC<br/><small>🔒 Accesso riservato</small></h2>
+    <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
     <button onclick="doLogin()">Accedi</button>
+    <div id="login-error">❌ Password non valida.</div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <div class="hdr">
-    <div>
-      <span class="hdr-title">📊 PSN Dashboard – DPC</span>
-      <span class="badge-live">● LIVE</span>
-      <span class="badge-dl">🔒 DIFFUSIONE LIMITATA</span>
-    </div>
-    <div class="hdr-meta">
-      Run: 2026-03-24 10:51<br>
-      Polo Strategico Nazionale | IT Infrastructure
-    </div>
-  </div>
+<!-- MAIN APP -->
+<div id="app" style="display:none">
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
-    <button class="tab-btn" onclick="showTab('email')">📧 Email PMO</button>
-    <button class="tab-btn" onclick="showTab('calendario')">📅 Calendario</button>
-    <button class="tab-btn" onclick="showTab('gantt')">📈 Gantt</button>
-    <button class="tab-btn" onclick="showTab('verticali')">🏗 Verticali</button>
-    <button class="tab-btn" onclick="showTab('storico')">🕐 Storico</button>
-    <button class="tab-btn" onclick="showTab('log')">📋 Log</button>
+<header>
+  <div>
+    <div class="header-title">🛡️ PSN Dashboard – Polo Strategico Nazionale</div>
+    <div class="header-sub">Dipartimento della Protezione Civile | 2026-03-31 09:00 | 🔒 DIFFUSIONE LIMITATA</div>
   </div>
+  <span class="live-badge">● LIVE</span>
+</header>
 
-  <!-- TAB OVERVIEW -->
-  <div id="tab-overview" class="tab-pane active">
-    <div class="kpi-grid" id="kpi-container"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-      <div class="card">
-        <div class="card-title">⚡ Azioni Prioritarie</div>
-        <div id="azioni-overview"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">📧 Ultime Email</div>
-        <div id="email-overview"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB EMAIL -->
-  <div id="tab-email" class="tab-pane">
-    <div class="card">
-      <div class="card-title">📧 Email PMO – Ferrari/Sogei</div>
-      <div id="email-full"></div>
-    </div>
-  </div>
-
-  <!-- TAB CALENDARIO -->
-  <div id="tab-calendario" class="tab-pane">
-    <div class="card">
-      <div class="card-title">📅 Riunioni del Giorno – 2026-03-24</div>
-      <div id="cal-container"></div>
-    </div>
-  </div>
-
-  <!-- TAB GANTT -->
-  <div id="tab-gantt" class="tab-pane">
-    <div class="card">
-      <div class="card-title">📈 Gantt Attività PSN</div>
-      <div style="overflow-x:auto"><table class="gantt-table" id="gantt-table">
-        <thead><tr>
-          <th>Attività</th><th>Stato</th><th>Owner</th><th>Verticale</th><th>%</th><th>Fonte</th><th>Note</th>
-        </tr></thead>
-        <tbody id="gantt-body"></tbody>
-      </table></div>
-    </div>
-  </div>
-
-  <!-- TAB VERTICALI -->
-  <div id="tab-verticali" class="tab-pane">
-    <div class="card">
-      <div class="card-title">🏗 Stato Verticali PSN</div>
-      <div id="vert-container"></div>
-    </div>
-  </div>
-
-  <!-- TAB STORICO -->
-  <div id="tab-storico" class="tab-pane">
-    <div class="card">
-      <div class="card-title">🕐 Storico Run Automatici</div>
-      <div id="storico-container"></div>
-    </div>
-  </div>
-
-  <!-- TAB LOG -->
-  <div id="tab-log" class="tab-pane">
-    <div class="card">
-      <div class="card-title">📋 Timeline Attività</div>
-      <div class="log-filters">
-        <button class="log-filter active" onclick="filterLog('all',this)">Tutti</button>
-        <button class="log-filter" onclick="filterLog('email',this)">Email</button>
-        <button class="log-filter" onclick="filterLog('cal',this)">Riunioni</button>
-        <button class="log-filter" onclick="filterLog('action',this)">Azioni</button>
-        <button class="log-filter" onclick="filterLog('excel',this)">Excel</button>
-        <button class="log-filter" onclick="filterLog('gantt',this)">Gantt</button>
-        <button class="log-filter" onclick="filterLog('system',this)">Sistema</button>
-        <input type="text" class="log-search" placeholder="🔍 Cerca..." oninput="searchLog(this.value)">
-      </div>
-      <div id="log-container"></div>
-    </div>
-  </div>
-
-  <div class="footer">🔒 DIFFUSIONE LIMITATA – DPC IT Infrastructure | PSN Monitor | 2026-03-24 10:51 | <a href="https://gmattei-creator.github.io/psn-dashboard/" style="color:#2563eb">Dashboard Online</a></div>
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">📊 Overview</button>
+  <button class="tab-btn" onclick="showTab('email')">📧 Email PMO</button>
+  <button class="tab-btn" onclick="showTab('calendario')">📅 Calendario</button>
+  <button class="tab-btn" onclick="showTab('gantt')">📈 Gantt</button>
+  <button class="tab-btn" onclick="showTab('verticali')">🏗 Verticali</button>
+  <button class="tab-btn" onclick="showTab('storico')">🕐 Storico</button>
+  <button class="tab-btn" onclick="showTab('log')">📋 Log</button>
 </div>
+
+<!-- TAB 1: OVERVIEW -->
+<div id="tab-overview" class="tab-content active">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-num">63</div><div class="kpi-lbl">📧 Email Totali</div></div>
+    <div class="kpi-card"><div class="kpi-num">20</div><div class="kpi-lbl">📈 Gantt Aperti</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:#16a34a">12</div><div class="kpi-lbl">✉️ Nuove Email</div></div>
+    <div class="kpi-card"><div class="kpi-num">5</div><div class="kpi-lbl">📅 Riunioni Oggi</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:#dc2626">1</div><div class="kpi-lbl">🔴 Critici</div></div>
+  </div>
+
+  <div class="section-title">⚡ Azioni Prioritarie</div>
+  <div class="azioni-list">
+<div class="azione-card azione-critica">
+            <div class="azione-title"><span class="badge badge-critical">🔴 Critico</span> <b>🚨 Fornire URGENTE piano indirizzamento Tenant Sicurezza/Backend a Leonardo</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">Leonardo è BLOCCATO. 2 subnet /23 (Nord/Sud) per Tenant Sicurezza + piano Tenant Backend. Sollecito Ferrari 30/03.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: Infrastruttura</div>
+        </div>
+<div class="azione-card azione-new">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Autorizzare avvio POOL LARGE IAAS16 per VM Bastion</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">Ferrari attende ok DPC per anticipata esecuzione. Costo: €4.963,803/anno.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: IaaS</div>
+        </div>
+<div class="azione-card azione-new">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Creare utenze CaaS CIMA Foundation + Sogei (7 utenti) su PSN</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">PSN03159380 e PSN03159375. 5 CIMA (Botto, Riolfo, Casasola, Burastero, Pintus) + 2 Sogei (Ciano, Barboni). Poi TT verso PSN.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: CaaS</div>
+        </div>
+<div class="azione-card azione-new">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Revisione PPDF e domanda finanziamento (esclusione SAE/CSRS/Designa)</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">SAE, CSRS e Designa esclusi dalla migrazione. Impatto su domanda finanziamento, PPDF e configuratore.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: Finanziamento</div>
+        </div>
+<div class="azione-card azione-new">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Partecipare riunione Teams migrazione servizi (Teams 339 516 150 781 22)</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">Ferrari ha fissato riunione su avanzamento migrazione. PW: pw2vS9Wi.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: PSN</div>
+        </div>
+<div class="azione-card azione-new">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Valutare integrazione KeyCloak per applicazioni Eustema</b> <span class="badge badge-new">🆕</span></div>
+            <div class="azione-note">Eustema non usa KeyCloak. Stimare tempi/effort integrazione con impatti sul piano IAM.</div>
+            <div class="azione-meta">Owner: DPC/Eustema | Verticale: IAM</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Partecipare/organizzare riunione Verticale AKAMAI - PSN DPC</b> </div>
+            <div class="azione-note">Teams ID: 351 581 470 730 41, passcode uE6ka7Qp.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: PSN</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Rispondere a Ferrari su compilazione Infogathering DPC</b> </div>
+            <div class="azione-note">Ferrari attende da CIMA/Versace conferma compilazione documento Infogathering con Leonardo per verticale IAM.</div>
+            <div class="azione-meta">Owner: DPC/CIMA | Verticale: IAM</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Abilitare VPN C2S per 8 utenti Accenture/Avanade</b> </div>
+            <div class="azione-note">Ferrari ha chiesto a Scaparro. Verificare abilitazione reti: DPC Onprem, AWS AS-IS, AWS TO-BE, IS.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: VPN</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Rispondere a Ferrari su proposta licenze TO-BE</b> </div>
+            <div class="azione-note">ArcGIS, Oracle, SQL Server, RedHat.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: PSN/Fornitori</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Creare utenza CaaS Maurizio Natalia + TT abilitazione</b> </div>
+            <div class="azione-note">Utenza su TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: CaaS</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Confermare sottomissione infrastruttura IS III WAVE</b> </div>
+            <div class="azione-note">TIM ha preparato export configuratore OL per DC Acilia, San Stefano IT-Alert, Pomezia. DPC deve dare approvazione.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: Infrastruttura</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Revisione documento variazione finanziamento v0.2</b> </div>
+            <div class="azione-note">Bozza ricevuta da Ferrari. DPC deve revisionare e approvare.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: Finanziamento</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT</b> </div>
+            <div class="azione-note">Ferrari in attesa di risposta DPC sulla firma del documento.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: Sicurezza</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Verificare abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)</b> </div>
+            <div class="azione-note">Ferrari ha chiesto a Stripoli (TIM). In attesa di conferma.</div>
+            <div class="azione-meta">Owner: DPC | Verticale: CaaS</div>
+        </div>
+<div class="azione-card azione-normal">
+            <div class="azione-title"><span class="badge badge-warn">🟡 Attenzione</span> <b>Creare utenze secondarie IaaS - 5 utenti Leonardo</b> </div>
+            <div class="azione-note">Borghesi, Galletti, Viscomi, Di Girolamo, Arcuri (@leonardo.com).</div>
+            <div class="azione-meta">Owner: DPC | Verticale: IaaS</div>
+        </div>
+
+  </div>
+
+  <div class="section-title">📧 Ultime 4 Nuove Email Ferrari</div>
+<div class="email-mini">
+            <span class="badge badge-warn">🟡 Attenzione</span> <b>Richiesta creazione utenze secondarie CaaS CIMA</b>
+            <span class="badge badge-new">🆕</span><br/>
+            <small>2026-03-30 | CaaS</small>
+        </div><div class="email-mini">
+            <span class="badge badge-warn">🟡 Attenzione</span> <b>Richiesta piano indirizzamento (sollecito urgente)</b>
+            <span class="badge badge-new">🆕</span><br/>
+            <small>2026-03-30 | Infrastruttura</small>
+        </div><div class="email-mini">
+            <span class="badge badge-warn">🟡 Attenzione</span> <b>Stato avanzamento attività e migrazione servizi</b>
+            <span class="badge badge-new">🆕</span><br/>
+            <small>2026-03-27 | PSN</small>
+        </div><div class="email-mini">
+            <span class="badge badge-warn">🟡 Attenzione</span> <b>R: Richiesta piano indirizzamenti Tenant Sicurezza e Backend</b>
+            <span class="badge badge-new">🆕</span><br/>
+            <small>2026-03-27 | Infrastruttura</small>
+        </div>
+</div>
+
+<!-- TAB 2: EMAIL PMO -->
+<div id="tab-email" class="tab-content">
+  <table class="data-table">
+    <thead><tr><th>Data</th><th>Prio</th><th>Oggetto</th><th>Verticale</th><th>Note</th></tr></thead>
+    <tbody>
+<tr class="row-new">
+            <td>03-30</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta creazione utenze secondarie CaaS CIMA <span class="badge badge-new">🆕</span></td>
+            <td>CaaS</td>
+            <td><small>Ferrari chiede a Giordano creazione utenze secondarie CaaS IT ALERT: 5 CIMA Foundation (Andrea Botto, Simone Riolfo, Ale</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-30</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta piano indirizzamento (sollecito urgente) <span class="badge badge-new">🆕</span></td>
+            <td>Infrastruttura</td>
+            <td><small>Ferrari sollecita Giordano e Pietro: &#x27;tempi stretti, bloccati dalla richiesta&#x27; del piano indirizzamento per Leonardo. Al</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-27</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Stato avanzamento attività e migrazione servizi <span class="badge badge-new">🆕</span></td>
+            <td>PSN</td>
+            <td><small>Ferrari fissa riunione Teams su avanzamento migrazione: Teams ID 339 516 150 781 22, PW pw2vS9Wi. Link: https://teams.mi</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-27</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>R: Richiesta piano indirizzamenti Tenant Sicurezza e Backend <span class="badge badge-new">🆕</span></td>
+            <td>Infrastruttura</td>
+            <td><small>Ferrari sollecita Antonio Catamo (DPC) in CC a tutto il gruppo di lavoro. Giordano aveva già scritto a Catamo. Ancora in</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-27</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Servizi in scope oggetto di migrazione DPC <span class="badge badge-new">🆕</span></td>
+            <td>PSN</td>
+            <td><small>SAE, CSRS e Designa esclusi dalla migrazione su decisione DPC (valutazioni tecniche). Va rivista la domanda di finanziam</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-27</td>
+            <td><span class="badge badge-info">🟢 Info</span></td>
+            <td>R: Utenze per accesso al CaaS - IT ALERT (risposta Cosimo) <span class="badge badge-new">🆕</span></td>
+            <td>CaaS</td>
+            <td><small>Cosimo Versace (CIMA Foundation, Direttore IT) ha fornito lista utenti CaaS IT ALERT: Andrea Botto, Simone Riolfo, Aless</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-26</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta piano indirizzamenti Tenant Sicurezza e Backend <span class="badge badge-new">🆕</span></td>
+            <td>Infrastruttura</td>
+            <td><small>Ferrari chiede a Giordano piano indirizzamento Tenant Sicurezza (2 subnet /23 Nord/Sud, diverse da on-prem per evitare o</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-26</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta rimodulazione Piano Fabbisogni - POOL LARGE <span class="badge badge-new">🆕</span></td>
+            <td>IaaS</td>
+            <td><small>Ferrari richiede autorizzazione DPC per avvio delivery POOL LARGE (VM Bastion): IAAS16 IndustryStandard Shared HA Pool L</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-26</td>
+            <td><span class="badge badge-info">🟢 Info</span></td>
+            <td>R: Incontro con AKAMAI <span class="badge badge-new">🆕</span></td>
+            <td>PSN</td>
+            <td><small>Ferrari ricorda il calendar Verticale AKAMAI già fissato, stesso orario. Teams: https://teams.microsoft.com/meet/3515814</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-25</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>R: dpc_gantt - SAL 25/03/2026 <span class="badge badge-new">🆕</span></td>
+            <td>PSN</td>
+            <td><small>Ferrari invia Gantt Excel SAL 25/03/2026 (DPC SAL_ Gantt 25032026.xlsx) da presentare al SAL di domani.</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-25</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>R: Utenze per accesso al CaaS - IT ALERT <span class="badge badge-new">🆕</span></td>
+            <td>CaaS</td>
+            <td><small>Sollecito a Cosimo Versace (CIMA) per lista utenti CaaS IT ALERT da abilitare (Nome/Cognome/Mail/Telefono).</small></td>
+        </tr>
+<tr class="row-new">
+            <td>03-24</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>I: Pianificazione incontro per integrazione IAM <span class="badge badge-new">🆕</span></td>
+            <td>IAM</td>
+            <td><small>Eustema non usa KeyCloak: nessuna app si avvale di Keycloak. DPC/Eustema devono valutare integrazione con stima tempi/ef</small></td>
+        </tr>
+<tr class="">
+            <td>03-24</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Verticale AKAMAI - PSN DPC </td>
+            <td>PSN</td>
+            <td><small>Ferrari fissa agenda riunione verticale AKAMAI con DPC, Accenture, BVTech, Leonardo, Sogei. Teams ID: 351 581 470 730 41</small></td>
+        </tr>
+<tr class="">
+            <td>03-24</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Infoghatering DPC </td>
+            <td>IAM</td>
+            <td><small>Ferrari chiede a Cosimo Versace (CIMA) se Leonardo ha compilato il documento di Infogathering DPC per il verticale IAM.</small></td>
+        </tr>
+<tr class="">
+            <td>03-19</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta VPN C2S </td>
+            <td>VPN</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-19</td>
+            <td><span class="badge badge-info">🟢 Info</span></td>
+            <td>Pianificazione incontro per integrazione IAM </td>
+            <td>IAM</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-19</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Proposta licenza infrastruttura TO-BE </td>
+            <td>PSN/Fornitori</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-18</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>dpc_gantt - SAL 19/03/2026 </td>
+            <td>PSN</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-18</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Abilitazione TT Leonardo su tutte TGU (Bani, Natalia, Battaglia) </td>
+            <td>CaaS</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-18</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia) </td>
+            <td>CaaS</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-17</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Creazione utenze secondarie </td>
+            <td>IaaS</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-16</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Assessment - SAE E CSRS </td>
+            <td>Fornitori Appl.</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-16</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Domanda finanziamento DPC - Variazione </td>
+            <td>Finanziamento</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-16</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Richiesta TT INC000007651467 e INC000007651466 - CaaS </td>
+            <td>CaaS</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-16</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Incontro in presenza confermato - 17/03 ore 10:30 </td>
+            <td>Fornitori Appl.</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-12</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Conferma approvazione infrastruttura IS - III WAVE </td>
+            <td>Infrastruttura</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-12</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Utenze da creare CaaS </td>
+            <td>CaaS</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-11</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Utenze per accesso al Caas - IT ALERT </td>
+            <td>PSN</td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>03-11</td>
+            <td><span class="badge badge-warn">🟡 Attenzione</span></td>
+            <td>Manvela attivazione servizi di sicurezza VA-DAST-PT </td>
+            <td>Sicurezza</td>
+            <td><small></small></td>
+        </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- TAB 3: CALENDARIO -->
+<div id="tab-calendario" class="tab-content">
+  <div class="section-title">📅 Riunioni di Oggi – 2026-03-31</div>
+  <div class="cal-grid">
+<div class="cal-card cal-new">
+            <div class="cal-time"><b>09:30–16:30</b></div>
+            <div class="cal-title">Protezione Civile - Nutanix NKP Design - workshop session <span class="badge badge-new">🆕</span> <a href="https://nutanix.zoom.us/j/95948963513" target="_blank">🔗 Partecipa</a></div>
+            <div class="cal-note">Estendere a: risorse networking, infrastrutture, containers/K8s. Ref: Antonio Sgobba (Nutanix PS) +39 331 622 7558</div>
+        </div>
+<div class="cal-card cal-new">
+            <div class="cal-time"><b>09:30–17:30</b></div>
+            <div class="cal-title">NDB Design DPC <span class="badge badge-new">🆕</span> <a href="https://nutanix.zoom.us/j/94486271436" target="_blank">🔗 Partecipa</a></div>
+            <div class="cal-note">Gaetano Di Matteo [C]. Zoom password: 190374</div>
+        </div>
+<div class="cal-card cal-new">
+            <div class="cal-time"><b>11:00–12:00</b></div>
+            <div class="cal-title">SAL - documentale Protezione Civile <span class="badge badge-new">🆕</span> </div>
+            <div class="cal-note">O.d.g.: Gestione attività/entry point DPC; Flussi approvazione; Comunicazioni; Repository documentazione</div>
+        </div>
+<div class="cal-card cal-new">
+            <div class="cal-time"><b>12:00–13:00</b></div>
+            <div class="cal-title">Servizio AGITEC <span class="badge badge-new">🆕</span> </div>
+            <div class="cal-note">Riunione Teams con Ferrari Emiliano (Sogei) su Servizio AGITEC</div>
+        </div>
+<div class="cal-card cal-new">
+            <div class="cal-time"><b>12:00–13:00</b></div>
+            <div class="cal-title">Analisi Utenti DB Budibase <span class="badge badge-new">🆕</span> </div>
+            <div class="cal-note">Bonifica Utenze DB Budibase. Riunione Teams.</div>
+        </div>
+
+  </div>
+</div>
+
+<!-- TAB 4: GANTT -->
+<div id="tab-gantt" class="tab-content">
+  <table class="data-table">
+    <thead><tr><th>Attività</th><th>Stato</th><th>Owner</th><th>Verticale</th><th>Fonte</th><th>Note</th></tr></thead>
+    <tbody>
+<tr class="">
+            <td>Riunione Verticale AKAMAI - PSN DPC </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>PSN</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari fissa agenda riunione verticale AKAMAI con DPC, Accenture, BVTech, Leonardo, Sogei. Teams ID</small></td>
+        </tr>
+<tr class="">
+            <td>Compilazione documento Infogathering DPC - Leonardo/CIMA </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>CIMA/Leonardo</td>
+            <td>IAM</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari chiede a Cosimo Versace (CIMA) se Leonardo ha compilato il documento Infogathering per il ve</small></td>
+        </tr>
+<tr class="">
+            <td>Abilitazione VPN C2S - 8 utenti Accenture/Avanade </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>Scaparro/RTI</td>
+            <td>VPN</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari chiede a Scaparro supporto per abilitazione VPN C2S: Micciché, Scordio, Moroniti, Cellamare </small></td>
+        </tr>
+<tr class="">
+            <td>Pianificazione incontro verticale IAM - Eustema/Leonardo </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>IAM</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari organizza incontro IAM con Crisci (Eustema) e Leonardo. Follow-up: Eustema non usa KeyCloak,</small></td>
+        </tr>
+<tr class="">
+            <td>Approvazione proposta licenze TO-BE (ArcGIS, Oracle, SQL Server, RedHa </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>PSN/Fornitori</td>
+            <td></td>
+            <td><small></small></td>
+        </tr>
+<tr class="">
+            <td>Accesso DB AS-IS Eustema - AWS </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC/Eustema</td>
+            <td>AWS</td>
+            <td>✉️ Email</td>
+            <td><small>Richiesta accesso a 5 DB AS-IS (Cartis, Check-in, Donazioni, Designa, Contributi)</small></td>
+        </tr>
+<tr class="">
+            <td>Invio Gantt Excel aggiornato #dpc_gantt </td>
+            <td><span class="badge badge-ok">✅ Completato</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>PSN</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari ha inviato il Gantt Excel SAL 19/03/2026 (DPC - SAL Gantt 19032026.xlsx).</small></td>
+        </tr>
+<tr class="">
+            <td>Approvazione Manvela VA-DAST-PT </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>Sicurezza</td>
+            <td>✉️ Email</td>
+            <td><small>Bozza Manvela per attivazione servizi VA-DAST-PT. In attesa conferma doppio Dipartimento e doppia fi</small></td>
+        </tr>
+<tr class="">
+            <td>Lista utenti CaaS - IT ALERT </td>
+            <td><span class="badge badge-ok">✅ Completato</span></td>
+            <td>DPC</td>
+            <td>PSN</td>
+            <td>✉️ Email</td>
+            <td><small>Lista ricevuta da Cosimo Versace (CIMA Foundation): Andrea Botto, Simone Riolfo, Alessandro Casasola</small></td>
+        </tr>
+<tr class="">
+            <td>Conferma sottomissione infrastruttura IS - III WAVE </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>Infrastruttura</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari richiede approvazione DPC per attivazione Housing III Wave: DC Acilia, San Stefano (IT-Alert</small></td>
+        </tr>
+<tr class="">
+            <td>Creazione utenza CaaS - Maurizio Natalia (Leonardo) </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>CaaS</td>
+            <td>✉️ Email</td>
+            <td><small>Creare utenza secondaria su TGU PSN03173885 e PSN03173849 per Maurizio Natalia (maurizio.natalia@leo</small></td>
+        </tr>
+<tr class="">
+            <td>Abilitazione TT CaaS - INC000007651467/466 </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>CaaS</td>
+            <td>✉️ Email</td>
+            <td><small>Ticket TT aperti al PSN per abilitazione utenza CaaS Maurizio Natalia. In attesa di riscontro da ass</small></td>
+        </tr>
+<tr class="">
+            <td>Revisione documento variazione finanziamento </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>Finanziamento</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari invia bozza v0.2. DPC deve revisionare e approvare.</small></td>
+        </tr>
+<tr class="">
+            <td>Incontro in presenza SAE/CSRS - 17/03 ore 10:30 </td>
+            <td><span class="badge badge-ok">✅ Completato</span></td>
+            <td>DPC/Sogei</td>
+            <td>Fornitori Appl.</td>
+            <td>✉️ Email</td>
+            <td><small>Confermato. Ferrari, Ciano, Perfumo (Sogei) a DPC Via Vitorchiano 4. SAE e CSRS esclusi dalla migraz</small></td>
+        </tr>
+<tr class="">
+            <td>Assessment SAE e CSRS (Teams) </td>
+            <td><span class="badge badge-ok">✅ Completato</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>Fornitori Appl.</td>
+            <td>✉️ Email</td>
+            <td><small>Assessment completato. SAE e CSRS esclusi dalla migrazione su decisione DPC (comunicazione Ferrari 2</small></td>
+        </tr>
+<tr class="">
+            <td>Creazione utenze secondarie IaaS - Leonardo (5 utenti) </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>IaaS</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari invia lista utenze IaaS Leonardo: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio D</small></td>
+        </tr>
+<tr class="">
+            <td>SAL Gantt PSN – 19/03/2026 </td>
+            <td><span class="badge badge-ok">✅ Completato</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>PSN</td>
+            <td>📎 Excel</td>
+            <td><small>Ferrari invia Gantt Excel SAL avanzamento lavori (DPC - SAL Gantt 19032026.xlsx). SAL 19/03 ore 11:0</small></td>
+        </tr>
+<tr class="">
+            <td>Abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia) </td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>TIM/PSN</td>
+            <td>CaaS</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia su tutt</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Valutazione integrazione KeyCloak - Eustema <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC/Eustema</td>
+            <td>IAM</td>
+            <td>✉️ Email</td>
+            <td><small>Eustema non usa KeyCloak. DPC deve valutare integrazione e stimare tempi/effort con impatti sul pian</small></td>
+        </tr>
+<tr class="row-new">
+            <td>SAL Gantt PSN – 25/03/2026 <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-progress">🔄 In corso</span></td>
+            <td>Ferrari/Sogei</td>
+            <td>PSN</td>
+            <td>📎 Excel</td>
+            <td><small>Ferrari invia Gantt Excel SAL 25/03/2026 (DPC SAL_ Gantt 25032026.xlsx) da presentare al SAL del 26/</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Autorizzazione POOL LARGE IAAS16 - VM Bastion <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>IaaS</td>
+            <td>✉️ Email</td>
+            <td><small>DPC deve autorizzare avvio delivery POOL LARGE: IAAS16 IndustryStandard Shared HA - €4.963,803/anno.</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Piano indirizzamento Tenant Sicurezza e Backend <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-critical">🔴 Bloccato</span></td>
+            <td>DPC</td>
+            <td>Infrastruttura</td>
+            <td>✉️ Email</td>
+            <td><small>DPC deve fornire 2 subnet /23 (Nord/Sud) per Tenant Sicurezza e piano Tenant Backend a Ferrari/Leona</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Revisione PPDF e domanda finanziamento (esclusione SAE/CSRS/Designa) <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>Finanziamento</td>
+            <td>✉️ Email</td>
+            <td><small>SAE, CSRS e Designa esclusi dalla migrazione. DPC deve rivedere domanda finanziamento, PPDF e config</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Riunione stato avanzamento migrazione servizi <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>PSN</td>
+            <td>✉️ Email</td>
+            <td><small>Ferrari fissa riunione Teams avanzamento migrazione. Teams ID 339 516 150 781 22, PW pw2vS9Wi.</small></td>
+        </tr>
+<tr class="row-new">
+            <td>Creazione utenze CaaS - CIMA Foundation + Sogei (7 utenti) <span class="badge badge-new">🆕</span></td>
+            <td><span class="badge badge-warn">⏳ Pending</span></td>
+            <td>DPC</td>
+            <td>CaaS</td>
+            <td>✉️ Email</td>
+            <td><small>Creare utenze secondarie CaaS su PSN03159380 e PSN03159375: 5 CIMA Foundation (Botto, Riolfo, Casaso</small></td>
+        </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- TAB 5: VERTICALI -->
+<div id="tab-verticali" class="tab-content">
+  <div class="vert-grid">
+
+        <div class="vert-card">
+            <div class="vert-name">IAM</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:16%"></div></div>
+            <div class="vert-stats">Aperti: <b>5</b> | Chiusi: <b>1</b> | <b>16%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">AWS</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:33%"></div></div>
+            <div class="vert-stats">Aperti: <b>4</b> | Chiusi: <b>2</b> | <b>33%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">VPN</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:25%"></div></div>
+            <div class="vert-stats">Aperti: <b>3</b> | Chiusi: <b>1</b> | <b>25%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">DB</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:33%"></div></div>
+            <div class="vert-stats">Aperti: <b>2</b> | Chiusi: <b>1</b> | <b>33%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">Finanziamento</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:0%"></div></div>
+            <div class="vert-stats">Aperti: <b>3</b> | Chiusi: <b>0</b> | <b>0%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">SAL</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:50%"></div></div>
+            <div class="vert-stats">Aperti: <b>1</b> | Chiusi: <b>1</b> | <b>50%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">Fornitori Appl.</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:100%"></div></div>
+            <div class="vert-stats">Aperti: <b>0</b> | Chiusi: <b>2</b> | <b>100%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">PSN</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:33%"></div></div>
+            <div class="vert-stats">Aperti: <b>6</b> | Chiusi: <b>3</b> | <b>33%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">Sicurezza</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:0%"></div></div>
+            <div class="vert-stats">Aperti: <b>1</b> | Chiusi: <b>0</b> | <b>0%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">Infrastruttura</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:0%"></div></div>
+            <div class="vert-stats">Aperti: <b>2</b> | Chiusi: <b>0</b> | <b>0%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">CaaS</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:20%"></div></div>
+            <div class="vert-stats">Aperti: <b>4</b> | Chiusi: <b>1</b> | <b>20%</b></div>
+        </div>
+        <div class="vert-card">
+            <div class="vert-name">IaaS</div>
+            <div class="vert-bar-bg"><div class="vert-bar" style="width:0%"></div></div>
+            <div class="vert-stats">Aperti: <b>2</b> | Chiusi: <b>0</b> | <b>0%</b></div>
+        </div>
+  </div>
+</div>
+
+<!-- TAB 6: STORICO -->
+<div id="tab-storico" class="tab-content">
+  <table class="data-table">
+    <thead><tr><th>Data</th><th>Ora</th><th>Email</th><th>Cal</th><th>Gantt</th><th>PDF</th><th>Note</th></tr></thead>
+    <tbody>
+<tr class="row-current">
+            <td>2026-03-31</td>
+            <td>09:00</td>
+            <td>12</td>
+            <td>5</td>
+            <td>25</td>
+            <td>PSN_Report_20260331_0900.pdf</td>
+            <td><small>12 nuove email Ferrari (24-30/03): piano indirizzamento BLOCCANTE, POOL LARGE, esclusione SAE/CSRS/D</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-24</td>
+            <td>10:51</td>
+            <td>2</td>
+            <td>4</td>
+            <td>18</td>
+            <td>PSN_Report_20260324_1051.pdf</td>
+            <td><small>2 nuove email Ferrari (Verticale AKAMAI + Infoghatering DPC). 4 riunioni oggi. 2 nuovi Gantt items.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-24</td>
+            <td>06:09</td>
+            <td>0</td>
+            <td>0</td>
+            <td>16</td>
+            <td></td>
+            <td><small>Run degradata: MCP Gmail/Calendar non disponibili in sessione. Nessun dato aggiornato.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-20</td>
+            <td>05:13</td>
+            <td>2</td>
+            <td>2</td>
+            <td>16</td>
+            <td></td>
+            <td><small>2 nuove email Ferrari (Richiesta VPN C2S + Pianificazione IAM), 2 eventi cal (FERIE + Document Platf</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-19</td>
+            <td>06:39</td>
+            <td>3</td>
+            <td>4</td>
+            <td>13</td>
+            <td></td>
+            <td><small>3 nuove email Ferrari (SAL Gantt 19/03, abilitazione TT Leonardo Bani/Natalia/Battaglia). 4 riunioni</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-18</td>
+            <td>09:14</td>
+            <td>1</td>
+            <td>2</td>
+            <td>11</td>
+            <td></td>
+            <td><small>1 nuova email Ferrari (Creazione utenze secondarie IaaS Leonardo 5 utenti), 2 riunioni oggi.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-17</td>
+            <td>09:11</td>
+            <td>0</td>
+            <td>3</td>
+            <td>10</td>
+            <td></td>
+            <td><small>TIER MEDIA: 3 riunioni 17/03. Nessuna nuova email Ferrari.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-16</td>
+            <td>18:47</td>
+            <td>13</td>
+            <td>7</td>
+            <td>10</td>
+            <td>PSN_Report_20260316_1847.pdf</td>
+            <td><small>13 nuove email Ferrari 12-16/03, 6 nuovi Gantt items, 7 riunioni oggi.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-12</td>
+            <td>09:11</td>
+            <td>0</td>
+            <td>4</td>
+            <td>4</td>
+            <td>PSN_Report_20260312_0911.pdf</td>
+            <td><small>Run mattutina. 4 riunioni DPC oggi.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-11</td>
+            <td>18:20</td>
+            <td>1</td>
+            <td>2</td>
+            <td>4</td>
+            <td>PSN_Report_20260311_1813.pdf</td>
+            <td><small>1 nuova email Ferrari (Utenze CaaS IT ALERT).</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-11</td>
+            <td>19:00</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>PSN_Report_20260311_1900.pdf</td>
+            <td><small>1 nuova email Ferrari (Manvela VA-DAST-PT).</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-10</td>
+            <td>19:00</td>
+            <td>2</td>
+            <td>4</td>
+            <td>2</td>
+            <td>PSN_Report_20260310_1900.pdf</td>
+            <td><small>2 nuove email Ferrari, 4 riunioni.</small></td>
+        </tr>
+<tr class="">
+            <td>2026-03-10</td>
+            <td>12:07</td>
+            <td>3</td>
+            <td>2</td>
+            <td>0</td>
+            <td>PSN_Report_20260310_1207.pdf</td>
+            <td><small>3 email 09/03.</small></td>
+        </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<!-- TAB 7: LOG -->
+<div id="tab-log" class="tab-content">
+  <div class="log-toolbar">
+    <button class="log-filter-btn active" onclick="filterLog('all',this)">Tutti</button>
+    <button class="log-filter-btn" onclick="filterLog('email',this)">📧 Email</button>
+    <button class="log-filter-btn" onclick="filterLog('cal',this)">📅 Riunioni</button>
+    <button class="log-filter-btn" onclick="filterLog('action',this)">⚡ Azioni</button>
+    <button class="log-filter-btn" onclick="filterLog('excel',this)">📎 Excel</button>
+    <button class="log-filter-btn" onclick="filterLog('gantt',this)">📈 Gantt</button>
+    <button class="log-filter-btn" onclick="filterLog('system',this)">🖥️ Sistema</button>
+    <input class="log-search" id="log-search" placeholder="🔍 Cerca nel log..." oninput="searchLog()"/>
+  </div>
+  <div class="log-entries" id="log-entries">
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run piena – 2026-03-31 09:00 </div>
+                <div class="log-desc">12 nuove email Ferrari (25-30/03), 5 riunioni oggi, 7 nuovi Gantt items. Piano indirizzamento BLOCCANTE.</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Richiesta creazione utenze CaaS CIMA Foundation <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">7 utenti (5 CIMA + 2 Sogei) su PSN03159380/PSN03159375. DPC deve creare + aprire TT.</div>
+                <div class="log-meta">2026-03-30 12:40 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Richiesta piano indirizzamento (URGENTE) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari sollecita Giordano/Pietro: tempi stretti, Leonardo bloccato. Piano Tenant Sicurezza/Backend.</div>
+                <div class="log-meta">2026-03-30 09:50 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Stato avanzamento attività e migrazione servizi <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari fissa riunione Teams migrazione. ID 339 516 150 781 22, PW pw2vS9Wi.</div>
+                <div class="log-meta">2026-03-27 13:10 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 R: Richiesta piano indirizzamenti (sollecito a Catamo) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari sollecita Antonio Catamo (DPC) CC a tutto il gruppo di lavoro.</div>
+                <div class="log-meta">2026-03-27 10:32 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Servizi in scope oggetto di migrazione DPC <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">SAE, CSRS e Designa ESCLUSI dalla migrazione. Impatto su finanziamento e PPDF.</div>
+                <div class="log-meta">2026-03-27 09:39 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 R: Utenze CaaS IT ALERT (lista ricevuta da Cosimo) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Cosimo Versace (CIMA) ha fornito lista: Botto, Riolfo, Casasola, Burastero, Pintus. Ferrari ringrazia.</div>
+                <div class="log-meta">2026-03-27 09:16 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Richiesta piano indirizzamenti Tenant Sicurezza e Backend <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">2 subnet /23 Nord/Sud per Tenant Sicurezza (diversi da on-prem) + piano Backend.</div>
+                <div class="log-meta">2026-03-26 10:26 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Richiesta POOL LARGE IAAS16 - VM Bastion <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Autorizzazione DPC per anticipata esecuzione IAAS16 Pool Large - €4.963,803/anno.</div>
+                <div class="log-meta">2026-03-26 07:51 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 R: Incontro con AKAMAI <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari ricorda calendario Verticale AKAMAI già fissato. Teams link confermato.</div>
+                <div class="log-meta">2026-03-26 07:38 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 R: Utenze CaaS IT ALERT (sollecito Cosimo) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari sollecita Cosimo Versace per lista utenti CaaS da abilitare.</div>
+                <div class="log-meta">2026-03-25 11:02 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 R: dpc_gantt - SAL 25/03/2026 <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Ferrari invia Gantt Excel SAL 25/03 (DPC SAL_ Gantt 25032026.xlsx) per SAL del 26/03.</div>
+                <div class="log-meta">2026-03-25 10:09 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 I: Pianificazione incontro IAM - Eustema no KeyCloak <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">Eustema non usa KeyCloak. Valutare integrazione IAM con stima tempi/effort.</div>
+                <div class="log-meta">2026-03-24 11:40 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Protezione Civile - Nutanix NKP Design workshop <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">09:30–16:30. Zoom: https://nutanix.zoom.us/j/95948963513</div>
+                <div class="log-meta">2026-03-31 09:30 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 NDB Design DPC <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">09:30–17:30. Zoom PW: 190374</div>
+                <div class="log-meta">2026-03-31 09:30 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 SAL - documentale Protezione Civile <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">11:00–12:00. Teams. O.d.g.: gestione attività, flussi approvazione, comunicazioni, repository doc.</div>
+                <div class="log-meta">2026-03-31 11:00 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Servizio AGITEC <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">12:00–13:00. Teams con Ferrari Emiliano (Sogei).</div>
+                <div class="log-meta">2026-03-31 12:00 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Analisi Utenti DB Budibase <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">12:00–13:00. Teams. Bonifica Utenze DB Budibase.</div>
+                <div class="log-meta">2026-03-31 12:00 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Piano indirizzamento Tenant Sicurezza/Backend [BLOCKED] <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">blocked · Infrastruttura · owner DPC · Leonardo bloccato</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Autorizzazione POOL LARGE IAAS16 - VM Bastion <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">pending · IaaS · owner DPC · €4.963,803/anno</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Revisione PPDF (esclusione SAE/CSRS/Designa) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">pending · Finanziamento · owner DPC</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Riunione avanzamento migrazione servizi <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">pending · PSN · Teams ID 339 516 150 781 22</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Creazione utenze CaaS CIMA Foundation + Sogei (7) <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">pending · CaaS · owner DPC · PSN03159380/PSN03159375</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Valutazione integrazione KeyCloak - Eustema <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">pending · IAM · owner DPC/Eustema</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry log-new" data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Excel: SAL Gantt PSN 25/03/2026 <span class="badge badge-new">🆕</span></div>
+                <div class="log-desc">in-progress · PSN · badge 📎 Excel</div>
+                <div class="log-meta">2026-03-31 09:00 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run piena – 2026-03-24 10:51 </div>
+                <div class="log-desc">2 nuove email Ferrari (Verticale AKAMAI + Infoghatering DPC), 4 riunioni oggi, 2 nuovi Gantt items.</div>
+                <div class="log-meta">2026-03-24 10:51 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Verticale AKAMAI - PSN DPC </div>
+                <div class="log-desc">Ferrari fissa agenda riunione verticale AKAMAI. Teams ID: 351 581 470 730 41.</div>
+                <div class="log-meta">2026-03-24 10:31 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">📧 Infoghatering DPC </div>
+                <div class="log-desc">Ferrari chiede a CIMA/Versace stato compilazione documento Infogathering con Leonardo.</div>
+                <div class="log-meta">2026-03-24 10:34 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Sessione 2 BI Platform Funzionalità - SIMpara </div>
+                <div class="log-desc">10:00–12:00. Teams ID: 399 290 390 079 90, PW: s96Ak6D5</div>
+                <div class="log-meta">2026-03-24 09:30 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Extreme/MuXo/DPC bi-weekly Call </div>
+                <div class="log-desc">11:00–11:30. Teams ID: 225 645 412 073 2, PW: sW3Tk9Yz</div>
+                <div class="log-meta">2026-03-24 11:00 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Pianificazione incontro per integrazione IAM </div>
+                <div class="log-desc">11:30–13:00. Teams ID: 337 736 536 074 31, PW: V4Ck78nj</div>
+                <div class="log-meta">2026-03-24 11:30 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 [DPC] Connettività EC2 AWS to-be → DB as-is </div>
+                <div class="log-desc">15:00–16:00. Teams ID: 231 977 181 368 4, PW: 5XW6ws3u</div>
+                <div class="log-meta">2026-03-24 15:00 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Riunione Verticale AKAMAI - PSN DPC </div>
+                <div class="log-desc">pending · PSN · owner Ferrari/Sogei</div>
+                <div class="log-meta">2026-03-24 10:51 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">📈 Nuovo Gantt: Compilazione Infogathering DPC - Leonardo/CIMA </div>
+                <div class="log-desc">pending · IAM · owner CIMA/Leonardo</div>
+                <div class="log-meta">2026-03-24 10:51 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run automatica – 2026-03-24 06:09 (MCP non disponibile) </div>
+                <div class="log-desc">I tool MCP Gmail e Google Calendar non sono stati caricati in questa sessione. Impossibile verificare nuove email Ferrari/Sogei o eventi calendario. Fingerprint non ricalcolabile. Stato invariato rispetto a 2026-03-20 05:13.</div>
+                <div class="log-meta">2026-03-24 06:09 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run automatica – 2026/03/20 05:13 (schedulata) </div>
+                <div class="log-desc">TIER PIENA: 2 nuove email Ferrari/Sogei (Richiesta VPN C2S + Pianificazione IAM), 2 eventi calendario (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.</div>
+                <div class="log-meta">2026-03-20 05:13 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟡 Richiesta VPN C2S </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; | Ferrari chiede a Scaparro abilitazione VPN C2S per 8 utenti Accenture/Avanade per accedere a DPC Onprem, AWS AS-IS, AWS TO-BE e IS.</div>
+                <div class="log-meta">2026-03-19 17:57 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟢 Pianificazione incontro verticale IAM </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; → Crisci/Eustema | Ferrari organizza incontro IAM con Leonardo. Disponibilità: Lun 23 pm, Mar 24, Mer 25.</div>
+                <div class="log-meta">2026-03-19 16:01 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Calendario aggiornato – 2026/03/20 05:13 </div>
+                <div class="log-desc">FERIE n.1 (tutto il giorno). Sessione 2 Document Platform Funzionalità – SIMpara ore 09:30–12:00 (Teams ID: 370 362 417 820 44, pw: zt7fy3j4).</div>
+                <div class="log-meta">2026-03-20 05:13 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">Gantt aggiornato: 2 nuove voci </div>
+                <div class="log-desc">Aggiunte: &#x27;Abilitazione VPN C2S 8 utenti Accenture/Avanade&#x27; (pending, VPN) | &#x27;Pianificazione incontro IAM Eustema/Leonardo&#x27; (pending, IAM).</div>
+                <div class="log-meta">2026-03-20 05:13 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">Email PMO: Proposta licenza infrastruttura TO-BE </div>
+                <div class="log-desc">Ferrari/Sogei propone mapping licenze AS-IS→TO-BE: ArcGIS (BYOL), RedHat (Included), Oracle (BYOL), SQL Server (Included). Attende ok DPC.</div>
+                <div class="log-meta">2026-03-19 12:59 | <span class="badge badge-info">🟡 Attenzione</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run automatica – 19/03/2026 06:39 </div>
+                <div class="log-desc">TIER PIENA: 3 nuove email Ferrari/Sogei (SAL Gantt 19/03 + abilitazione TT Leonardo), 4 riunioni oggi, 2 nuovi Gantt items (tot 13). Ora &lt; 17: nessun PDF.</div>
+                <div class="log-meta">2026-03-19 06:39 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟡 dpc_gantt - SAL 19/03/2026 </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; | Gantt Excel avanzamento lavori per SAL 19/03. Allegato: DPC - SAL Gantt 19032026.xlsx</div>
+                <div class="log-meta">2026-03-18 15:05 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟡 Abilitazione TT Leonardo su tutte TGU </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; | Ferrari conferma a TIM (Stripoli): abilitare Bani, Natalia, Battaglia su tutte le TGU PSN.</div>
+                <div class="log-meta">2026-03-18 11:41 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟡 Richiesta abilitazione TT PSN – Leonardo </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; | Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia per apertura TT PSN.</div>
+                <div class="log-meta">2026-03-18 11:23 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="gantt">
+            <span class="log-icon">📈</span>
+            <div class="log-body">
+                <div class="log-title">Gantt aggiornato: 2 nuove voci, 1 completata </div>
+                <div class="log-desc">Nuove: &#x27;SAL Gantt PSN 19/03/2026&#x27; (📎 Excel) | &#x27;Abilitazione TT PSN Leonardo&#x27;. Completata: &#x27;Invio Gantt Excel aggiornato #dpc_gantt&#x27;.</div>
+                <div class="log-meta">2026-03-19 06:39 | <span class="badge badge-info">📈 Gantt</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="cal">
+            <span class="log-icon">📅</span>
+            <div class="log-body">
+                <div class="log-title">📅 Calendario aggiornato – 19/03/2026 06:39 </div>
+                <div class="log-desc">4 riunioni oggi: BI Platform Overview 09:30 (Teams 339 190 090 747 40), SAL PSN 11:00 (Teams 331 771 225 424 53), Tenable 14:00 (Zoom 917 1007 2267), Colloquio Pricoco 15:00 (Teams 378 373 359 806 64).</div>
+                <div class="log-meta">2026-03-19 06:39 | <span class="badge badge-info">📅 Calendario</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="system">
+            <span class="log-icon">🖥️</span>
+            <div class="log-body">
+                <div class="log-title">Run automatica – 18/03/2026 09:14 </div>
+                <div class="log-desc">Elaborazione completata: 1 nuova email Ferrari/Sogei (Creazione utenze secondarie IaaS Leonardo), 2 riunioni oggi, 1 nuovo Gantt item (tot 11). Ora &lt; 17: nessun PDF.</div>
+                <div class="log-meta">2026-03-18 09:14 | <span class="badge badge-info">🖥️ Sistema</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="email">
+            <span class="log-icon">📧</span>
+            <div class="log-body">
+                <div class="log-title">🟡 Creazione utenze secondarie </div>
+                <div class="log-desc">Da: FERRARI EMILIANO &lt;eferrari@sogei.it&gt; | Ferrari invia lista 5 utenze IaaS Leonardo (Borghesi, Galletti, Viscomi, Di Girolamo, Arcuri). DPC deve creare utenze secondarie.</div>
+                <div class="log-meta">2026-03-17 10:50 | <span class="badge badge-info">📧 Email PMO</span></div>
+            </div>
+        </div>
+<div class="log-entry " data-tipo="action">
+            <span class="log-icon">⚡</span>
+            <div class="log-body">
+                <div class="log-title">🟡 Creare utenze secondarie IaaS - 5 utenti Leonardo </div>
+                <div class="log-desc">Ferrari ha inviato lista: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (tutti @leonardo.com). DPC deve creare le utenze secondarie IaaS. Owner: DPC.</div>
+                <div class="log-meta">2026-03-18 09:14 | <span class="badge badge-info">⚡ Azione</span></div>
+            </div>
+        </div>
+
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<footer>🔒 DIFFUSIONE LIMITATA – Dipartimento della Protezione Civile | PSN Dashboard | 2026-03-31 | <a href="https://gmattei-creator.github.io/psn-dashboard/" style="color:#93c5fd">gmattei-creator.github.io/psn-dashboard/</a></footer>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
-const EMAIL_LOG = [{"id": "19d1f3005c5900da", "oggetto": "Verticale AKAMAI - PSN DPC", "data": "2026-03-24", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "prio": "🟡", "verticale": "PSN", "note": "Ferrari fissa agenda riunione verticale AKAMAI con DPC, Accenture, BVTech, Leonardo, Sogei. Teams ID: 351 581 470 730 41, Passcode: uE6ka7Qp.", "is_new": true}, {"id": "19d1f3341d4e7813", "oggetto": "Infoghatering DPC", "data": "2026-03-24", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "prio": "🟡", "verticale": "IAM", "note": "Ferrari chiede a Cosimo Versace (CIMA) se Leonardo ha compilato il documento di Infogathering DPC per il verticale IAM.", "is_new": true}, {"data": "2026-03-19", "prio": "🟡", "oggetto": "Richiesta VPN C2S", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "VPN", "id": "19d07080ba47f4bc", "is_new": true}, {"data": "2026-03-19", "prio": "🟢", "oggetto": "Pianificazione incontro per integrazione IAM", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "IAM", "id": "19d069e53cf1235f", "is_new": true}, {"data": "2026-03-19", "prio": "🟡", "oggetto": "Proposta licenza infrastruttura TO-BE", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "PSN/Fornitori", "id": "19d058fa68c82418", "is_new": false}, {"data": "2026-03-18", "prio": "🟡", "oggetto": "dpc_gantt - SAL 19/03/2026", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "PSN", "is_new": false}, {"data": "2026-03-18", "prio": "🟡", "oggetto": "Abilitazione TT Leonardo su tutte TGU (Bani, Natalia, Battaglia)", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "CaaS", "is_new": false}, {"data": "2026-03-18", "prio": "🟡", "oggetto": "Richiesta abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "CaaS", "is_new": false}, {"data": "2026-03-17", "prio": "🟡", "oggetto": "Creazione utenze secondarie", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "IaaS", "is_new": false}, {"data": "2026-03-16", "prio": "🟡", "oggetto": "Assessment - SAE E CSRS", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "Fornitori Appl.", "is_new": false}, {"data": "2026-03-16", "prio": "🟡", "oggetto": "Domanda finanziamento DPC - Variazione", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "Finanziamento", "is_new": false}, {"data": "2026-03-16", "prio": "🟡", "oggetto": "Richiesta TT INC000007651467 e INC000007651466 - CaaS", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "CaaS", "is_new": false}, {"data": "2026-03-16", "prio": "🟡", "oggetto": "Incontro in presenza confermato - 17/03 ore 10:30", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "Fornitori Appl.", "is_new": false}, {"data": "2026-03-12", "prio": "🟡", "oggetto": "Conferma approvazione infrastruttura IS - III WAVE", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "Infrastruttura", "is_new": false}, {"data": "2026-03-12", "prio": "🟡", "oggetto": "Utenze da creare CaaS", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "CaaS", "is_new": false}, {"data": "2026-03-11", "prio": "🟡", "oggetto": "Utenze per accesso al Caas - IT ALERT", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "PSN", "is_new": false}, {"data": "2026-03-11", "prio": "🟡", "oggetto": "Manvela attivazione servizi di sicurezza VA-DAST-PT", "mittente": "FERRARI EMILIANO <eferrari@sogei.it>", "verticale": "Sicurezza", "is_new": false}];
-const GANTT_ITEMS = [{"nome": "Riunione Verticale AKAMAI - PSN DPC", "stato": "pending", "inizio": "2026-03-24", "fine": "", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "PSN", "fonte": "email", "badge": "✉️ Email", "email_id": "19d1f3005c5900da", "note": "Ferrari fissa agenda riunione verticale AKAMAI con DPC, Accenture, BVTech, Leonardo, Sogei. Teams ID: 351 581 470 730 41, Passcode: uE6ka7Qp.", "is_new": true}, {"nome": "Compilazione documento Infogathering DPC - Leonardo/CIMA", "stato": "pending", "inizio": "2026-03-24", "fine": "", "owner": "CIMA/Leonardo", "pct": 0, "verticale": "IAM", "fonte": "email", "badge": "✉️ Email", "email_id": "19d1f3341d4e7813", "note": "Ferrari chiede a Cosimo Versace (CIMA) se Leonardo ha compilato il documento Infogathering per il verticale IAM. In attesa di riscontro.", "is_new": true}, {"nome": "Abilitazione VPN C2S - 8 utenti Accenture/Avanade", "stato": "pending", "inizio": "2026-03-19", "fine": "", "owner": "Scaparro/RTI", "pct": 0, "verticale": "VPN", "fonte": "email", "badge": "✉️ Email", "email_id": "19d07080ba47f4bc", "note": "Ferrari chiede a Scaparro supporto per abilitazione VPN C2S: Micciché, Scordio, Moroniti, Cellamare (Accenture), Paolini, Pagliai, Palomba (Avanade), Vernile (Accenture).", "is_new": true}, {"nome": "Pianificazione incontro verticale IAM - Eustema/Leonardo", "stato": "pending", "inizio": "2026-03-19", "fine": "", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "IAM", "fonte": "email", "badge": "✉️ Email", "email_id": "19d069e53cf1235f", "note": "Ferrari organizza incontro IAM con Crisci (Eustema) e Leonardo. Slot proposti: Lun 23, Mar 24, Mer 25 marzo.", "is_new": true}, {"nome": "Approvazione proposta licenze TO-BE (ArcGIS, Oracle, SQL Server, RedHat)", "stato": "pending", "owner": "DPC", "data_fine": "", "pct": 0, "verticale": "PSN/Fornitori", "fonte": "✉️ Email", "is_new": false}, {"nome": "Accesso DB AS-IS Eustema - AWS", "stato": "pending", "inizio": "2026-03-10", "fine": "", "owner": "DPC/Eustema", "pct": 0, "verticale": "AWS", "fonte": "email", "badge": "✉️ Email", "email_id": "19cd850e9cc29a3e", "note": "Richiesta accesso a 5 DB AS-IS (Cartis, Check-in, Donazioni, Designa, Contributi)", "is_new": false}, {"nome": "Invio Gantt Excel aggiornato #dpc_gantt", "stato": "completed", "inizio": "2026-03-10", "fine": "2026-03-18", "owner": "Ferrari/Sogei", "pct": 100, "verticale": "PSN", "fonte": "email", "badge": "✉️ Email", "email_id": "19cd7e7427e7e069", "note": "Ferrari ha inviato il Gantt Excel SAL 19/03/2026 (DPC - SAL Gantt 19032026.xlsx).", "is_new": false}, {"nome": "Approvazione Manvela VA-DAST-PT", "stato": "pending", "inizio": "2026-03-11", "fine": "", "owner": "DPC", "pct": 0, "verticale": "Sicurezza", "fonte": "email", "badge": "✉️ Email", "email_id": "19cdcc96cc0edb6c", "note": "Bozza Manvela per attivazione servizi VA-DAST-PT. In attesa conferma doppio Dipartimento e doppia firma.", "is_new": false}, {"nome": "Lista utenti CaaS - IT ALERT", "stato": "pending", "inizio": "2026-03-11", "fine": "", "owner": "DPC", "pct": 0, "verticale": "PSN", "fonte": "email", "badge": "✉️ Email", "email_id": "19cddb3bd62b3d79", "note": "Ferrari chiede a Cosimo Versace lista utenti CaaS IT ALERT: Nome, Cognome, Mail, Telefono.", "is_new": false}, {"nome": "Conferma sottomissione infrastruttura IS - III WAVE", "stato": "pending", "inizio": "2026-03-12", "fine": "", "owner": "DPC", "pct": 0, "verticale": "Infrastruttura", "fonte": "email", "badge": "✉️ Email", "email_id": "19ce1c4d130e6468", "note": "Ferrari richiede approvazione DPC per attivazione Housing III Wave: DC Acilia, San Stefano (IT-Alert), Pomezia.", "is_new": false}, {"nome": "Creazione utenza CaaS - Maurizio Natalia (Leonardo)", "stato": "pending", "inizio": "2026-03-12", "fine": "", "owner": "DPC", "pct": 0, "verticale": "CaaS", "fonte": "email", "badge": "✉️ Email", "email_id": "19ce1236f353548a", "note": "Creare utenza secondaria su TGU PSN03173885 e PSN03173849 per Maurizio Natalia (maurizio.natalia@leonardo.com).", "is_new": false}, {"nome": "Abilitazione TT CaaS - INC000007651467/466", "stato": "pending", "inizio": "2026-03-16", "fine": "", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "CaaS", "fonte": "email", "badge": "✉️ Email", "email_id": "19cf6cd6e0e74596", "note": "Ticket TT aperti al PSN per abilitazione utenza CaaS Maurizio Natalia. In attesa di riscontro da assistenza PSN.", "is_new": false}, {"nome": "Revisione documento variazione finanziamento", "stato": "pending", "inizio": "2026-03-16", "fine": "", "owner": "DPC", "pct": 0, "verticale": "Finanziamento", "fonte": "email", "badge": "✉️ Email", "email_id": "19cf70e3b7b32fd4", "note": "Ferrari invia bozza v0.2. DPC deve revisionare e approvare.", "is_new": false}, {"nome": "Incontro in presenza SAE/CSRS - 17/03 ore 10:30", "stato": "pending", "inizio": "2026-03-17", "fine": "2026-03-17", "owner": "DPC/Sogei", "pct": 0, "verticale": "Fornitori Appl.", "fonte": "email", "badge": "✉️ Email", "email_id": "19cf63f5b795a070", "note": "Confermato. Ferrari, Ciano, Perfumo (Sogei) a DPC Via Vitorchiano 4. Predisporre badge/accesso.", "is_new": false}, {"nome": "Assessment SAE e CSRS (Teams)", "stato": "pending", "inizio": "2026-03-16", "fine": "", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "Fornitori Appl.", "fonte": "email", "badge": "✉️ Email", "email_id": "19cf74e3bb555cfe", "note": "Ferrari fissa agenda assessment SAE e CSRS con Accenture/Avanade/Leonardo. Teams ID: 372 149 426 718 70", "is_new": false}, {"nome": "Creazione utenze secondarie IaaS - Leonardo (5 utenti)", "stato": "pending", "inizio": "2026-03-17", "fine": "", "owner": "DPC", "pct": 0, "verticale": "IaaS", "fonte": "email", "badge": "✉️ Email", "email_id": "19cfb352e081cdb4", "note": "Ferrari invia lista utenze IaaS Leonardo: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri. DPC deve creare utenze secondarie.", "is_new": false}, {"nome": "SAL Gantt PSN – 19/03/2026", "stato": "pending", "inizio": "2026-03-19", "fine": "2026-03-19", "owner": "Ferrari/Sogei", "pct": 0, "verticale": "PSN", "fonte": "email", "badge": "📎 Excel", "email_id": "19d017b3a0cb7023", "note": "Ferrari invia Gantt Excel SAL avanzamento lavori (DPC - SAL Gantt 19032026.xlsx). SAL oggi 19/03 ore 11:00.", "is_new": false}, {"nome": "Abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)", "stato": "pending", "inizio": "2026-03-18", "fine": "", "owner": "TIM/PSN", "pct": 0, "verticale": "CaaS", "fonte": "email", "badge": "✉️ Email", "email_id": "19d00b024765d296", "note": "Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia su tutte le TGU PSN per apertura TT assistenza.", "is_new": false}];
-const AZIONI = [{"prio": "🟡", "titolo": "Partecipare/organizzare riunione Verticale AKAMAI - PSN DPC", "note": "Ferrari ha fissato agenda Teams ID 351 581 470 730 41 (passcode uE6ka7Qp). Da estendere ai colleghi necessari.", "owner": "DPC", "verticale": "PSN", "is_new": true}, {"prio": "🟡", "titolo": "Rispondere a Ferrari su compilazione Infogathering DPC", "note": "Ferrari attende da CIMA/Versace conferma compilazione documento Infogathering con Leonardo per verticale IAM.", "owner": "DPC/CIMA", "verticale": "IAM", "is_new": true}, {"titolo": "Abilitare VPN C2S per 8 utenti Accenture/Avanade", "prio": "🟡", "verticale": "VPN", "note": "Ferrari ha chiesto a Scaparro. Verificare abilitazione reti: DPC Onprem, AWS AS-IS, AWS TO-BE, IS.", "is_new": true}, {"titolo": "Rispondere a Ferrari su proposta licenze TO-BE", "prio": "🟡", "verticale": "PSN/Fornitori", "is_new": false}, {"prio": "🟡", "titolo": "Partecipare SAL PSN con Gantt Ferrari – oggi ore 11:00", "note": "SAL settimanale PCM-DPC-PSN. Ferrari presenta Gantt avanzamento lavori. Teams ID: 331 771 225 424 53, Passcode: dc2YJ6C7.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Verificare abilitazione TT PSN - Leonardo (Bani, Natalia, Battaglia)", "note": "Ferrari ha chiesto a Stripoli (TIM) di abilitare Davide Bani, Natalia Maurizio, Andrea Battaglia su tutte le TGU PSN. In attesa di conferma TIM.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Creare utenze secondarie IaaS - 5 utenti Leonardo", "note": "Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (@leonardo.com). Dati ricevuti da Ferrari.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Confermare sottomissione infrastruttura IS III WAVE", "note": "TIM ha preparato export configuratore OL per DC Acilia, San Stefano IT-Alert, Pomezia. DPC deve dare approvazione a Ferrari.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Creare utenza CaaS Maurizio Natalia + TT abilitazione", "note": "Utenza su TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Fornire lista utenti CaaS IT ALERT", "note": "Lista utenti da abilitare al CaaS: Nome, Cognome, Mail, Telefono.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Revisione documento variazione finanziamento v0.2", "note": "Bozza ricevuta da Ferrari. DPC deve revisionare e approvare.", "owner": "DPC", "is_new": false}, {"prio": "🟡", "titolo": "Conferma doppio Dipartimento e doppia firma Manvela VA-DAST-PT", "note": "Ferrari in attesa di risposta DPC sulla firma del documento.", "owner": "DPC", "is_new": false}];
-const CAL_OGGI = [{"ora_inizio": "09:30", "ora_fine": "12:00", "summary": "Sessione 2 BI Platform Funzionalità - SIMpara", "teams_url": "https://teams.microsoft.com/meet/39929039007990?p=WJrgPGuKJ15jsSpmrW", "teams_id": "399 290 390 079 90", "teams_pw": "s96Ak6D5", "is_new": true}, {"ora_inizio": "11:00", "ora_fine": "11:30", "summary": "Extreme/MuXo/DPC bi-weekly Call", "teams_id": "225 645 412 073 2", "teams_pw": "sW3Tk9Yz", "is_new": true}, {"ora_inizio": "11:30", "ora_fine": "13:00", "summary": "Pianificazione incontro per integrazione IAM", "teams_url": "https://teams.microsoft.com/meet/33773653607431?p=4qwaNMGEnP0RL6rIGP", "teams_id": "337 736 536 074 31", "teams_pw": "V4Ck78nj", "is_new": true}, {"ora_inizio": "15:00", "ora_fine": "16:00", "summary": "[DPC] Connettività EC2 AWS to-be → DB as-is", "teams_url": "https://teams.microsoft.com/meet/2319771813684?p=eBy8lpaGMsKPvZkJI7", "teams_id": "231 977 181 368 4", "teams_pw": "5XW6ws3u", "is_new": true}];
-const VERTICALI = {"IAM": {"aperti": 4, "chiusi": 1}, "AWS": {"aperti": 4, "chiusi": 2}, "VPN": {"aperti": 3, "chiusi": 1}, "DB": {"aperti": 2, "chiusi": 1}, "Finanziamento": {"aperti": 2, "chiusi": 0}, "SAL": {"aperti": 1, "chiusi": 1}, "Fornitori Appl.": {"aperti": 2, "chiusi": 0}, "PSN": {"aperti": 4, "chiusi": 2}, "Sicurezza": {"aperti": 1, "chiusi": 0}, "Infrastruttura": {"aperti": 1, "chiusi": 0}, "CaaS": {"aperti": 3, "chiusi": 0}, "IaaS": {"aperti": 1, "chiusi": 0}};
-const RUN_HISTORY = [{"data": "2026-03-24", "ora": "10:51", "nuove_email": 2, "eventi_cal": 4, "gantt": 18, "pdf": "PSN_Report_20260324_1051.pdf", "note": "2 nuove email Ferrari (Verticale AKAMAI + Infoghatering DPC). 4 riunioni oggi. 2 nuovi Gantt items.", "is_current": true}, {"data": "2026-03-24", "ora": "06:09", "nuove_email": 0, "eventi_cal": 0, "gantt": 16, "pdf": "", "note": "Run degradata: MCP Gmail/Calendar non disponibili in sessione. Nessun dato aggiornato.", "is_current": false}, {"data": "2026-03-20", "ora": "05:13", "nuove_email": 2, "eventi_cal": 2, "gantt": 16, "pdf": "", "note": "2 nuove email Ferrari (Richiesta VPN C2S + Pianificazione IAM), 2 eventi cal (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.", "is_current": false}, {"data": "2026-03-19", "ora": "06:39", "nuove_email": 3, "eventi_cal": 4, "gantt": 13, "pdf": "", "note": "3 nuove email Ferrari (SAL Gantt 19/03, abilitazione TT Leonardo Bani/Natalia/Battaglia). 4 riunioni oggi incl. SAL PSN.", "is_current": false}, {"data": "2026-03-18", "ora": "09:14", "nuove_email": 1, "eventi_cal": 2, "gantt": 11, "pdf": "", "note": "1 nuova email Ferrari (Creazione utenze secondarie IaaS Leonardo 5 utenti), 2 riunioni oggi.", "is_current": false}, {"data": "2026-03-17", "ora": "09:11", "nuove_email": 0, "eventi_cal": 3, "gantt": 10, "pdf": "", "note": "TIER MEDIA: 3 riunioni 17/03. Nessuna nuova email Ferrari.", "is_current": false}, {"data": "2026-03-16", "ora": "18:47", "nuove_email": 13, "eventi_cal": 7, "gantt": 10, "pdf": "PSN_Report_20260316_1847.pdf", "note": "13 nuove email Ferrari 12-16/03, 6 nuovi Gantt items, 7 riunioni oggi.", "is_current": false}, {"data": "2026-03-12", "ora": "09:11", "nuove_email": 0, "eventi_cal": 4, "gantt": 4, "pdf": "PSN_Report_20260312_0911.pdf", "note": "Run mattutina. 4 riunioni DPC oggi.", "is_current": false}, {"data": "2026-03-11", "ora": "18:20", "nuove_email": 1, "eventi_cal": 2, "gantt": 4, "pdf": "PSN_Report_20260311_1813.pdf", "note": "1 nuova email Ferrari (Utenze CaaS IT ALERT).", "is_current": false}, {"data": "2026-03-11", "ora": "19:00", "nuove_email": 1, "eventi_cal": 2, "gantt": 3, "pdf": "PSN_Report_20260311_1900.pdf", "note": "1 nuova email Ferrari (Manvela VA-DAST-PT).", "is_current": false}, {"data": "2026-03-10", "ora": "19:00", "nuove_email": 2, "eventi_cal": 4, "gantt": 2, "pdf": "PSN_Report_20260310_1900.pdf", "note": "2 nuove email Ferrari, 4 riunioni.", "is_current": false}, {"data": "2026-03-10", "ora": "12:07", "nuove_email": 3, "eventi_cal": 2, "gantt": 0, "pdf": "PSN_Report_20260310_1207.pdf", "note": "3 email 09/03.", "is_current": false}];
-const LOG_ENTRIES = [{"tipo": "system", "data": "2026-03-24", "ora": "10:51", "titolo": "Run piena – 2026-03-24 10:51", "descrizione": "2 nuove email Ferrari (Verticale AKAMAI + Infoghatering DPC), 4 riunioni oggi, 2 nuovi Gantt items.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "2026-03-24", "ora": "10:31", "titolo": "📧 Verticale AKAMAI - PSN DPC", "descrizione": "Ferrari fissa agenda riunione verticale AKAMAI. Teams ID: 351 581 470 730 41.", "badge": "📧 Email PMO", "prio": "🟡", "is_new": true}, {"tipo": "email", "data": "2026-03-24", "ora": "10:34", "titolo": "📧 Infoghatering DPC", "descrizione": "Ferrari chiede a CIMA/Versace stato compilazione documento Infogathering con Leonardo.", "badge": "📧 Email PMO", "prio": "🟡", "is_new": true}, {"tipo": "cal", "data": "2026-03-24", "ora": "09:30", "titolo": "📅 Sessione 2 BI Platform Funzionalità - SIMpara", "descrizione": "10:00–12:00. Teams ID: 399 290 390 079 90, PW: s96Ak6D5", "badge": "📅 Calendario", "is_new": true}, {"tipo": "cal", "data": "2026-03-24", "ora": "11:00", "titolo": "📅 Extreme/MuXo/DPC bi-weekly Call", "descrizione": "11:00–11:30. Teams ID: 225 645 412 073 2, PW: sW3Tk9Yz", "badge": "📅 Calendario", "is_new": true}, {"tipo": "cal", "data": "2026-03-24", "ora": "11:30", "titolo": "📅 Pianificazione incontro per integrazione IAM", "descrizione": "11:30–13:00. Teams ID: 337 736 536 074 31, PW: V4Ck78nj", "badge": "📅 Calendario", "is_new": true}, {"tipo": "cal", "data": "2026-03-24", "ora": "15:00", "titolo": "📅 [DPC] Connettività EC2 AWS to-be → DB as-is", "descrizione": "15:00–16:00. Teams ID: 231 977 181 368 4, PW: 5XW6ws3u", "badge": "📅 Calendario", "is_new": true}, {"tipo": "gantt", "data": "2026-03-24", "ora": "10:51", "titolo": "📈 Nuovo Gantt: Riunione Verticale AKAMAI - PSN DPC", "descrizione": "pending · PSN · owner Ferrari/Sogei", "badge": "📈 Gantt", "is_new": true}, {"tipo": "gantt", "data": "2026-03-24", "ora": "10:51", "titolo": "📈 Nuovo Gantt: Compilazione Infogathering DPC - Leonardo/CIMA", "descrizione": "pending · IAM · owner CIMA/Leonardo", "badge": "📈 Gantt", "is_new": true}, {"tipo": "system", "data": "2026-03-24", "ora": "06:09", "titolo": "Run automatica – 2026-03-24 06:09 (MCP non disponibile)", "descrizione": "I tool MCP Gmail e Google Calendar non sono stati caricati in questa sessione. Impossibile verificare nuove email Ferrari/Sogei o eventi calendario. Fingerprint non ricalcolabile. Stato invariato rispetto a 2026-03-20 05:13.", "badge": "🖥️ Sistema"}, {"tipo": "system", "data": "2026-03-20", "ora": "05:13", "titolo": "Run automatica – 2026/03/20 05:13 (schedulata)", "descrizione": "TIER PIENA: 2 nuove email Ferrari/Sogei (Richiesta VPN C2S + Pianificazione IAM), 2 eventi calendario (FERIE + Document Platform SIMpara). 2 nuovi Gantt items.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "2026-03-19", "ora": "17:57", "titolo": "🟡 Richiesta VPN C2S", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari chiede a Scaparro abilitazione VPN C2S per 8 utenti Accenture/Avanade per accedere a DPC Onprem, AWS AS-IS, AWS TO-BE e IS.", "badge": "📧 Email PMO"}, {"tipo": "email", "data": "2026-03-19", "ora": "16:01", "titolo": "🟢 Pianificazione incontro verticale IAM", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> → Crisci/Eustema | Ferrari organizza incontro IAM con Leonardo. Disponibilità: Lun 23 pm, Mar 24, Mer 25.", "badge": "📧 Email PMO"}, {"tipo": "cal", "data": "2026-03-20", "ora": "05:13", "titolo": "📅 Calendario aggiornato – 2026/03/20 05:13", "descrizione": "FERIE n.1 (tutto il giorno). Sessione 2 Document Platform Funzionalità – SIMpara ore 09:30–12:00 (Teams ID: 370 362 417 820 44, pw: zt7fy3j4).", "badge": "📅 Calendario"}, {"tipo": "gantt", "data": "2026-03-20", "ora": "05:13", "titolo": "Gantt aggiornato: 2 nuove voci", "descrizione": "Aggiunte: 'Abilitazione VPN C2S 8 utenti Accenture/Avanade' (pending, VPN) | 'Pianificazione incontro IAM Eustema/Leonardo' (pending, IAM).", "badge": "📈 Gantt"}, {"tipo": "email", "data": "2026-03-19", "ora": "12:59", "titolo": "Email PMO: Proposta licenza infrastruttura TO-BE", "descrizione": "Ferrari/Sogei propone mapping licenze AS-IS→TO-BE: ArcGIS (BYOL), RedHat (Included), Oracle (BYOL), SQL Server (Included). Attende ok DPC.", "badge": "🟡 Attenzione"}, {"tipo": "system", "data": "2026-03-19", "ora": "06:39", "titolo": "Run automatica – 19/03/2026 06:39", "descrizione": "TIER PIENA: 3 nuove email Ferrari/Sogei (SAL Gantt 19/03 + abilitazione TT Leonardo), 4 riunioni oggi, 2 nuovi Gantt items (tot 13). Ora < 17: nessun PDF.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "2026-03-18", "ora": "15:05", "titolo": "🟡 dpc_gantt - SAL 19/03/2026", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Gantt Excel avanzamento lavori per SAL 19/03. Allegato: DPC - SAL Gantt 19032026.xlsx", "badge": "📧 Email PMO"}, {"tipo": "email", "data": "2026-03-18", "ora": "11:41", "titolo": "🟡 Abilitazione TT Leonardo su tutte TGU", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari conferma a TIM (Stripoli): abilitare Bani, Natalia, Battaglia su tutte le TGU PSN.", "badge": "📧 Email PMO"}, {"tipo": "email", "data": "2026-03-18", "ora": "11:23", "titolo": "🟡 Richiesta abilitazione TT PSN – Leonardo", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari chiede a Stripoli (TIM) abilitazione Davide Bani, Natalia Maurizio, Andrea Battaglia per apertura TT PSN.", "badge": "📧 Email PMO"}, {"tipo": "gantt", "data": "2026-03-19", "ora": "06:39", "titolo": "Gantt aggiornato: 2 nuove voci, 1 completata", "descrizione": "Nuove: 'SAL Gantt PSN 19/03/2026' (📎 Excel) | 'Abilitazione TT PSN Leonardo'. Completata: 'Invio Gantt Excel aggiornato #dpc_gantt'.", "badge": "📈 Gantt"}, {"tipo": "cal", "data": "2026-03-19", "ora": "06:39", "titolo": "📅 Calendario aggiornato – 19/03/2026 06:39", "descrizione": "4 riunioni oggi: BI Platform Overview 09:30 (Teams 339 190 090 747 40), SAL PSN 11:00 (Teams 331 771 225 424 53), Tenable 14:00 (Zoom 917 1007 2267), Colloquio Pricoco 15:00 (Teams 378 373 359 806 64).", "badge": "📅 Calendario"}, {"tipo": "system", "data": "2026-03-18", "ora": "09:14", "titolo": "Run automatica – 18/03/2026 09:14", "descrizione": "Elaborazione completata: 1 nuova email Ferrari/Sogei (Creazione utenze secondarie IaaS Leonardo), 2 riunioni oggi, 1 nuovo Gantt item (tot 11). Ora < 17: nessun PDF.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "2026-03-17", "ora": "10:50", "titolo": "🟡 Creazione utenze secondarie", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari invia lista 5 utenze IaaS Leonardo (Borghesi, Galletti, Viscomi, Di Girolamo, Arcuri). DPC deve creare utenze secondarie.", "badge": "📧 Email PMO"}, {"tipo": "action", "data": "2026-03-18", "ora": "09:14", "titolo": "🟡 Creare utenze secondarie IaaS - 5 utenti Leonardo", "descrizione": "Ferrari ha inviato lista: Michele Borghesi, Mirco Galletti, Rodolfo Viscomi, Ennio Di Girolamo, Francesco Arcuri (tutti @leonardo.com). DPC deve creare le utenze secondarie IaaS. Owner: DPC.", "badge": "⚡ Azione"}, {"tipo": "gantt", "data": "2026-03-18", "ora": "09:14", "titolo": "Gantt aggiornato: 1 nuova voce", "descrizione": "Aggiunta: 'Creazione utenze secondarie IaaS - Leonardo (5 utenti)' (pending, DPC, IaaS)", "badge": "📈 Gantt"}, {"tipo": "cal", "data": "2026-03-18", "ora": "09:14", "titolo": "📅 Calendario aggiornato – 18/03/2026 09:14", "descrizione": "TIER PIENA: 1 nuova email Ferrari. 2 riunioni oggi: Dataiku Platform Overview 09:30 (Teams ID: 316 060 439 981 1), Meeting AIM 15:00 (Teams ID: 351 776 686 306 83).", "badge": "📅 Calendario"}, {"tipo": "cal", "data": "2026-03-17", "ora": "09:11", "titolo": "📅 Calendario aggiornato – 17/03/2026 09:11", "descrizione": "TIER MEDIA: Nuovo giorno 17/03. 3 riunioni: Document Platform Overview 09:30 (Teams), DPC Cluster Ulpiano On Site 09:30–17:30 (Zoom), Assessment SAE/CSRS 11:15 (Teams ID 372 149 426 718 70). Nessuna nuova email Ferrari.", "badge": "📅 Calendario"}, {"tipo": "cal", "data": "2026-03-16", "ora": "19:07", "titolo": "Calendario aggiornato – 16/03/2026 19:07", "descrizione": "TIER MEDIA: orario VPN AWS corretto (17:00–18:00). Nessuna nuova email Ferrari.", "badge": "📅 Calendario"}, {"tipo": "system", "data": "2026-03-16", "ora": "18:47", "titolo": "Run automatica – 16/03/2026 18:47", "descrizione": "Elaborazione completata: 13 nuove email Ferrari/Sogei (12-16/03), 7 riunioni oggi, 6 nuovi Gantt items (tot 10), PDF PSN_Report_20260316_1847.pdf generato.", "badge": "🖥️ Sistema"}, {"tipo": "email", "data": "2026-03-16", "ora": "16:39", "titolo": "🟡 Assessment - SAE E CSRS", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Fisso agenda assessment SAE e CSRS con Accenture/Avanade/Leonardo. Teams ID: 372 149 426 718 70", "badge": "📧 Email"}, {"tipo": "email", "data": "2026-03-16", "ora": "15:29", "titolo": "🟡 Domanda finanziamento DPC - Variazione", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Bozza documento variazione v0.2 allegata. In attesa revisione DPC.", "badge": "📧 Email"}, {"tipo": "email", "data": "2026-03-16", "ora": "14:19", "titolo": "🟡 Richiesta TT INC000007651467 e INC000007651466 - CaaS", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Abilitazione utenza CaaS Maurizio Natalia (Leonardo) su TGU PSN03173885 e PSN03173849.", "badge": "📧 Email"}, {"tipo": "email", "data": "2026-03-16", "ora": "11:43", "titolo": "🟡 Incontro in presenza confermato - 17/03 ore 10:30", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Ferrari, Ciano, Perfumo (Sogei) a DPC Via Vitorchiano 4 martedì 17/03.", "badge": "📧 Email"}, {"tipo": "email", "data": "2026-03-12", "ora": "12:17", "titolo": "🟡 Conferma approvazione infrastruttura IS - III WAVE", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Richiesta approvazione DPC per Housing III Wave (DC Acilia, S.Stefano IT-Alert, Pomezia).", "badge": "📧 Email"}, {"tipo": "email", "data": "2026-03-12", "ora": "09:21", "titolo": "🟡 Utenze da creare CaaS", "descrizione": "Da: FERRARI EMILIANO <eferrari@sogei.it> | Creare utenza CaaS per Maurizio Natalia (Leonardo) su TGU PSN03173885/49. Aprire TT abilitazione.", "badge": "📧 Email"}, {"tipo": "action", "data": "2026-03-16", "ora": "18:47", "titolo": "🟡 Confermare sottomissione infrastruttura IS III WAVE", "descrizione": "TIM ha preparato export configuratore OL per DC Acilia, San Stefano IT-Alert, Pomezia. DPC deve dare approvazione a Ferrari per sottomissione.", "badge": "⚡ Azione"}, {"tipo": "action", "data": "2026-03-16", "ora": "18:47", "titolo": "🟡 Creare utenza CaaS Maurizio Natalia + TT abilitazione", "descrizione": "Utenza su TGU PSN03173885 e PSN03173849. Poi aprire TT verso assistenza PSN. Owner: DPC.", "badge": "⚡ Azione"}, {"tipo": "gantt", "data": "2026-03-16", "ora": "18:47", "titolo": "Gantt aggiornato: 6 nuove voci", "descrizione": "Aggiunte: Conferma infrastruttura IS III Wave | Creazione utenza CaaS Natalia | TT CaaS INC7651467/466 | Revisione doc variazione finanziamento | Incontro SAE/CSRS 17/03 | Assessment SAE CSRS", "badge": "📈 Gantt"}];
-const KPI = {
-  email_totali: 51,
-  gantt_aperti: 17,
-  nuove_email_oggi: 2,
-  riunioni_oggi: 4,
-  pdf: "PSN_Report_20260324_1051.pdf"
-};
-
-// ── LOGIN ─────────────────────────────────────────────────────
+// LOGIN
 function doLogin() {
-  const pwd = document.getElementById('pwd-input').value;
-  if(pwd === 'DashDpc@26') {
+  var pwd = document.getElementById('pwd-input').value;
+  if (pwd === 'DashDpc@26') {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    renderAll();
+    sessionStorage.setItem('psn_auth','1');
   } else {
-    const err = document.getElementById('login-err');
-    err.style.display = 'block';
-    setTimeout(()=>err.style.display='none',3000);
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
   }
 }
-document.getElementById('pwd-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+// Auto-login se già autenticato
+if (sessionStorage.getItem('psn_auth') === '1') {
+  document.getElementById('login-overlay').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
 
-// ── TABS ──────────────────────────────────────────────────────
+// TABS
 function showTab(name) {
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
   event.target.classList.add('active');
 }
 
-// ── RENDER ────────────────────────────────────────────────────
-const STATO_ICON = {pending:'⏳',['in-progress']:'🔄',blocked:'🔴',completed:'✅'};
-const PRIO_COLOR = {'🔴':'#fee2e2','🟡':'#fef9c3','🟢':'#dcfce7'};
-
-function renderAll() {
-  renderKPI();
-  renderAzioniOverview();
-  renderEmailOverview();
-  renderEmailFull();
-  renderCalendario();
-  renderGantt();
-  renderVerticali();
-  renderStorico();
-  renderLog('all');
-}
-
-function renderKPI() {
-  const kpis = [
-    {val: KPI.email_totali, lbl:'📧 Email Totali', color:'#2563eb'},
-    {val: KPI.gantt_aperti, lbl:'📈 Gantt Aperti', color:'#7c3aed'},
-    {val: KPI.nuove_email_oggi, lbl:'🆕 Nuove Oggi', color:'#059669'},
-    {val: KPI.riunioni_oggi, lbl:'📅 Riunioni Oggi', color:'#d97706'},
-  ];
-  document.getElementById('kpi-container').innerHTML = kpis.map(k=>
-    `<div class="kpi-card" style="border-top-color:${k.color}">
-      <div class="kpi-val" style="color:${k.color}">${k.val}</div>
-      <div class="kpi-lbl">${k.lbl}</div>
-    </div>`).join('');
-}
-
-function emailCard(em, compact=false) {
-  const isNew = em.is_new;
-  const bg = isNew ? '#fef9c3' : (PRIO_COLOR[em.prio]||'#f8fafc');
-  const newBadge = isNew ? '<span class="badge-new">🆕</span>' : '';
-  const vertBadge = em.verticale ? `<span class="badge-vert">${em.verticale}</span>` : '';
-  const note = (!compact && em.note) ? `<div style="font-size:0.76rem;color:#64748b;margin-top:4px">${em.note}</div>` : '';
-  return `<div class="email-item${isNew?' new':''}" style="background:${bg}">
-    <span class="email-prio">${em.prio||'🟢'}</span>
-    <div style="flex:1">
-      <div class="email-subj">${em.oggetto||''}${newBadge} ${vertBadge}</div>
-      <div class="email-meta">${em.data||''} · ${em.mittente||''}</div>
-      ${note}
-    </div>
-  </div>`;
-}
-
-function renderAzioniOverview() {
-  document.getElementById('azioni-overview').innerHTML = AZIONI.slice(0,5).map(az=>
-    `<div class="action-item${az.is_new?' new':''}" style="background:${az.is_new?'#fef9c3':'white'}">
-      <span style="font-size:1.1rem">${az.prio}</span>
-      <div>
-        <div style="font-weight:600;font-size:0.85rem">${az.titolo}${az.is_new?'<span class="badge-new">🆕</span>':''}</div>
-        <div style="font-size:0.75rem;color:#64748b">${az.note||''} · ${az.owner||'DPC'}</div>
-      </div>
-    </div>`).join('');
-}
-
-function renderEmailOverview() {
-  document.getElementById('email-overview').innerHTML = EMAIL_LOG.slice(0,4).map(e=>emailCard(e,true)).join('');
-}
-
-function renderEmailFull() {
-  document.getElementById('email-full').innerHTML = EMAIL_LOG.map(e=>emailCard(e,false)).join('');
-}
-
-function renderCalendario() {
-  document.getElementById('cal-container').innerHTML = CAL_OGGI.map(ev=>
-    `<div class="cal-item${ev.is_new?' new':''}">
-      <div class="cal-time">🕐 ${ev.ora_inizio} – ${ev.ora_fine}</div>
-      <div class="cal-title">${ev.summary}${ev.is_new?'<span class="badge-new">🆕</span>':''}</div>
-      ${ev.teams_id?`<div class="cal-teams">Teams: ${ev.teams_id}${ev.teams_pw?' · PW: '+ev.teams_pw:''}${ev.teams_url?` · <a href="${ev.teams_url}" target="_blank">Join</a>`:''}</div>`:''}
-    </div>`).join('') || '<p style="color:#94a3b8">Nessuna riunione oggi.</p>';
-}
-
-function renderGantt() {
-  const STATO_CSS = {pending:'stato-pending',['in-progress']:'stato-in-progress',blocked:'stato-blocked',completed:'stato-completed'};
-  document.getElementById('gantt-body').innerHTML = GANTT_ITEMS.map(g=>
-    `<tr class="${g.is_new?'new-row':''}">
-      <td><b>${g.nome}</b>${g.is_new?'<span class="badge-new">🆕</span>':''}</td>
-      <td><span class="${STATO_CSS[g.stato]||''}">
-        ${STATO_ICON[g.stato]||'⏳'} ${g.stato}</span></td>
-      <td>${g.owner||''}</td>
-      <td><span class="badge-vert">${g.verticale||''}</span></td>
-      <td>${g.pct||0}%</td>
-      <td>${g.badge||''}</td>
-      <td style="font-size:0.75rem;color:#64748b;max-width:200px">${g.note||''}</td>
-    </tr>`).join('');
-}
-
-function renderVerticali() {
-  document.getElementById('vert-container').innerHTML = Object.entries(VERTICALI).map(([v,cnt])=>{
-    const tot = (cnt.aperti||0)+(cnt.chiusi||0);
-    const pct = tot>0 ? Math.round(cnt.chiusi*100/tot) : 0;
-    return `<div class="vert-item">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span class="vert-name">🏗 ${v}</span>
-        <span style="font-size:0.78rem;color:#64748b">
-          ⏳ ${cnt.aperti} aperti · ✅ ${cnt.chiusi} chiusi · ${pct}%
-        </span>
-      </div>
-      <div class="vert-bar"><div class="vert-fill" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
-}
-
-function renderStorico() {
-  document.getElementById('storico-container').innerHTML = RUN_HISTORY.map(r=>
-    `<div class="hist-item${r.is_current?' current':''}">
-      <div class="hist-date">${r.data}<br><span style="font-size:0.75rem;color:#64748b">${r.ora}</span></div>
-      <div>
-        <div style="font-size:0.78rem;font-weight:600;color:#1a3a5c">
-          📧 ${r.nuove_email} email · 📅 ${r.eventi_cal} riunioni · 📈 ${r.gantt} Gantt
-          ${r.is_current?'<span class="badge-new">● current</span>':''}
-        </div>
-        <div class="hist-note">${r.note||''}</div>
-        ${r.pdf?`<div style="font-size:0.72rem;color:#2563eb">📄 ${r.pdf}</div>`:''}
-      </div>
-    </div>`).join('');
-}
-
-let logFilter = 'all', logSearch = '';
-function filterLog(type, btn) {
-  logFilter = type;
-  document.querySelectorAll('.log-filter').forEach(b=>b.classList.remove('active'));
+// LOG FILTER
+var currentFilter = 'all';
+function filterLog(tipo, btn) {
+  currentFilter = tipo;
+  document.querySelectorAll('.log-filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderLog(type);
+  applyLogFilter();
 }
-function searchLog(val) {
-  logSearch = val.toLowerCase();
-  renderLog(logFilter);
-}
-function renderLog(type) {
-  let items = LOG_ENTRIES;
-  if(type!=='all') items = items.filter(l=>l.tipo===type);
-  if(logSearch) items = items.filter(l=>(l.titolo+l.descrizione).toLowerCase().includes(logSearch));
-  // Group by date
-  const byDate = {};
-  items.forEach(l=>{ if(!byDate[l.data]) byDate[l.data]=[]; byDate[l.data].push(l); });
-  let html = '';
-  Object.entries(byDate).sort((a,b)=>b[0].localeCompare(a[0])).forEach(([date, logs])=>{
-    html += `<div style="font-size:0.78rem;font-weight:700;color:#1a3a5c;margin:0.8rem 0 0.3rem;border-bottom:1px solid #e2e8f0;padding-bottom:3px">📅 ${date}</div>`;
-    logs.forEach(l=>{
-      html += `<div class="log-item ${l.tipo||''} ${l.is_new?'new':''}">
-        <span class="log-badge ${l.tipo||'system'}">${l.badge||l.tipo}</span>
-        ${l.ora?`<span style="font-size:0.72rem;color:#94a3b8">${l.ora}</span>`:''}
-        <span class="log-title"> ${l.titolo||''}</span>
-        <div class="log-desc">${l.descrizione||''}</div>
-      </div>`;
-    });
+function searchLog() { applyLogFilter(); }
+function applyLogFilter() {
+  var q = document.getElementById('log-search').value.toLowerCase();
+  document.querySelectorAll('#log-entries .log-entry').forEach(function(el) {
+    var tipo = el.dataset.tipo || '';
+    var txt = el.textContent.toLowerCase();
+    var matchTipo = currentFilter === 'all' || tipo === currentFilter;
+    var matchQ = !q || txt.includes(q);
+    el.style.display = (matchTipo && matchQ) ? '' : 'none';
   });
-  document.getElementById('log-container').innerHTML = html || '<p style="color:#94a3b8">Nessun risultato.</p>';
 }
 </script>
 </body>
